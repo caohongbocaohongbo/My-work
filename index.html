@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Work — AI 辅助设计开发工作流</title>
+    <style>
+        :root {
+            --bg: #050507;
+            --surface: #101010;
+            --border: #3d3a39;
+            --text: #f2f2f2;
+            --text-secondary: #b8b3b0;
+            --accent: #00d992;
+            --accent-mint: #2fd6a1;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 60px 24px; }
+        header {
+            text-align: center;
+            padding: 80px 0 60px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 60px;
+        }
+        h1 {
+            font-size: 48px;
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
+        }
+        h1 span { color: var(--accent); }
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 18px;
+            font-weight: 400;
+        }
+        .section {
+            margin-bottom: 48px;
+        }
+        .section h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--accent-mint);
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 24px;
+            transition: border-color 0.2s;
+        }
+        .card:hover { border-color: var(--accent); }
+        .card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .card p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .card a {
+            color: var(--accent-mint);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .card a:hover { text-decoration: underline; }
+        .dir-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 8px;
+        }
+        .dir-list a {
+            display: block;
+            padding: 12px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        .dir-list a:hover { border-color: var(--accent); }
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-top: 60px;
+        }
+        footer a { color: var(--accent-mint); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>My <span>Work</span></h1>
+            <p class="subtitle">AI 辅助设计与开发工作流 — Agents + Skills + DESIGN.md</p>
+        </header>
+
+        <div class="section">
+            <h2>核心组成</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Agents</h3>
+                    <p>7 个专业 Agent，从需求分析到部署发布全链路协作，KPI 考核流转。</p>
+                    <a href="agents/">浏览 Agents</a>
+                </div>
+                <div class="card">
+                    <h3>Skills</h3>
+                    <p>30+ 可复用技能，覆盖 Figma 设计、前端动效、UI/UX 审查等领域。</p>
+                    <a href="skills/">浏览 Skills</a>
+                </div>
+                <div class="card">
+                    <h3>DESIGN.md</h3>
+                    <p>71 个品牌设计系统文档，AI 可直接读取生成像素级一致 UI。</p>
+                    <a href="design-system/design-md/">浏览设计系统</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>设计品牌库</h2>
+            <ul class="dir-list">
+                <li><a href="design-system/design-md/apple/">Apple</a></li>
+                <li><a href="design-system/design-md/stripe/">Stripe</a></li>
+                <li><a href="design-system/design-md/vercel/">Vercel</a></li>
+                <li><a href="design-system/design-md/figma/">Figma</a></li>
+                <li><a href="design-system/design-md/airbnb/">Airbnb</a></li>
+                <li><a href="design-system/design-md/spotify/">Spotify</a></li>
+                <li><a href="design-system/design-md/notion/">Notion</a></li>
+                <li><a href="design-system/design-md/linear.app/">Linear</a></li>
+                <li><a href="design-system/design-md/tesla/">Tesla</a></li>
+                <li><a href="design-system/design-md/nvidia/">NVIDIA</a></li>
+                <li><a href="design-system/design-md/supabase/">Supabase</a></li>
+                <li><a href="design-system/design-md/claude/">Claude</a></li>
+                <li><a href="design-system/design-md/primary-dark/">Primary Dark</a></li>
+                <li><a href="design-system/design-md/">全部 71 个品牌</a></li>
+            </ul>
+        </div>
+
+        <footer>
+            <p><a href="https://github.com/caohongbocaohongbo/My-work">GitHub 仓库</a> · MIT License</p>
+        </footer>
+    </div>
+</body>
+</html>
