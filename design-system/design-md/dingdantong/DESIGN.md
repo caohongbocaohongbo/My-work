@@ -332,13 +332,57 @@ easing:
 - 包含筛选器（客户选择器、时间粒度选择器等）
 - 水平排列，元素间距由 `--space-3` 控制
 
-### 客户选择器 (customer-trigger-v2)
-- 下拉触发器，显示当前选中的客户名称
-- 带有 meta 标签和 chevron 图标
-- 弹出菜单 `customer-menu` 包含客户选项列表
-- 支持：全部客户、南方电网、中国平安、中国移动、中国联通等
+### 客户选择器 / 下拉组件
 
-### 指标卡片 (metric cards)
+**Trigger (customer-trigger-v2)** — 下拉触发器按钮：
+- 内联 flex 布局，`inline-flex align-items: center`
+- 高度 `{controlHeight.lg}` (36px)，与分段控制器、主操作按钮同高
+- 最小宽度 200px
+- 背景 `{colors.surface}` (#ffffff)
+- 边框 1px `{colors.line}` (#e6ecf2)
+- 圆角 `{rounded.md}` (8px)
+- 左右内边距 `{spacing.3}` (12px)
+- 元素间距 `{spacing.2}` (8px)
+- 字体 `{typography.body}` (13px)，文字色 `{colors.ink-900}`
+- Meta 标签：`{typography.meta}` (12px)，`{colors.ink-500}`
+- Chevron 图标：11px，`{colors.ink-300}`
+- **Hover**: 边框加深至 `{colors.line-strong}` (#d5dde7)
+- **Focus-visible**: `{ring-brand}` 焦点环
+- **Transition**: `{easing.fast}`
+
+**Menu (customer-menu)** — 弹出菜单容器：
+- 绝对定位，`left: 0; top: calc(100% + 8px)`
+- z-index 20
+- 宽度 220px
+- 背景 `{colors.surface}` (#ffffff)
+- 边框 1px `{colors.line}` (#e6ecf2)
+- 圆角 16px (rounded-2xl)
+- 内边距 `{spacing.2}` (8px)
+- 阴影 `{shadows.float}`
+- 默认隐藏 (`[hidden]` → `display: none !important`)
+
+**Option (customer-option / *-customer-option)** — 菜单选项按钮：
+- 全宽 (`width: 100%`)
+- 圆角 12px (rounded-xl)
+- 内边距 `{spacing.2}` 垂直 / `{spacing.3}` 水平
+- 文字左对齐
+- 字体 14px (text-sm) / `{fw-medium}` (500) / `{colors.ink-900}`
+- 边框 1px transparent（默认透明，为 hover/active 预留）
+- **Hover**: 边框 `#dbe4ee` + 背景 `{colors.surface-2}` (#f8fafc)
+- **Active (选中态)**: 边框 `#d9e3ed` + 背景 `#f8fafc` + 文字 `#1f2d3d`
+- **Transition**: `{easing.fast}`
+
+**下载中心多选菜单 (download-customer-option)** — checkbox 型选项：
+- 标准 Option 结构 + 左侧 checkbox (`download-customer-option__cb`)
+- 标签 `download-customer-option__label`：13px Regular，`{colors.ink-900}`
+- **Hover**: 背景 `{colors.surface-2}`
+- **选中态** (is-selected): 标签加粗至 `{fw-medium}`；hover 时标签 `{colors.brand-600}`
+
+**通用交互**：
+- 点击触发器展开/收起菜单
+- 点击选项后关闭菜单并更新触发器显示
+- 点击菜单外部区域关闭
+- 选项垂直排列，间距 `{spacing.1}` (4px)
 - 白色背景卡片，圆角 `{rounded.lg}`
 - 包含指标标签（小字灰色）、数值（大字 `{typography.num-lg}`）、对比变化（带正负色）
 - 多卡片网格排列，间距 20px
@@ -387,13 +431,6 @@ easing:
 - 四种语义变体：成功（绿）、警告（橙）、危险（红）、信息（蓝）
 - 字体 `{typography.micro}`，padding 2px 8px
 
-### 客户选项菜单 (customer-menu)
-- 弹出式下拉菜单
-- 白色背景 + 1px `{colors.line}` 边框
-- 圆角 `{rounded.lg}` (12px) → 实际 compact 为 14px
-- 选项 hover 态：浅灰底 `{colors.surface-2}`
-- 选中态：边框 `#d9e3ed` + 背景 `#f8fafc`
-
 ### 提示工具 (info-tip)
 - 标题旁的小问号图标
 - hover 显示 tooltip 气泡
@@ -414,10 +451,8 @@ easing:
 - **激活**: `{colors.ink-900}` 文字 + `{colors.brand-500}` 底部指示线
 
 ### 下拉菜单
-- **触发器**: 点击展开/收起
-- **选项 Hover**: `{colors.surface-2}` 背景
-- **选项激活**: 特定边框色 + `{colors.surface-2}` 背景
-- 点击选项或外部区域关闭
+- 参见上方「客户选择器 / 下拉组件」完整规范
+- 所有下拉触发器、菜单、选项统一使用 customer-trigger-v2 / customer-menu / customer-option 体系
 
 ### 图表
 - 静态 SVG/CSS 渲染，无交互
