@@ -85,11 +85,12 @@ https://figma.com/design/<fileKey>/<fileName>?node-id=<nodeId>
 | `wireframe-pencil.md` | 生成线框图或 Pencil 项目，快速迭代布局方案 |
 | `style-theme-tune.md` | 根据行业/产品类型调整配色、字体、圆角、阴影等视觉参数 |
 | `req-to-figma.md` | **核心技能**：从需求到 Figma 设计的完整流程，含多方案和用户确认规范 |
+| `lovart-image-gen.md` | 调用 Lovart API 生成 UI 素材、图标、插画、参考图等设计素材 |
 
 ## 工作流程
 
 1. **文档检查（阻断点）**：检查项目 `DESIGN.md` 是否存在，不存在则查 `README.md`。两者都没有 → 阻断并通知用户添加。用户明确说"不需要参照"时可跳过。
-2. **准备阶段**：读取 `需求规格说明.md` 和 `DESIGN.md`/`README.md`，提取页面清单、交互流程和样式约束。
+2. **准备阶段**：读取 `需求规格说明.md` 和 `DESIGN.md`/`README.md`，提取页面清单、交互流程和样式约束。如需 AI 生成设计素材（图标、插画、背景等），运行 `lovart-image-gen.md`。
 3. **布局设计**：运行 `wireframe-pencil.md` 快速产出布局方案（≥2 个）。
 4. **视觉主题**：运行 `style-theme-tune.md` 确定配色和设计变量（≥2 套），**必须与 DESIGN.md 中的视觉约束对齐**。
 5. **Figma 设计**：运行 `req-to-figma.md`，在 Figma 中逐方案构建设计稿。
