@@ -10,6 +10,7 @@ colors:
   surface: "#ffffff"
   surface-2: "#f8fafc"
   surface-3: "#f1f5f9"
+  table-header-bg: "#F0F4F7"
   # --- 描边 ---
   line: "#e6ecf2"
   line-soft: "#eef3f7"
@@ -20,6 +21,7 @@ colors:
   ink-500: "#617285"
   ink-300: "#8d9bae"
   ink-200: "#b6c0cd"
+  table-header-text: "#97A6B8"
   # --- 品牌 ---
   brand-50: "#eef8fc"
   brand-100: "#d9eef7"
@@ -82,6 +84,12 @@ typography:
     fontWeight: 400
     lineHeight: 1.3
     color: "{colors.ink-300}"
+  table-header:
+    fontFamily: "'Poppins', 'Inter', sans-serif"
+    fontSize: 12px
+    fontWeight: 600
+    lineHeight: 18px
+    color: "{colors.table-header-text}"
   num-lg:
     fontFamily: "'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif"
     fontSize: 28px
@@ -163,7 +171,8 @@ easing:
 
 ### 表面
 - **Surface** (`{colors.surface}` — #ffffff): 默认卡片和面板底色
-- **Surface-2** (`{colors.surface-2}` — #f8fafc): 次级表面，用于表头、hover 态
+- **Surface-2** (`{colors.surface-2}` — #f8fafc): 次级表面，用于 hover 态
+- **Table Header BG** (`{colors.table-header-bg}` — #F0F4F7): 表格表头背景色
 - **Surface-3** (`{colors.surface-3}` — #f1f5f9): 三级表面，用于分隔区域
 
 ### 描边
@@ -175,8 +184,9 @@ easing:
 - **Ink 900** (`{colors.ink-900}` — #1f2d3d): 主文字，页面标题、卡片标题
 - **Ink 700** (`{colors.ink-700}` — #4d6278): 正文，表格数据
 - **Ink 500** (`{colors.ink-500}` — #617285): 次要文字，控件标签
-- **Ink 300** (`{colors.ink-300}` — #8d9bae): 辅助文字，表头、面包屑
+- **Ink 300** (`{colors.ink-300}` — #8d9bae): 辅助文字，面包屑
 - **Ink 200** (`{colors.ink-200}` — #b6c0cd): 禁用态文字
+- **Table Header Text** (`{colors.table-header-text}` — #97A6B8): 表格表头文字色
 
 ### 品牌
 - **Brand 50** (`{colors.brand-50}` — #eef8fc): 品牌色最浅底
@@ -218,7 +228,8 @@ easing:
 | `{typography.card-title}` | 14px | 600 | 卡片标题 / 段落标题 |
 | `{typography.body}` | 13px | 400 | 正文 |
 | `{typography.meta}` | 12px | 400 | 控件、副文、表格 |
-| `{typography.micro}` | 11px | 400 | 标签、表头、辅助 |
+| `{typography.micro}` | 11px | 400 | 标签、辅助 |
+| `{typography.table-header}` | 12px | 600 | 表格表头（Poppins） |
 
 ### 指标数字
 
@@ -349,12 +360,22 @@ easing:
 - 填充色可配置（品牌色、数据色板各色）
 - 高度 8px，圆角 999px
 
-### 数据表格
-- 标准表格，表头灰色底、正文白色底
-- 表头字体 `{typography.micro}` (11px)
-- 数据行字体 `{typography.meta}` (12px) 或 `{typography.body}` (13px)
-- 数字列等宽对齐
-- 支持 hover 高亮行
+### 数据表格 (tbl-v2)
+- 标准表格组件，使用 `.tbl-v2` CSS 类
+- **表头行**:
+  - 背景色 `{colors.table-header-bg}` (#F0F4F7)
+  - 高度 48px（由 `th` 元素承载）
+  - 字体 `{typography.table-header}`：Poppins 600 12px，行高 18px
+  - 文字色 `{colors.table-header-text}` (#97A6B8)
+  - 底部 1px `{colors.line}` 分隔线
+  - 左右内边距 `{spacing.3}` (12px)
+- **数据行**:
+  - 白色背景，hover 态切换为 `{colors.surface-2}` (#f8fafc)
+  - 字体 `{typography.meta}` (12px) 或 `{typography.body}` (13px)
+  - 行底 1px `{colors.line-soft}` 分隔线
+  - 末行无底部分隔线
+- 数字列等宽对齐 (`font-variant-numeric: tabular-nums`)
+- `border-collapse: collapse`，全宽 `width: 100%`
 
 ### 分段控制器 (seg)
 - 用于时间粒度切换（按天 / 按周 / 按月）
