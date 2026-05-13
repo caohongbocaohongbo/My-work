@@ -332,57 +332,74 @@ easing:
 - 包含筛选器（客户选择器、时间粒度选择器等）
 - 水平排列，元素间距由 `--space-3` 控制
 
-### 客户选择器 / 下拉组件
+### 客户选择器 / 下拉组件 (Form Select)
+
+基于 Figma 设计稿 (node-id=61:16) 精确还原。
 
 **Trigger (customer-trigger-v2)** — 下拉触发器按钮：
 - 内联 flex 布局，`inline-flex align-items: center`
-- 高度 `{controlHeight.lg}` (36px)，与分段控制器、主操作按钮同高
-- 最小宽度 200px
-- 背景 `{colors.surface}` (#ffffff)
-- 边框 1px `{colors.line}` (#e6ecf2)
-- 圆角 `{rounded.md}` (8px)
-- 左右内边距 `{spacing.3}` (12px)
-- 元素间距 `{spacing.2}` (8px)
-- 字体 `{typography.body}` (13px)，文字色 `{colors.ink-900}`
-- Meta 标签：`{typography.meta}` (12px)，`{colors.ink-500}`
-- Chevron 图标：11px，`{colors.ink-300}`
-- **Hover**: 边框加深至 `{colors.line-strong}` (#d5dde7)
-- **Focus-visible**: `{ring-brand}` 焦点环
+- 高度 `40px`
+- 最小宽度 `260px`
+- 内部间距 `gap: 40px`（label 区域 与 value+chevron 区域之间）
+- 背景 `#ffffff`
+- 边框 `1px solid #dee0e5`
+- 圆角 `8px`
+- 内边距 `10px 12px`
+- 文字色 `#1f2d3d`，字号 `14px`
+- **Hover**: 边框加深至 `#d5dde7`
+- **展开态 (aria-expanded="true")**: 边框 `1.5px solid #2f87ac`
+- **Focus-visible**: 边框 `1.5px solid #2f87ac`，无 outline
 - **Transition**: `{easing.fast}`
 
+**Label (.meta)** — 触发器左侧标签：
+- 字体 `'Inter', 'Noto Sans SC', sans-serif`
+- 字重 `400` (Regular)
+- 字号 `13px`
+- 文字色 `#97a6b8`
+- 行高 `normal`
+- `flex-shrink: 0`
+
+**Value (.name)** — 触发器选中值：
+- 字体 `'Inter', 'Noto Sans SC', 'Noto Sans JP', sans-serif`
+- 字重 `400` (Regular)
+- 字号 `14px`
+- 文字色 `#1f2d3d`
+- 行高 `19px`
+- `flex: 1; min-width: 0`，溢出省略号截断
+
+**Chevron (.chev)** — 下拉箭头：
+- 字符 `▾`（非 FontAwesome 图标）
+- 字体 `'Inter', 'Noto Sans', sans-serif`
+- 字重 `700` (Bold)
+- 字号 `12px`
+- 文字色 `#97a6b8`
+- 行高 `16px`
+- `flex-shrink: 0`
+
 **Menu (customer-menu)** — 弹出菜单容器：
-- 绝对定位，`left: 0; top: calc(100% + 8px)`
+- 绝对定位，`left: 0; top: calc(100% + 4px)`
 - z-index 20
-- 宽度 220px
-- 背景 `{colors.surface}` (#ffffff)
-- 边框 1px `{colors.line}` (#e6ecf2)
-- 圆角 16px (rounded-2xl)
-- 内边距 `{spacing.2}` (8px)
+- 宽度 `260px`（与 Trigger 同宽）
+- 背景 `#ffffff`
+- 边框 `1.5px solid #2f87ac`
+- 圆角 `8px`（与 Trigger 一致）
+- 内边距 `10px`
+- Flex 纵向排列，选项间距 `gap: 5px`
 - 阴影 `{shadows.float}`
 - 默认隐藏 (`[hidden]` → `display: none !important`)
 
-**Option (customer-option / *-customer-option)** — 菜单选项按钮：
+**Option (customer-option / *-customer-option)** — 菜单选项：
 - 全宽 (`width: 100%`)
-- 圆角 12px (rounded-xl)
-- 内边距 `{spacing.2}` 垂直 / `{spacing.3}` 水平
+- 高度 `32px`
+- 内边距 `7px 0 7px 12px`
+- 圆角 `0`（无圆角）
+- 边框 `none`
+- 背景 `#ffffff`（默认）
+- 文字：`'Inter', 'Noto Sans JP', 'Noto Sans SC', sans-serif` / `400` / `13px` / `#1f2d3d` / 行高 `18px`
 - 文字左对齐
-- 字体 14px (text-sm) / `{fw-medium}` (500) / `{colors.ink-900}`
-- 边框 1px transparent（默认透明，为 hover/active 预留）
-- **Hover**: 边框 `#dbe4ee` + 背景 `{colors.surface-2}` (#f8fafc)
-- **Active (选中态)**: 边框 `#d9e3ed` + 背景 `#f8fafc` + 文字 `#1f2d3d`
+- **Hover**: 背景 `#f4fbfe`
+- **Active (选中态)**: 背景 `#f4fbfe`，边框 `transparent`
 - **Transition**: `{easing.fast}`
-
-**下载中心多选菜单 (download-customer-option)** — checkbox 型选项：
-- 标准 Option 结构 + 左侧 checkbox (`download-customer-option__cb`)
-- 标签 `download-customer-option__label`：13px Regular，`{colors.ink-900}`
-- **Hover**: 背景 `{colors.surface-2}`
-- **选中态** (is-selected): 标签加粗至 `{fw-medium}`；hover 时标签 `{colors.brand-600}`
-
-**通用交互**：
-- 点击触发器展开/收起菜单
-- 点击选项后关闭菜单并更新触发器显示
-- 点击菜单外部区域关闭
-- 选项垂直排列，间距 `{spacing.1}` (4px)
 - 白色背景卡片，圆角 `{rounded.lg}`
 - 包含指标标签（小字灰色）、数值（大字 `{typography.num-lg}`）、对比变化（带正负色）
 - 多卡片网格排列，间距 20px
