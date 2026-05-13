@@ -10,7 +10,7 @@ colors:
   surface: "#ffffff"
   surface-2: "#f8fafc"
   surface-3: "#f1f5f9"
-  table-header-bg: "#F0F4F7"
+  table-header-bg: "#FBFCFE"
   # --- 描边 ---
   line: "#e6ecf2"
   line-soft: "#eef3f7"
@@ -172,7 +172,7 @@ easing:
 ### 表面
 - **Surface** (`{colors.surface}` — #ffffff): 默认卡片和面板底色
 - **Surface-2** (`{colors.surface-2}` — #f8fafc): 次级表面，用于 hover 态
-- **Table Header BG** (`{colors.table-header-bg}` — #F0F4F7): 表格表头背景色
+- **Table Header BG** (`{colors.table-header-bg}` — #FBFCFE): 表格表头背景色
 - **Surface-3** (`{colors.surface-3}` — #f1f5f9): 三级表面，用于分隔区域
 
 ### 描边
@@ -363,7 +363,7 @@ easing:
 ### 数据表格 (tbl-v2)
 - 标准表格组件，使用 `.tbl-v2` CSS 类
 - **表头行**:
-  - 背景色 `{colors.table-header-bg}` (#F0F4F7)
+  - 背景色 `{colors.table-header-bg}` (#FBFCFE)
   - 高度 48px（由 `th` 元素承载）
   - 字体 `{typography.table-header}`：Poppins 600 12px，行高 18px
   - 文字色 `{colors.table-header-text}` (#97A6B8)
