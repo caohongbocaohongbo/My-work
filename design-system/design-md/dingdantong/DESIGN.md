@@ -1,7 +1,7 @@
 ---
 version: v2
 name: 订单通 · 数据洞察 (DingdanTong Data Insights)
-description: 订单通数据洞察模块，一套独立的 B2B SaaS 数据分析界面，用于酒店企业客户的经营总览、流失分析、企业 360 画像和潜力机会发掘。页面采用全宽布局、无侧边栏、无顶部 Header，内容区域以浅蓝灰色底色承载白色数据卡片。品牌色为 #2ea0ce 冷蓝，辅以克制的数据色板和语义状态色。字体使用 Inter + PingFang SC 双字体体系，数字默认等宽。设计语言延续订单通主平台的克制专业调性，但更聚焦于数据可视化和指标卡片的呈现。
+description: 订单通数据洞察模块，一套独立的 B2B SaaS 数据分析界面，用于酒店企业客户的经营总览、流失分析、企业 360 画像和潜力机会发掘。页面采用全宽布局、无侧边栏、无顶部 Header，内容区域以浅蓝灰色底色承载白色数据卡片。品牌色为 #2F87AC 冷蓝，辅以克制的数据色板和语义状态色。字体使用 Inter + PingFang SC 双字体体系，数字默认等宽。设计语言延续订单通主平台的克制专业调性，但更聚焦于数据可视化和指标卡片的呈现。
 
 colors:
   # --- 页面底色 ---
@@ -26,7 +26,7 @@ colors:
   brand-50: "#eef8fc"
   brand-100: "#d9eef7"
   brand-300: "#86c8df"
-  brand-500: "#2ea0ce"
+  brand-500: "#2F87AC"
   brand-600: "#2587b1"
   brand-700: "#1f6f92"
   # --- 语义色 ---
@@ -39,7 +39,7 @@ colors:
   info-50: "#eef8fc"
   info-700: "#1f6f92"
   # --- 数据色板 ---
-  data-1: "#2ea0ce"
+  data-1: "#2F87AC"
   data-2: "#5f97d3"
   data-3: "#57c8b8"
   data-4: "#f5ae42"
@@ -156,7 +156,7 @@ easing:
 与订单通主平台不同，数据洞察模块采用**全宽布局**：无侧边栏导航、无顶部 Header 栏。内容区域自动浮动填充整个视口，以浅蓝灰色底色 (`{colors.page}` #f4f7fb) 承载白色数据卡片，通过卡片间的间距和极克制的阴影 (`{shadows.panel}`) 建立层次。
 
 **核心特征：**
-- 单品牌色 `{colors.brand-500}` (#2ea0ce) 承担所有主操作、激活态、图表主色
+- 单品牌色 `{colors.brand-500}` (#2F87AC) 承担所有主操作、激活态、图表主色
 - Inter + PingFang SC 双字体体系，数字默认 tabular-nums 等宽
 - 4px 基准间距系统，8 档梯度
 - 3 档圆角（6px / 8px / 12px），统一柔和的视觉节奏
@@ -192,7 +192,7 @@ easing:
 - **Brand 50** (`{colors.brand-50}` — #eef8fc): 品牌色最浅底
 - **Brand 100** (`{colors.brand-100}` — #d9eef7): 品牌浅底，hover 态
 - **Brand 300** (`{colors.brand-300}` — #86c8df): 品牌中浅
-- **Brand 500** (`{colors.brand-500}` — #2ea0ce): **主品牌色**，按钮、激活态、图表主色
+- **Brand 500** (`{colors.brand-500}` — #2F87AC): **主品牌色**，按钮、激活态、图表主色
 - **Brand 600** (`{colors.brand-600}` — #2587b1): hover 加深
 - **Brand 700** (`{colors.brand-700}` — #1f6f92): 最深品牌色
 
@@ -203,7 +203,7 @@ easing:
 - **Info** (背景 `{colors.info-50}` #eef8fc, 文字 `{colors.info-700}` #1f6f92): 信息提示
 
 ### 数据色板
-- **Data 1** (`{colors.data-1}` — #2ea0ce): 主数据色，品牌蓝
+- **Data 1** (`{colors.data-1}` — #2F87AC): 主数据色，品牌蓝
 - **Data 2** (`{colors.data-2}` — #5f97d3): 蓝色系辅助
 - **Data 3** (`{colors.data-3}` — #57c8b8): 青绿色系
 - **Data 4** (`{colors.data-4}` — #f5ae42): 暖橙色系
@@ -374,7 +374,7 @@ easing:
 
 **Accent 变体 (.accent)**：
 - 左侧 3px 品牌色竖线 (`::before` 伪元素)
-- 颜色 `{colors.brand-500}` (#2ea0ce)
+- 颜色 `{colors.brand-500}` (#2F87AC)
 - 位置：`top: 16px; bottom: 16px; left: 0`
 - 圆角右侧 2px
 
