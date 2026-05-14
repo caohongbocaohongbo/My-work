@@ -38,11 +38,14 @@ colors:
   danger-700: "#be123c"
   info-50: "#eef8fc"
   info-700: "#1f6f92"
-  # --- 数据色板 ---
-  data-1: "#2F87AC"
-  data-2: "#5f97d3"
-  data-3: "#57c8b8"
-  data-4: "#f5ae42"
+  # --- 图表色板 ---
+  chart-bar: "#A2C2E4"
+  chart-bar-compare: "#BDE7ED"
+  chart-line: "#caa24e"
+  data-1: "#A2C2E4"
+  data-2: "#A2C2E4"
+  data-3: "#BDE7ED"
+  data-4: "#caa24e"
   data-5: "#c084fc"
   data-neutral: "#cbd5e1"
 
@@ -156,7 +159,7 @@ easing:
 与订单通主平台不同，数据洞察模块采用**全宽布局**：无侧边栏导航、无顶部 Header 栏。内容区域自动浮动填充整个视口，以浅蓝灰色底色 (`{colors.page}` #f4f7fb) 承载白色数据卡片，通过卡片间的间距和极克制的阴影 (`{shadows.panel}`) 建立层次。
 
 **核心特征：**
-- 单品牌色 `{colors.brand-500}` (#2F87AC) 承担所有主操作、激活态、图表主色
+- 单品牌色 `{colors.brand-500}` (#2F87AC) 承担所有主操作、激活态；图表主色独立为 `{colors.chart-bar}` (#A2C2E4)
 - Inter + PingFang SC 双字体体系，数字默认 tabular-nums 等宽
 - 4px 基准间距系统，8 档梯度
 - 3 档圆角（6px / 8px / 12px），统一柔和的视觉节奏
@@ -202,13 +205,16 @@ easing:
 - **Danger** (背景 `{colors.danger-50}` #fef2f2, 文字 `{colors.danger-700}` #be123c): 危险 / 流失告警
 - **Info** (背景 `{colors.info-50}` #eef8fc, 文字 `{colors.info-700}` #1f6f92): 信息提示
 
-### 数据色板
-- **Data 1** (`{colors.data-1}` — #2F87AC): 主数据色，品牌蓝
-- **Data 2** (`{colors.data-2}` — #5f97d3): 蓝色系辅助
-- **Data 3** (`{colors.data-3}` — #57c8b8): 青绿色系
-- **Data 4** (`{colors.data-4}` — #f5ae42): 暖橙色系
-- **Data 5** (`{colors.data-5}` — #c084fc): 紫色系
-- **Data Neutral** (`{colors.data-neutral}` — #cbd5e1): 中性灰，用于对比基线
+### 图表色板
+- **Chart Bar** (`{colors.chart-bar}` — #A2C2E4): 一维图表柱状图主色，单色图表统一使用
+- **Chart Bar Compare** (`{colors.chart-bar-compare}` — #BDE7ED): 双色图表对比柱颜色
+- **Chart Line** (`{colors.chart-line}` — #caa24e): 图表折线/同比趋势线颜色
+- **Data 1** (`{colors.data-1}` — #A2C2E4): 图表主数据色
+- **Data 2** (`{colors.data-2}` — #A2C2E4): 图表数据色2
+- **Data 3** (`{colors.data-3}` — #BDE7ED): 图表数据色3
+- **Data 4** (`{colors.data-4}` — #caa24e): 图表数据色4
+- **Data 5** (`{colors.data-5}` — #c084fc): 图表数据色5
+- **Data Neutral** (`{colors.data-neutral}` — #cbd5e1): 中性灰，用于对比基线、进度条背景
 
 ## 字体
 
@@ -331,6 +337,34 @@ easing:
 - 位于 Tab 下方的操作栏
 - 包含筛选器（客户选择器、时间粒度选择器等）
 - 水平排列，元素间距由 `--space-3` 控制
+
+### 分段控制器 / 时间粒度筛选 (Seg / Time Grain)
+
+基于 Figma 组件集 `Seg / Time Grain` (node-id=137:32)，含 Default / Custom 两个状态变体。
+
+**容器 (.seg.seg--toolbar)**：
+- Flex 行布局，按钮间距 2px
+- 最小高度 36px (`{controlHeight.lg}`)
+- 允许换行 (`flex-wrap: wrap`)
+
+**按钮 (.time-filter-btn)**：
+- 高度 24–28px，左右内边距 `{spacing.3}` (12px)
+- 圆角 5px
+- **默认**: 透明背景、无边框、`{colors.ink-500}` (#617285) 文字、Regular 字重
+- **Hover**: 文字加深至 `{colors.ink-900}`
+- **激活 (.active)**: `{colors.surface-3}` (#f1f5f9) 背景、`{colors.ink-900}` 文字、Medium 字重
+
+**自定义按钮 (.time-custom-btn)**：
+- 同为 seg 按钮，默认无边框透明
+- 点击后隐藏自身，显示日期选择器
+- 日期选择器：`{colors.surface-3}` 背景、无边框、圆角 5px、高度 28px
+- 日期输入框：透明背景、无边框、12px Regular
+
+**交互 (2 态切换)**：
+| 操作 | 效果 |
+|------|------|
+| 点击预设粒度（按日/按周/半月/按月/按季） | 激活该按钮，隐藏日期选择器，恢复自定义按钮 |
+| 点击「自定义」 | 取消所有预设，隐藏自定义按钮，显示日期选择器 |
 
 ### 指标卡片网格 (kpi-grid-v2) & 指标卡片 (kpi-card-v2)
 
@@ -466,8 +500,8 @@ easing:
   - 柱状图区 (chart-bars)
   - 折线图区 (chart-line)
   - 坐标轴 (chart-axis-left/right/bottom)
-- 柱状图使用品牌蓝 `#9cc6e5`，对比柱使用 `#cfe4d8`
-- 折线图描边色 `#caa24e`
+- 柱状图使用 `{colors.chart-bar}` (#A2C2E4)，对比柱使用 `{colors.chart-bar-compare}` (#BDE7ED)
+- 折线图描边色 `{colors.chart-line}` (#caa24e)
 
 ### 进度条 (progress bars)
 - 用于展示占比和完成度
