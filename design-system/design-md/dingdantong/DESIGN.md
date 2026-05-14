@@ -332,6 +332,60 @@ easing:
 - 包含筛选器（客户选择器、时间粒度选择器等）
 - 水平排列，元素间距由 `--space-3` 控制
 
+### 指标卡片网格 (kpi-grid-v2) & 指标卡片 (kpi-card-v2)
+
+基于 Figma 组件集 `KPI Card` (node-id=129:5)，含 Default / Hover / Active 三个交互状态。
+
+**Grid 容器 (kpi-grid-v2)**：
+- CSS Grid 布局，`display: grid`
+- 列配置：`.cols-2` (2列) / `.cols-3` (3列) / `.cols-4` (4列)
+- 列间距 `{spacing.3}` (12px)
+- 响应式：≤768px 强制单列
+
+**Card (kpi-card-v2) — Default 状态**：
+- 背景 `#f8fafc` (`{colors.surface-2}`)
+- 边框 `1px solid #eef3f7` (`{colors.line-soft}`)
+- 圆角 `{rounded.md}` (8px)
+- 内边距 `{spacing.4}` (16px) 上下 / `{spacing.5}` (20px) 左右
+- 内部纵向 auto-layout，间距 8px (`{spacing.2}`)
+- `overflow: hidden`，`position: relative`
+
+**Card (kpi-card-v2) — Hover 状态**：
+- 背景 `#ffffff` (`{colors.surface}`)
+- 边框 `1px solid #e6ecf2` (`{colors.line}`)
+- 文字颜色不变
+- Transition: `{easing.fast}`
+
+**Card (kpi-card-v2) — Active/Pressed 状态**：
+- 背景 `#ffffff`
+- 边框 `1px solid #d5dde7` (`{colors.line-strong}`)
+- 增加轻微阴影 `0 2px 4px rgba(15,23,42,0.06)`
+
+**内部结构**：
+
+| 元素 | 类名 | 样式 |
+|------|------|------|
+| **Label** | `.label` | Inter Medium 11px, `{colors.ink-300}` (#8d9bae) |
+| **Value** | `.value` | Inter SemiBold 22px, `{colors.ink-900}` (#1f2d3d), letter-spacing -0.015em, tabular-nums, margin-top 8px |
+| **Foot 区域** | `.foot` | Flex row, 12px gap, margin-top 8px |
+| **Foot 文字** | (span) | Inter Regular 11px, `{colors.ink-300}` |
+| **Foot 数值** | `strong` | Inter Medium 11px, `{colors.ink-700}` (#4d6278), tabular-nums |
+| **Delta 指示** | `.delta` | Inter Medium 11px; 涨 .delta-up 绿色 `{colors.success-700}`, 跌 .delta-down 红色 `{colors.danger-700}` |
+
+**Accent 变体 (.accent)**：
+- 左侧 3px 品牌色竖线 (`::before` 伪元素)
+- 颜色 `{colors.brand-500}` (#2ea0ce)
+- 位置：`top: 16px; bottom: 16px; left: 0`
+- 圆角右侧 2px
+
+**Compact 变体 (.compact)**：
+- 更紧凑的内边距和字号（用于 4 列 Grid 或侧栏场景）
+
+**Foot 对比行变体 (.kpi-foot-compare)**：
+- Flex column 纵向排列
+- 每行 `.kpi-foot-row` 包含：周期标签 + 对比数值/Delta
+- 两行间距由父容器 foot 的 gap 控制
+
 ### 客户选择器 / 下拉组件 (Form Select)
 
 基于 Figma 设计稿 (node-id=61:16) 精确还原。
