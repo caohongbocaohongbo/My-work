@@ -405,12 +405,13 @@ easing:
 |------|---------|------|
 | 查询 | `button-outline-primary` | 品牌主操作 |
 | 导出 | `button-outline-primary` | 品牌主操作 |
+| 确定 | `button-outline-primary` | 弹窗主操作 |
+| 确认新增/修改 | `button-outline-primary` | 弹窗主操作 |
+| + 新增 | `button-outline-primary` | 页面主操作 |
+| 批量修改 | `button-outline-primary` | 页面主操作 |
 | 重置 | `button-secondary` | 中性次操作，降低权重 |
 | 取消 | `button-secondary` | 弹窗次操作，降低权重 |
 | 返回 | `button-secondary` | 导航次操作 |
-| + 新增 | 需显式指定 | 页面主 CTA，指定时用 filled |
-| 批量修改 | 需显式指定 | 页面主 CTA，指定时用 filled |
-| 确认新增/修改 | 需显式指定 | 弹窗主 CTA，指定时用 filled |
 | 确认删除 | 自定义 (danger 色) | 危险操作需特殊处理 |
 
 #### 三种按钮速查表
