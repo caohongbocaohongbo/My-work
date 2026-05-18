@@ -492,6 +492,86 @@ easing:
 - 包含指标标签（小字灰色）、数值（大字 `{typography.num-lg}`）、对比变化（带正负色）
 - 多卡片网格排列，间距 20px
 
+### 输入框 (Form Input)
+
+基于 Figma 组件 `input / default` (node-id=111:369)，含 Default / Focus / Error / Disabled 四个状态变体。
+
+**核心设计原则**：Label 标题文字和输入内容区域**共同包裹在一个带边框的外层容器内**，而非 Label 在外、输入框独立的分离结构。
+
+**外层容器 (input-container)**：
+- Flex 行布局，`display: flex; align-items: center`
+- 内边距：上下 `{spacing.1}` (4px)，左右 `15px`
+- 圆角 `{rounded.md}` (8px)
+- 子元素间距：无 gap（Label 与输入区紧密相邻）
+- 宽度撑满父容器
+
+**标题 Label (.input-label)**：
+- 字体 `'Inter', 'Noto Sans SC', sans-serif`
+- 字重 `400` (Regular)，字号 `13px`
+- 文字色 `{colors.table-header-text}` (#97A6B8)
+- 行高 `normal`
+- `flex-shrink: 0`，不换行
+
+**输入内容区域 (.input-area)**：
+- Flex 行布局，`display: flex; align-items: center`
+- 背景 `{colors.surface}` (#ffffff)
+- 圆角 `{rounded.sm}` (6px)
+- 内边距：`{spacing.3}` (12px) 左右，`{spacing.2}` (8px) 上下
+- `flex: 1; min-width: 0`
+- **注意**：输入区域内部无独立边框，边框由外层容器统一控制
+
+**Placeholder / Value 文字**：
+- 字体 `'Inter', 'Noto Sans SC', sans-serif`
+- 字重 `400` (Regular)，字号 `13px`
+- 行高 `normal`
+- Placeholder 色：`#bfc9d6`（浅灰蓝）
+- Value 色：`{colors.ink-900}` (#1f2d3d)
+
+#### 状态变体
+
+**Default (`input / default`)**：
+- 外层容器：背景 `{colors.surface}` (#ffffff)，边框 `0.6px solid #e1eef5`
+- Label：`{colors.table-header-text}` (#97A6B8)
+- Placeholder：`#bfc9d6`
+- Hover：边框加深为 `{colors.line-strong}` (#d5dde7)
+
+**Focus (`input / focus`)**：
+- 外层容器：背景 `{colors.surface}`，边框 `1.5px solid {colors.brand-500}` (#2F87AC)
+- Label：`{colors.table-header-text}` (#97A6B8)
+- Value 文字：`{colors.ink-900}` (#1f2d3d)
+- Focus-visible：无额外 outline，边框颜色变化即为焦点指示
+- Transition：`{easing.fast}`
+
+**Error (`input / error`)**：
+- 外层容器：背景 `{colors.surface}`，边框 `1.5px solid #c66261`
+- Label：`{colors.table-header-text}` (#97A6B8)
+- Placeholder：`#bfc9d6`
+- 可配合下方红色错误提示文字使用
+
+**Disabled (`input / disabled`)**：
+- 外层容器：背景 `#f5f7fb`，边框 `1px solid #f0f4f7`
+- Label：`{colors.table-header-text}` (#97A6B8)
+- Placeholder：`#bfc9d6`
+- 整体不可交互，无 hover 效果
+
+#### 交互状态速查
+
+| 状态 | 外层背景 | 外层边框 | Label 色 | 文字色 |
+|------|---------|---------|---------|--------|
+| Default | `#ffffff` | `0.6px #e1eef5` | `#97A6B8` | `#bfc9d6` (placeholder) |
+| Focus | `#ffffff` | `1.5px #2F87AC` | `#97A6B8` | `#1f2d3d` (value) |
+| Error | `#ffffff` | `1.5px #c66261` | `#97A6B8` | `#bfc9d6` (placeholder) |
+| Disabled | `#f5f7fb` | `1px #f0f4f7` | `#97A6B8` | `#bfc9d6` (placeholder) |
+
+#### 与旧版组件的区别
+
+| 特性 | 旧版（已废弃） | 新版（当前规范） |
+|------|--------------|----------------|
+| Label 位置 | Label 在输入框外部独立放置 | Label 在带边框的外层容器内部 |
+| 边框归属 | 仅输入区域有独立边框 (`#d5dde7 1px rounded 6`) | 边框在外层容器上 (`#e1eef5 0.6px rounded 8`)，输入区域无独立边框 |
+| Label 颜色 | `{colors.ink-500}` (#617285) | `{colors.table-header-text}` (#97A6B8) |
+| 输入区域圆角 | 6px | 6px（在外层 8px 圆角内） |
+
 ### 图表面板 (chart-board)
 - 固定高度 252px 的图表容器
 - 白色背景，1px `#e8eef5` 边框
