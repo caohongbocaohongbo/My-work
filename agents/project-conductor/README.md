@@ -8,6 +8,29 @@
 - 监控单步耗时：超过 25 分钟 → 强制中断 → 运行 `resolve-deadlock.md` 诊断。
 - 自身技能：`monitor-timelimit.md`、`resolve-deadlock.md`。
 
+## 技能
+
+### 自有技能
+
+| 技能文件 | 用途 |
+|----------|------|
+| `monitor-timelimit.md` | 监控单步耗时，超时自动中断 |
+| `resolve-deadlock.md` | 诊断卡住原因，生成降序建议方案 |
+| `writing-plans/` | 将需求转化为可执行的阶段计划 |
+| `executing-plans/` | 按计划逐步调度各阶段执行 |
+| `subagent-driven-development/` | 多子代理驱动开发模式（含规格评审/实现/质量审查） |
+| `dispatching-parallel-agents/` | 并行派发多代理任务，合并结果 |
+| `requesting-code-review/` | 向子代理请求代码审查 |
+| `receiving-code-review/` | 接收审查反馈并路由到对应 agent |
+
+### 共享技能（可调用 skills/ 目录）
+
+| 技能 | 用途 |
+|------|------|
+| `verification-before-completion/` | 每个阶段完成前自检 |
+| `using-superpowers/` | 技能库导航 |
+| `writing-skills/` | 需要时可扩展新技能 |
+
 ## 核心约束（硬性规则，不可绕过）
 
 **Conductor 是质量门禁的唯一执行者，以下行为视为违规**：

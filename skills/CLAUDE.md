@@ -81,5 +81,11 @@ skills/<skill-name>/
 | 工具 | skill-creator | 创建/优化 Skills |
 | 工具 | agent-reach | 多平台网络搜索 |
 | 其他 | emblem-market-research | 加密市场数据分析 |
+| 工程 | systematic-debugging | 系统性调试方法论 |
+| 工程 | test-driven-development | TDD 测试驱动开发 |
+| 工程 | verification-before-completion | 完成前自检验证 |
+| 工程 | using-git-worktrees | Git Worktree 多分支隔离 |
+| 工程 | writing-skills | 编写 AI Agent 技能 |
+| 工程 | using-superpowers | Superpowers 技能库使用导航 |
 
 链接目标 Skills 通过 `~/.cc-switch/skills/` 管理，实际文件在 `/Users/fangcang/.cc-switch/skills/`。
