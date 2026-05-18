@@ -31,14 +31,6 @@
 | `repo-create.md` | 创建 GitHub 仓库，初始化结构，推送代码 |
 | `deploy-free-service.md` | 部署到 Vercel / Netlify / Render / GitHub Pages |
 | `auto-pr.md` | 自动创建 Pull Request（多人协作时可选） |
-| `finishing-a-development-branch/` | 分支完成与合并的标准流程 |
-
-### 共享技能（可调用 skills/ 目录）
-
-| 技能 | 用途 |
-|------|------|
-| `verification-before-completion/` | 发布前自检验证 |
-| `using-git-worktrees/` | 多分支隔离操作指南 |
 
 ## 工作流程
 
