@@ -338,6 +338,64 @@ easing:
 - 包含筛选器（客户选择器、时间粒度选择器等）
 - 水平排列，元素间距由 `--space-3` 控制
 
+### 按钮 (BUTTON COMPONENTS)
+
+基于 Figma 组件集 `BUTTON COMPONENTS` (node-id=58:2)，含 `button-outline-primary` 和 `button-primary-filled` 两种变体，每种含 Default / Hover / Active / Disabled 四个状态。
+
+#### 设计原则
+
+- **默认使用 `button-outline-primary`**（描边样式）完成设计任务
+- **`button-primary-filled` 极少使用**，仅当明确指定需要高强调 CTA 按钮时才参与设计
+- 按钮圆角统一 `{rounded.md}` (8px)
+- 文字统一：Inter SemiBold 13px，行高 18px
+- Transition：`{easing.fast}` (0.12s)
+
+#### button-outline-primary（默认选择）
+
+**容器 (.btn-outline-primary)**：
+- Flex 居中布局，`display: flex; justify-content: center; align-items: center`
+- 内边距：`{spacing.3}` (14px) 左右，`{spacing.2}` (8px) 上下
+- 圆角 `{rounded.md}` (8px)
+
+| 状态 | 背景 | 边框 | 文字色 |
+|------|------|------|--------|
+| **Default** | `{colors.table-header-bg}` (#FBFCFE) | `0.6px solid #e1eef5` | `{colors.brand-500}` (#2F87AC) |
+| **Hover** | `#f4fbfe` | `0.6px solid #d9edf6` | `{colors.brand-500}` (#2F87AC) |
+| **Active** | `#f4fbfe` | `0.6px solid #d9edf6` | `#1f6d8a`（加深） |
+| **Disabled** | `{colors.table-header-bg}` (#FBFCFE) | `0.6px solid #f0f4f7` | `{colors.table-header-text}` (#97A6B8) |
+
+典型用途：查询、重置、导出、取消、上一页、下一页等常规操作。
+
+#### button-primary-filled（高强调，按需使用）
+
+**容器 (.btn-primary-filled)**：
+- Flex 居中布局，`display: flex; justify-content: center; align-items: center`
+- 内边距：`14px`（四边统一）
+- 圆角 `{rounded.md}` (8px)
+- 无边框
+
+| 状态 | 背景 | 文字色 |
+|------|------|--------|
+| **Default** | `{colors.brand-500}` (#2F87AC) | `{colors.surface}` (#ffffff) |
+| **Hover** | `#2ea0ce` | `{colors.surface}` (#ffffff) |
+| **Active** | `#1f6d8a` | `{colors.surface}` (#ffffff) |
+| **Disabled** | `#b8d8e7` | `{colors.surface}` (#ffffff) |
+
+典型用途：新增、批量修改、弹窗确认按钮等需要**显式指定的主 CTA 操作**。
+
+#### 按钮使用场景速查
+
+| 按钮 | 推荐组件 | 理由 |
+|------|---------|------|
+| 查询 | `button-outline-primary` | 常规表单操作 |
+| 重置 | `button-outline-primary` | 常规表单操作 |
+| 导出 | `button-outline-primary` | 常规操作 |
+| 取消 | `button-outline-primary` | 弹窗次要操作 |
+| + 新增 | `button-primary-filled` | 页面主 CTA |
+| 批量修改 | `button-primary-filled` | 页面主 CTA |
+| 确认新增/修改 | `button-primary-filled` | 弹窗主 CTA |
+| 确认删除 | 自定义 (danger 色) | 危险操作需特殊处理 |
+
 ### 分段控制器 / 时间粒度筛选 (Seg / Time Grain)
 
 基于 Figma 组件集 `Seg / Time Grain` (node-id=137:32)，含 Default / Custom 两个状态变体。
