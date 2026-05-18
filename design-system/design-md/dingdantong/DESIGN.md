@@ -606,6 +606,79 @@ easing:
 - 数字列等宽对齐 (`font-variant-numeric: tabular-nums`)
 - `border-collapse: collapse`，全宽 `width: 100%`
 
+### 翻页器 (pagination-row)
+
+基于 Figma 组件 `pagination-row` (node-id=60:51)，位于数据表格底部，用于展示总记录数并提供分页导航。
+
+**容器 (.pagination-row)**：
+- Flex 行布局，`display: flex; align-items: center; justify-content: space-between`
+- 背景 `{colors.table-header-bg}` (#FBFCFE)
+- 边框 `0.6px solid #f0f4f7`
+- 圆角 `{rounded.md}` (8px)
+- 最小高度 `52px`
+- 内边距：`{spacing.3}` (11px) 上下，`18px` 左右
+- 宽度撑满父容器
+
+**总记录数文字 (左侧)**：
+- 字体 `'Inter', 'Noto Sans SC', sans-serif`
+- 字重 `400` (Regular)，字号 `12px`
+- 文字色 `#647487`
+- 行高 `16px`
+- 文案格式：`共 {N} 条记录`
+
+**页码按钮组 (右侧)**：
+- Flex 行布局，`display: flex; align-items: center; gap: 6px`
+- 包含三种按钮类型：
+
+#### 导航按钮 (.pagination-button)
+
+用于 `上一页` / `下一页` 操作。
+
+- 固定尺寸：`42px × 30px`
+- 背景 `{colors.surface}` (#ffffff)
+- 边框 `0.6px solid {colors.line}` (#e6ecf2)
+- 圆角 `{rounded.md}` (8px)
+- 内容居中 (`justify-content: center; align-items: center`)
+- 文字：`<` 或 `>` 符号，`12px` Regular，`#647487`，行高 `16px`
+- Hover：边框加深为 `{colors.line-strong}` (#d5dde7)
+- Transition：`{easing.fast}`
+
+#### 数字按钮 (.pagination-number)
+
+用于可点击的页码数字。
+
+- 固定尺寸：`30px × 30px` (正方形)
+- 背景 `{colors.surface}` (#ffffff)
+- 边框 `0.6px solid {colors.line}` (#e6ecf2)
+- 圆角 `{rounded.md}` (8px)
+- 内容居中
+- 文字：页码数字，`12px` Regular，`#647487`，行高 `16px`
+- Hover：边框加深
+
+#### 激活态按钮 (.pagination-button-active)
+
+用于当前选中页码。
+
+- 固定尺寸：`30px × 30px` (正方形)
+- 背景 `#f4fbfe`（浅蓝底色）
+- 边框 `0.6px solid #d9edf6`
+- 圆角 `{rounded.md}` (8px)
+- 内容居中
+- 文字：页码数字，`12px` **Bold**，`#2ea0ce`，行高 `16px`
+
+#### 省略号 (.pagination-number)
+
+- 样式同数字按钮，文字为 `...`
+
+#### 交互状态速查
+
+| 按钮类型 | 尺寸 | 背景 | 边框 | 文字色 | 字重 |
+|---------|------|------|------|--------|------|
+| navigation | 42×30 | `#ffffff` | `0.6px #e6ecf2` | `#647487` | Regular |
+| number | 30×30 | `#ffffff` | `0.6px #e6ecf2` | `#647487` | Regular |
+| active | 30×30 | `#f4fbfe` | `0.6px #d9edf6` | `#2ea0ce` | **Bold** |
+| ellipsis | 30×30 | `#ffffff` | `0.6px #e6ecf2` | `#647487` | Regular |
+
 ### 分段控制器 (seg)
 - 用于时间粒度切换（按天 / 按周 / 按月）
 - 按钮组样式，选中态品牌色底 + 白色文字
