@@ -340,22 +340,29 @@ easing:
 
 ### 按钮 (BUTTON COMPONENTS)
 
-基于 Figma 组件集 `BUTTON COMPONENTS` (node-id=58:2)，含 `button-outline-primary` 和 `button-primary-filled` 两种变体，每种含 Default / Hover / Active / Disabled 四个状态。
+基于 Figma 组件集 `BUTTON COMPONENTS` (node-id=58:2)，含 `button-outline-primary`、`button-secondary`、`button-primary-filled` 三种变体，每种含 Default / Hover / Active / Disabled 四个状态。
 
 #### 设计原则
 
-- **默认使用 `button-outline-primary`**（描边样式）完成设计任务
-- **`button-primary-filled` 极少使用**，仅当明确指定需要高强调 CTA 按钮时才参与设计
+- **常规任务默认使用 `button-outline-primary` 或 `button-secondary`**
+- **`button-primary-filled` 禁止默认使用**，仅当用户**明确指定**需要实心高强调 CTA 按钮时才参与设计
 - 按钮圆角统一 `{rounded.md}` (8px)
 - 文字统一：Inter SemiBold 13px，行高 18px
+- 内边距统一：`{spacing.3}` (14px) 左右，`{spacing.2}` (8px) 上下
 - Transition：`{easing.fast}` (0.12s)
 
-#### button-outline-primary（默认选择）
+#### 三层按钮体系
 
-**容器 (.btn-outline-primary)**：
-- Flex 居中布局，`display: flex; justify-content: center; align-items: center`
-- 内边距：`{spacing.3}` (14px) 左右，`{spacing.2}` (8px) 上下
-- 圆角 `{rounded.md}` (8px)
+```
+强调程度：button-outline-primary  >  button-secondary  >  (button-primary-filled 需指定)
+用途定位：  品牌主操作              中性次操作              高强调 CTA（禁默认使用）
+```
+
+---
+
+#### button-outline-primary（品牌主操作）
+
+用于需要品牌色引导的主要操作，如查询、导出。
 
 | 状态 | 背景 | 边框 | 文字色 |
 |------|------|------|--------|
@@ -364,15 +371,24 @@ easing:
 | **Active** | `#f4fbfe` | `0.6px solid #d9edf6` | `#1f6d8a`（加深） |
 | **Disabled** | `{colors.table-header-bg}` (#FBFCFE) | `0.6px solid #f0f4f7` | `{colors.table-header-text}` (#97A6B8) |
 
-典型用途：查询、重置、导出、取消、上一页、下一页等常规操作。
+---
 
-#### button-primary-filled（高强调，按需使用）
+#### button-secondary（中性次操作）
 
-**容器 (.btn-primary-filled)**：
-- Flex 居中布局，`display: flex; justify-content: center; align-items: center`
-- 内边距：`14px`（四边统一）
-- 圆角 `{rounded.md}` (8px)
-- 无边框
+用于需要降低视觉权重的次要操作，如重置、取消、返回。
+
+| 状态 | 背景 | 边框 | 文字色 |
+|------|------|------|--------|
+| **Default** | `{colors.surface}` (#ffffff) | `1px solid {colors.line-strong}` (#d5dde7) | `{colors.ink-700}` (#4d6278) |
+| **Hover** | `{colors.surface-2}` (#f8fafc) | `1px solid {colors.line-strong}` (#d5dde7) | `{colors.ink-700}` (#4d6278) |
+| **Active** | `{colors.surface-3}` (#f1f5f9) | `1px solid #c0cad5` | `{colors.ink-700}` (#4d6278) |
+| **Disabled** | `{colors.surface}` (#ffffff) | `1px solid {colors.line-soft}` (#eef3f7) | `{colors.ink-200}` (#b6c0cd) |
+
+---
+
+#### button-primary-filled（高强调 CTA，需显式指定才可使用）
+
+**⚠️ 禁止默认使用。** 仅当用户明确要求或场景确需最高强调级别时才使用。
 
 | 状态 | 背景 | 文字色 |
 |------|------|--------|
@@ -381,20 +397,29 @@ easing:
 | **Active** | `#1f6d8a` | `{colors.surface}` (#ffffff) |
 | **Disabled** | `#b8d8e7` | `{colors.surface}` (#ffffff) |
 
-典型用途：新增、批量修改、弹窗确认按钮等需要**显式指定的主 CTA 操作**。
+---
 
 #### 按钮使用场景速查
 
 | 按钮 | 推荐组件 | 理由 |
 |------|---------|------|
-| 查询 | `button-outline-primary` | 常规表单操作 |
-| 重置 | `button-outline-primary` | 常规表单操作 |
-| 导出 | `button-outline-primary` | 常规操作 |
-| 取消 | `button-outline-primary` | 弹窗次要操作 |
-| + 新增 | `button-primary-filled` | 页面主 CTA |
-| 批量修改 | `button-primary-filled` | 页面主 CTA |
-| 确认新增/修改 | `button-primary-filled` | 弹窗主 CTA |
+| 查询 | `button-outline-primary` | 品牌主操作 |
+| 导出 | `button-outline-primary` | 品牌主操作 |
+| 重置 | `button-secondary` | 中性次操作，降低权重 |
+| 取消 | `button-secondary` | 弹窗次操作，降低权重 |
+| 返回 | `button-secondary` | 导航次操作 |
+| + 新增 | 需显式指定 | 页面主 CTA，指定时用 filled |
+| 批量修改 | 需显式指定 | 页面主 CTA，指定时用 filled |
+| 确认新增/修改 | 需显式指定 | 弹窗主 CTA，指定时用 filled |
 | 确认删除 | 自定义 (danger 色) | 危险操作需特殊处理 |
+
+#### 三种按钮速查表
+
+| 变体 | 默认背景 | 默认边框 | 默认文字 | 默认使用 |
+|------|---------|---------|---------|---------|
+| `outline-primary` | `#FBFCFE` | `0.6px #e1eef5` | `#2F87AC` | **是** |
+| `secondary` | `#ffffff` | `1px #d5dde7` | `#4d6278` | **是** |
+| `primary-filled` | `#2F87AC` | 无 | `#ffffff` | **否**，需显式指定 |
 
 ### 分段控制器 / 时间粒度筛选 (Seg / Time Grain)
 
