@@ -1,0 +1,166 @@
+{
+  "enabledPlugins": {
+    "superpowers@superpowers-marketplace": true,
+    "claude-code-setup@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "superpowers-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "obra/superpowers-marketplace"
+      }
+    },
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    }
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm *)",
+      "Bash(node *)",
+      "Bash(pnpm *)",
+      "Bash(npx *)",
+      "Bash(npx playwright *)",
+      "Bash(NPM_CONFIG_REGISTRY=https://registry.npmjs.org npx playwright *)",
+      "Bash(NPM_CONFIG_REGISTRY=https://registry.npmjs.org playwright install chromium)",
+      "Bash(playwright --version)",
+      "Bash(python3:*)",
+      "Bash(pip3 --version)",
+      "Bash(pip3 install *)",
+      "Bash(curl *)",
+      "Bash(ls *)",
+      "Bash(grep *)",
+      "Bash(grep -v \"^$\")",
+      "Bash(grep -v \"^[[:space:]]*$\")",
+      "Bash(open *)",
+      "Bash(bash)",
+      "Bash(kill %1)",
+      "Bash(xargs kill *)",
+      "Bash(wait)",
+      "Bash(break)",
+      "Bash(chmod +x *)",
+      "Bash(mdls *)",
+      "Bash(qlmanage *)",
+      "Bash(crontab *)",
+      "Bash(crontab -l)",
+      "Bash(mdfind -name \"Google Chrome\" -onlyin /Applications)",
+      "Bash(echo \"---CRON_EXIT:$?---\")",
+      "Bash(echo \"exit: $?\")",
+      "Bash(cat /Users/fangcang/Library/LaunchAgents/*.plist)",
+      "Bash(/usr/bin/python3 *)",
+      "Bash(import sys *)",
+      "Bash(identify \"/Users/fangcang/.claude/image-cache/d22f9f20-1fc8-4e25-9275-a89609ac95bf/1.png\")",
+      "Bash(security find-generic-password *)",
+      "Bash(security dump-keychain *)",
+      "Bash(sips -s format jpeg /tmp/figma_design.png --out /tmp/figma_design.jpg)",
+      "Bash(brew list *)",
+      "Bash(brew install *)",
+      "Bash(docker login *)",
+      "Bash(docker info *)",
+      "Bash(nslookup registry-1.docker.io)",
+      "Bash(osascript -e 'quit app \"Docker\"')",
+      "Bash(networksetup -getwebproxy Wi-Fi)",
+      "Bash(networksetup -getsecurewebproxy Wi-Fi)",
+      "Bash(~/.local/bin/dreamina user_credit *)",
+      "Bash(~/.local/bin/dreamina login *)",
+      "Bash(~/.local/bin/dreamina session *)",
+      "Bash(~/.local/bin/dreamina text2image *)",
+      "Bash(gh repo *)",
+      "Bash(shortcuts list *)",
+      "Bash(claude mcp *)",
+      "Bash(claude plugin *)",
+      "Bash(claude auth *)",
+      "Bash(claude --version)",
+      "Bash(figma-developer-mcp *)",
+      "Bash(xcrun --sdk macosx swiftc -o /tmp/ocr2 -framework Vision -framework CoreImage -framework Foundation /tmp/ocr.swift)",
+      "Bash(/tmp/ocr2)",
+      "Bash(tesseract --version)",
+      "Bash(tesseract /tmp/figma_design.png /tmp/figma_ocr_output -l chi_sim+eng --psm 6)",
+      "Bash(tesseract /tmp/figma_design.jpg /tmp/figma_ocr_output -l chi_sim+eng --psm 6)",
+      "Bash(tesseract figma_design.png figma_ocr_output -l chi_sim+eng --psm 6)",
+      "Bash(tesseract figma_design.png figma_ocr_output2 -l chi_sim+eng --psm 3)",
+
+      "Read(*)",
+
+      "WebFetch(*)",
+      "WebSearch",
+
+      "Skill(skill-creator)",
+      "Skill(style-design)",
+      "Skill(design-system)",
+      "Skill(find-skills)",
+      "Skill(interaction-design)",
+      "Skill(ui-ux-pro-max)",
+      "Skill(ux-research)",
+      "Skill(hotel-admin-blue)",
+      "Skill(update-config)",
+
+      "mcp__figma__get_figma_data",
+      "mcp__figma__download_figma_images",
+      "mcp__figma-desktop__get_design_context",
+      "mcp__figma-desktop__get_screenshot",
+      "mcp__figma-desktop__get_metadata",
+      "mcp__figma-hosted__authenticate",
+      "mcp__figma-hosted__complete_authentication",
+      "mcp__figma-hosted__get_design_context",
+      "mcp__figma-hosted__get_screenshot",
+      "mcp__figma-hosted__get_metadata",
+      "mcp__figma-hosted__use_figma",
+      "mcp__figma-hosted__generate_figma_design",
+      "mcp__figma-official__authenticate",
+      "mcp__figma-official__complete_authentication",
+      "mcp__figma-official__get_design_context",
+      "mcp__figma-official__get_screenshot",
+      "mcp__figma-official__get_metadata",
+
+      "mcp__pencil__get_editor_state"
+    ],
+    "defaultMode": "bypassPermissions"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "npx -y ccstatusline@latest",
+    "padding": 0,
+    "refreshInterval": 10
+  },
+  "autoUpdatesChannel": "latest",
+  "skipDangerousModePermissionPrompt": true,
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[token-optimizer] 建议运行 /context 查看当前 Token 基线 | [self-improving-agent] 检查 .learnings/ 有无适用于本任务的记录'"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[self-improving-agent] 子代理已完成，检查是否需要记录经验教训到 .learnings/'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /Users/fangcang/.claude/sync-to-github.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
