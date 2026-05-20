@@ -61,34 +61,44 @@ skills/<skill-name>/
     └── ...
 ```
 
-### 7. 本地 Skills 清单
+### 7. 当前 Skills 清单（按需加载）
 
 | 类别 | Skill | 用途 |
 |------|-------|------|
-| Figma | figma-use | Figma Plugin API 操作 |
-| Figma | figma-generate-design | 从代码到 Figma 设计 |
-| Figma | figma-generate-diagram | FigJam 图表生成 |
-| Figma | figma-generate-library | Figma 设计系统构建 |
-| Figma | figma-implement-design | Figma 设计转代码 |
-| Figma | figma-create-design-system-rules | 生成设计系统规则 |
-| Figma | figma-code-connect | Code Connect 映射 |
-| Figma | figma-use-figjam | FigJam 专用 API |
-| 设计 | design-md | 设计系统文档生成 |
+| Figma | figma-use | Figma Plugin API 操作（ux-agent 核心） |
+| Figma | figma-generate-design | 从代码到 Figma 设计（ux-agent 核心） |
+| Figma | figma-create-new-file | 创建新 Figma 文件 |
+| 设计 | design-md | 设计系统文档生成（ux-agent 核心） |
 | 设计 | design-system | 设计规范与组件库搭建 |
 | 设计 | style-design | UI 风格分析与提炼 |
-| 设计 | hotel-admin-blue | SaaS 后台蓝色主题 |
-| 前端 | frontend-design | 高质量前端界面生成 |
-| 前端 | gsap-advanced-animation | GSAP 动效开发 |
-| 前端 | ui-ux-pro-max | UI/UX 设计智能辅助 |
-| 前端 | make-interfaces-feel-better | 界面精致化优化 |
-| 前端 | emil-design-eng | Emil UI 设计哲学 |
+| 前端 | frontend-design | 高质量前端界面生成（front-agent 核心） |
+| 前端 | gsap-advanced-animation | GSAP 动效开发（front-agent） |
+| 前端 | ui-ux-pro-max | UI/UX 设计智能辅助（front-agent 核心） |
+| 前端 | make-interfaces-feel-better | 界面精致化优化（front-agent） |
 | 前端 | web-design-guidelines | Web 界面最佳实践审查 |
 | UX | ux-research | 用户研究与需求分析 |
 | UX | interaction-design | 交互逻辑与微交互设计 |
-| UX | information-architecture | 信息架构规划 |
+| 工具 | agent-browser | 浏览器自动化（test-agent 核心） |
 | 工具 | find-skills | 搜索可用 Skills |
 | 工具 | skill-creator | 创建/优化 Skills |
-| 工具 | agent-reach | 多平台网络搜索 |
-| 其他 | emblem-market-research | 加密市场数据分析 |
+| 工具 | brainstorming | 复杂任务规划 |
+| 工具 | token-optimizer | Token 消耗诊断与优化 |
+| 工具 | self-improving-agent | 自优化学习系统 |
 
-链接目标 Skills 通过 `~/.cc-switch/skills/` 管理，实际文件在 `/Users/fangcang/.cc-switch/skills/`。
+### 8. 已归档 Skills
+
+以下 skill 因使用频率极低已移至 `~/.claude/skills-archive/`，需要时手动恢复：
+
+| Skill | 归档原因 |
+|-------|----------|
+| agent-reach | WebSearch 工具可替代 |
+| emblem-market-research | 加密市场数据，与当前工作无关 |
+| emil-design-eng | 特定设计风格偏好 |
+| figma-code-connect | 仅建立 Figma↔代码关联时用 |
+| figma-create-design-system-rules | 仅新建项目时用一次 |
+| figma-generate-diagram | FigJam 图表，极少使用 |
+| figma-generate-library | 仅从零搭建组件库时用 |
+| figma-implement-design | front-agent 已内建此能力 |
+| figma-use-figjam | 与 figma-use 重叠 |
+| hotel-admin-blue | 酒店 SaaS 后台，领域极窄 |
+| information-architecture | ux-agent 已内建此能力 |
