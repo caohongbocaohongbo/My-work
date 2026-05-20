@@ -1,6 +1,16 @@
 ---
 name: self-improving-agent
 description: 自优化 Agent 技能 — 从错误、用户纠正和运行反馈中持续学习，将经验沉淀为持久知识。当发生以下情况时触发：(1) 命令或操作意外失败，(2) 用户纠正 Agent 输出（"不对，应该是..."），(3) 用户请求的能力不存在，(4) 外部 API 或工具失败，(5) Agent 发现自身知识过时或错误，(6) 发现某类重复任务有更优方案。在执行重大任务前也应主动回顾已有学习记录。
+when_to_use:
+  - 命令执行失败或返回非预期错误时自动触发
+  - 用户说"不对""应该是""改一下""换一种方式"等纠正话语
+  - 用户请求某个不存在的功能或能力
+  - 外部 API 超时、服务不可用、工具调用失败
+  - Agent 完成子任务后检查是否有可记录的经验教训（SubagentStop 触发）
+  - 发现某类重复任务的更优处理方案
+  - 执行重大任务前回顾 .learnings/ 中的历史记录
+  - 定期扫描学习文件，清理过期条目，标记可晋升的 Pattern
+argument-hint: "[review | promote <key> | summary | clean]"
 compatibility: Claude Code
 license: MIT
 metadata:
