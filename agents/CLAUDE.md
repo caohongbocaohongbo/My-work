@@ -76,7 +76,36 @@
 3. 将新 Agent 注册到本文件的 Agent 列表中
 4. 按标准流程调用执行
 
-### 6. 重试与人工介入
+### 6. Skill 按需加载策略
+
+**Skill 是 Agent 的工具箱，不是会话默认配件。** 默认不加载任何 skill，由 Agent 在任务启动时按需声明和加载。
+
+#### 加载原则
+
+- **默认零加载**：会话启动时不自动加载 skill，节省 token 给实际任务
+- **Agent 显式声明**：Agent 执行任务前，分析所需能力，显式通过 `Skill` 工具加载对应 skill
+- **用完即释放**：skill 使用完毕后不保留在上下文，下次需要时重新加载
+- **禁止预加载**：不得"可能用到就提前加载"，只在确定需要时加载
+
+#### 各 Agent 推荐 Skill 清单
+
+| Agent | 常需 Skill | 加载时机 |
+|-------|-----------|----------|
+| req-agent | 无（纯文本分析） | — |
+| ux-agent | figma-use, figma-generate-design, design-md | 开始 Figma 设计时 |
+| front-agent | frontend-design, ui-ux-pro-max, gsap-advanced-animation | 开始前端编码时 |
+| back-agent | 无（纯后端设计） | — |
+| test-agent | agent-browser | 需要浏览器测试时 |
+| github-agent | 无 | — |
+| project-conductor | 无（纯编排） | — |
+
+#### 禁止行为
+
+- **禁止一次性加载所有 skill** — 只加载当前阶段需要的
+- **禁止 skill 链式预加载** — 不能"当前阶段加载下个阶段的 skill"
+- **禁止空载运行** — Agent 启动时必须检查是否有多余 skill 占用上下文
+
+### 7. 重试与人工介入
 
 - 同一 Agent 连续 3 次 KPI 不达标 → **暂停流程** + 输出错误报告 + 请求人工介入
 - 卡住方案用户全部否决 → 请求人工介入

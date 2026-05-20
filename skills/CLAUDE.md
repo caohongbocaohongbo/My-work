@@ -4,16 +4,23 @@
 
 ## 使用规则
 
-### 1. Skills 可自由搭配
+### 1. Skill 按需加载（最高优先级）
 
-执行任务时，根据实际需要**自行组合多个 Skills** 来配合完成任务。没有一对一绑定限制。
+**Skill 默认不加载。** 遵循 `~/.claude/CLAUDE.md` 中"Skill 按需加载策略"：
 
-典型组合示例：
+- 会话启动时 skill 列表为空，不消耗 token
+- 只有 Agent 确定任务需要某 skill 时，才通过 `Skill` 工具显式加载
+- 禁止因"可能用到"而预加载 skill
+- 各 Agent 的推荐 skill 清单见 `agents/CLAUDE.md`
+
+### 2. Skills 可由 Agent 自由组合
+
+Agent 执行任务时，根据实际需要自行组合所需 Skills。典型组合示例：
 - Figma 设计任务: `figma-use` + `figma-generate-design` + `design-md`
 - 前端动效任务: `gsap-advanced-animation` + `make-interfaces-feel-better` + `emil-design-eng`
 - UI 审查任务: `web-design-guidelines` + `ui-ux-pro-max` + `interaction-design`
 
-### 2. Skill 缺失时的处理流程
+### 3. Skill 缺失时的处理流程
 
 当执行工作流需要某个领域能力，但本地 `/Users/fangcang/.claude/skills/` 下**没有对应 Skill** 时：
 
@@ -28,21 +35,23 @@
 └── 不需要 → 继续当前流程
 ```
 
-### 3. Skill 维护
+### 4. Skill 维护
 
 已有 Skill 需要完善时：
 1. 读取现有 Skill 的 `SKILL.md`
 2. 用 `skill-creator` 更新：补充缺失的触发条件、使用说明、参考文档
 3. 保持 Skill 目录结构一致（SKILL.md + references/ 子目录）
 
-### 4. 禁止行为
+### 5. 禁止行为
 
 - **不得在 Skill 缺失时随便执行** — Skill 不存在时不可用通用方法替代执行设计/开发类专项任务
 - **不得跳过 find-skills 搜索** — 必须先确认互联网上没有现成方案
 - **不得创建空壳 Skill** — 创建的 Skill 必须包含可执行的实际指令
 - **不得执行超出用户指令范围的操作** — Skills 只作为辅助工具，当用户有明确指定指令时严格按用户指令执行
+- **不得默认预加载 Skill** — 会话启动时 skill 列表必须为空，只有 Agent 确定需要时才加载
+- **不得一次性加载所有 skill** — 只加载当前阶段需要的，禁止"打包加载"
 
-### 5. Skill 目录标准结构
+### 6. Skill 目录标准结构
 
 ```
 skills/<skill-name>/
@@ -52,7 +61,7 @@ skills/<skill-name>/
     └── ...
 ```
 
-### 6. 本地 Skills 清单
+### 7. 本地 Skills 清单
 
 | 类别 | Skill | 用途 |
 |------|-------|------|
