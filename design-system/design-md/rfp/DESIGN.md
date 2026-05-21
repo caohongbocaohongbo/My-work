@@ -1,5 +1,5 @@
 ---
-version: v3
+version: v4
 name: 协议通 (RFP)
 description: 协议通 (RFP) 是阿里巴巴酒店招采系统的核心业务模块，用于酒店签约报价的全流程管理。页面采用左侧深色导航 + 右侧内容区的经典后台布局，内容区域以浅灰底色承载白色主操作区。品牌色为 #1657DC 蓝，辅以语义状态色和克制的数据色板。字体使用 PingFang SC + Poppins/Inter 双字体体系。设计语言延续企业级 B2B 后台的严谨专业调性，聚焦于数据表格、筛选操作、指标卡片和酒店信息展示。
 
@@ -17,7 +17,7 @@ colors:
   surface-soft: "#F8F9FA"
   surface-table-header: "#EAF1FF"
   surface-tag-warning: "#FBEBDF"
-  surface-badge-success: "#D1FAE5"
+  surface-disabled: "#F5F5F5"
   # --- 侧栏 ---
   sidebar-bg: "#102348"
   sidebar-border: "#334B7B"
@@ -27,25 +27,35 @@ colors:
   # --- 描边 ---
   line: "#DFE0E5"
   line-input: "#E2EAF6"
-  line-soft: "#CBD5E1"
-  line-dash: "#949999"
+  line-active: "#AFC5F1"
+  line-error: "#F28989"
+  line-dash: "#CCD1D6"
   # --- 文字 ---
-  ink: "#333333"
+  ink: "#313333"
   ink-secondary: "#666666"
   ink-muted: "#9A9794"
   ink-link: "#1657DC"
   ink-warning: "#F5841F"
-  ink-success: "#047857"
-  ink-danger: "#CC2A4D"
   ink-cyan: "#006A6E"
+  ink-placeholder: "#CCD1D6"
   # --- 语义色 ---
   success-100: "#D1FAE5"
-  success-700: "#047857"
   warning-100: "#FBEBDF"
-  warning-600: "#CA8A04"
-  warning-700: "#F5841F"
   danger-100: "#FBEBDF"
   danger-700: "#CC2A4D"
+  # --- 评分徽章色 ---
+  rating-green-bg: "#D1FAE5"
+  rating-green-text: "#6F9B8E"
+  rating-orange-bg: "#FBEBDF"
+  rating-orange-text: "#AB896A"
+  rating-blue-bg: "#EAF1FF"
+  rating-blue-text: "#4C628A"
+  # --- 星级/价格色 ---
+  star-gold: "#F5B640"
+  price-text: "#CC2A4D"
+  # --- KPI 专用 ---
+  kpi-label: "#949999"
+  kpi-border: "#E8EBEF"
 
 typography:
   page-title:
@@ -90,13 +100,13 @@ typography:
     fontWeight: 700
     lineHeight: 18px
     color: "{colors.ink}"
+  table-cell:
+    fontFamily: "'Poppins', 'Noto Sans SC', sans-serif"
+    fontSize: 14px
+    fontWeight: 400
+    lineHeight: 18px
+    color: "{colors.ink}"
   nav-level1:
-    fontFamily: "'PingFang SC', 'Microsoft YaHei', sans-serif"
-    fontSize: 16px
-    fontWeight: 500
-    lineHeight: 24px
-    color: "{colors.sidebar-text}"
-  nav-level1-active:
     fontFamily: "'PingFang SC', 'Microsoft YaHei', sans-serif"
     fontSize: 16px
     fontWeight: 500
@@ -117,7 +127,7 @@ typography:
   kpi-value:
     fontFamily: "'PingFang SC', 'Microsoft YaHei', sans-serif"
     fontSize: 34px
-    fontWeight: 600
+    fontWeight: 700
     lineHeight: 22px
     color: "{colors.ink}"
   kpi-label:
@@ -125,12 +135,13 @@ typography:
     fontSize: 14px
     fontWeight: 400
     lineHeight: 22px
-    color: "{colors.ink-muted}"
+    color: "{colors.kpi-label}"
   breadcrumb:
     fontFamily: "'PingFang SC', 'Microsoft YaHei', sans-serif"
     fontSize: 14px
-    fontWeight: 600
+    fontWeight: 700
     lineHeight: 26px
+    color: "{colors.brand-500}"
   btn-primary:
     fontFamily: "'PingFang SC', 'Microsoft YaHei', sans-serif"
     fontSize: 14px
@@ -182,30 +193,30 @@ easing:
 **核心特征：**
 - 品牌色 `{colors.brand-500}` (#1657DC) 承担主导航选中态、主按钮、链接、表头底线
 - 深色侧栏 (`{colors.sidebar-bg}` #102348) 提供结构层次
-- PingFang SC + Poppins 双字体体系，中文优先
+- PingFang SC + Poppins/Inter 双字体体系，中文优先
 - 4px 基准圆角，按钮/标签/输入框统一 `{rounded.sm}` (4px)
-- KPI 卡片柔和大圆角 (`{rounded.lg}` 20px)，灰底 (`{colors.surface-soft}` #F8F9FA)
+- KPI 卡片柔和大圆角 (`{rounded.lg}` 20px)，灰底+细边框 (`{colors.kpi-border}` #E8EBEF)
 - 表格表头蓝色底 (`{colors.surface-table-header}` #EAF1FF) + 3px 品牌色底线
-- 主按钮实心填充品牌色，非描边样式
+- 主按钮实心填充品牌色
+- 评分徽章支持 3 色变体（绿/橙/蓝）
 
 ## 颜色
 
 ### 品牌色
-- **Brand 500** (`{colors.brand-500}` — #1657DC): **主品牌色**，导航选中背景、主按钮、链接、表头底线
+- **Brand 500** (`{colors.brand-500}` — #1657DC): **主品牌色**，导航选中背景、主按钮、链接、表头底线、操作列文字
 - **Brand 400** (`{colors.brand-400}` — #2E7AE5): hover 加深
 - **Brand 300** (`{colors.brand-300}` — #5592F4): 浅品牌色
 - **Brand 100** (`{colors.brand-100}` — #D9E8FD): 品牌浅底
-- **Brand 50** (`{colors.brand-50}` — #EAF1FF): 品牌最浅底，表头背景
+- **Brand 50** (`{colors.brand-50}` — #EAF1FF): 品牌最浅底，表头背景、蓝色评分徽章背景
 
 ### 页面底色
 - **Page** (`{colors.page}` — #F2F2F2): 全局内容区底色，浅灰
 
 ### 表面
 - **Surface** (`{colors.surface}` — #FFFFFF): 主操作卡片、Header、表行背景
-- **Surface Soft** (`{colors.surface-soft}` — #F8F9FA): KPI 指标卡片背景
+- **Surface Soft** (`{colors.surface-soft}` — #F8F9FA): KPI 指标卡片背景、下拉选项 hover/选中背景
 - **Surface Table Header** (`{colors.surface-table-header}` — #EAF1FF): 表格表头背景
-- **Surface Tag Warning** (`{colors.surface-tag-warning}` — #FBEBDF): 警告类标签背景
-- **Surface Badge Success** (`{colors.surface-badge-success}` — #D1FAE5): 成功类徽章背景
+- **Surface Disabled** (`{colors.surface-disabled}` — #F5F5F5): 禁用态背景
 
 ### 侧栏
 - **Sidebar BG** (`{colors.sidebar-bg}` — #102348): 侧栏深色背景
@@ -216,24 +227,35 @@ easing:
 
 ### 描边
 - **Line** (`{colors.line}` — #DFE0E5): Header 底部分割线、内容卡片边框
-- **Line Input** (`{colors.line-input}` — #E2EAF6): 筛选器/下拉框边框
-- **Line Soft** (`{colors.line-soft}` — #CBD5E1): 日期 placeholder 文字色
-- **Line Dash** (`{colors.line-dash}` — #949999): 表格虚线分隔
+- **Line Input** (`{colors.line-input}` — #E2EAF6): 默认输入框/筛选器边框
+- **Line Active** (`{colors.line-active}` — #AFC5F1): 激活态边框 (focus/active)
+- **Line Error** (`{colors.line-error}` — #F28989): 错误态边框
+- **Line Dash** (`{colors.line-dash}` — #CCD1D6): 表格数据行虚线分隔、占位文字色
 
 ### 文字
-- **Ink** (`{colors.ink}` — #333333): 主文字，标题、正文、表格数据
+- **Ink** (`{colors.ink}` — #313333): 主文字，标题、正文、表格数据、下拉选项
 - **Ink Secondary** (`{colors.ink-secondary}` — #666666): 次要文字，描述、辅助信息
-- **Ink Muted** (`{colors.ink-muted}` — #9A9794): 标签文字，输入框标签、KPI 标签
-- **Ink Link** (`{colors.ink-link}` — #1657DC): 链接文字，操作链接
-- **Ink Warning** (`{colors.ink-warning}` — #F5841F): 警告类文字
-- **Ink Success** (`{colors.ink-success}` — #047857): 成功类文字
-- **Ink Danger** (`{colors.ink-danger}` — #CC2A4D): 危险类文字
-- **Ink Cyan** (`{colors.ink-cyan}` — #006A6E): 增长率/变化率文字
+- **Ink Muted** (`{colors.ink-muted}` — #9A9794): 标签文字，输入框标签、筛选器标签
+- **Ink Link** (`{colors.ink-link}` — #1657DC): 链接文字，操作列文字，下拉选项选中态
+- **Ink Warning** (`{colors.ink-warning}` — #F5841F): 警告类标签文字/边框
+- **Ink Cyan** (`{colors.ink-cyan}` — #006A6E): KPI 变化率文字
+- **Ink Placeholder** (`{colors.ink-placeholder}` — #CCD1D6): 输入框占位文字
 
-### 语义色
-- **Success** (背景 `{colors.success-100}` #D1FAE5, 文字 `{colors.success-700}` #047857): 正向指标 / OTA 评分徽章
-- **Warning** (背景 `{colors.warning-100}` #FBEBDF, 文字 `{colors.danger-700}` #CC2A4D): 警示标签 / 未报价状态
-- **Info** (背景 `{colors.brand-50}` #EAF1FF, 文字 `{colors.brand-500}` #1657DC): 信息提示
+### 评分徽章色
+- **绿色徽章**: 背景 `{colors.rating-green-bg}` #D1FAE5, 文字 `{colors.rating-green-text}` #6F9B8E
+- **橙色徽章**: 背景 `{colors.rating-orange-bg}` #FBEBDF, 文字 `{colors.rating-orange-text}` #AB896A
+- **蓝色徽章**: 背景 `{colors.rating-blue-bg}` #EAF1FF, 文字 `{colors.rating-blue-text}` #4C628A
+
+### 特殊色
+- **Star Gold** (`{colors.star-gold}` — #F5B640): 酒店星级图标色
+- **Price Text** (`{colors.price-text}` — #CC2A4D): 酒店卡片价格文字色
+- **KPI Label** (`{colors.kpi-label}` — #949999): KPI 卡片标签文字色
+- **KPI Border** (`{colors.kpi-border}` — #E8EBEF): KPI 卡片边框色
+
+### 语义状态色
+- **Success** (背景 `{colors.success-100}` #D1FAE5)
+- **Warning** (背景 `{colors.warning-100}` #FBEBDF, 文字 `{colors.ink-warning}` #F5841F)
+- **Danger** (背景 `{colors.danger-100}` #FBEBDF, 文字 `{colors.danger-700}` #CC2A4D)
 
 ## 字体
 
@@ -245,25 +267,27 @@ easing:
 
 | Token | 字号 | 字重 | 用途 |
 |--------|------|------|------|
-| `{typography.page-title}` | 18px | 600 (Semibold) | 页面主标题 |
-| `{typography.section-title}` | 16px | 600 (Semibold) | 区块标题 |
-| `{typography.body}` | 14px | 400 (Regular) | 正文、表格数据 |
-| `{typography.body-secondary}` | 14px | 400 (Regular) | 次要正文 |
-| `{typography.meta}` | 12px | 400 (Regular) | 辅助文字、地址 |
-| `{typography.label}` | 14px | 400 (Regular) | 输入框标签、筛选器标签 |
-| `{typography.table-header}` | 14px | 700 (Bold) | 表格表头 (Poppins) |
-| `{typography.nav-level1}` | 16px | 500 (Medium) | 一级导航 |
-| `{typography.nav-level2}` | 16px | 400 (Regular) | 二级导航 |
-| `{typography.kpi-value}` | 34px | 600 (Semibold) | KPI 大数值 |
-| `{typography.kpi-label}` | 14px | 400 (Regular) | KPI 标签 |
-| `{typography.breadcrumb}` | 14px | 600 (Semibold) | 面包屑导航 |
-| `{typography.btn-primary}` | 14px | 500 (Medium) | 主按钮文字 |
+| `{typography.page-title}` | 18px | 600 | 页面主标题 |
+| `{typography.section-title}` | 16px | 600 | 区块标题 |
+| `{typography.body}` | 14px | 400 | 正文 |
+| `{typography.body-secondary}` | 14px | 400 | 次要正文 |
+| `{typography.meta}` | 12px | 400 | 辅助文字、地址 |
+| `{typography.label}` | 14px | 400 | 输入框标签、筛选器标签 |
+| `{typography.table-header}` | 14px | 700 | 表格表头 (Poppins SemiBold) |
+| `{typography.table-cell}` | 14px | 400 | 表格数据行 (Poppins Regular) |
+| `{typography.nav-level1}` | 16px | 500 | 一级导航 (Medium) |
+| `{typography.nav-level2}` | 16px | 400 | 二级导航 (Regular) |
+| `{typography.nav-level2-active}` | 16px | 500 | 二级导航选中 (Medium) |
+| `{typography.kpi-value}` | 34px | 700 | KPI 大数值 (Bold) |
+| `{typography.kpi-label}` | 14px | 400 | KPI 卡片标签 |
+| `{typography.breadcrumb}` | 14px | 700 | 面包屑导航 (Bold) |
+| `{typography.btn-primary}` | 14px | 500 | 主按钮文字 (Medium) |
 
 ### 字体原则
 - 中文优先使用 PingFang SC，Windows 回退 Microsoft YaHei
-- 表格表头使用 Poppins Bold，数字和拉丁字符优先
-- KPI 大数字使用 PingFang SC Semibold
-- 行高统一 22px (14px 字号) / 26px (18px 字号) / 24px (16px 字号)
+- 表格表头使用 Poppins SemiBold (wght 700)，数据行使用 Poppins Regular (wght 400)
+- KPI 大数字使用 PingFang SC Bold
+- 行高统一：22px (14px 字号) / 26px (18px 字号) / 24px (16px 字号) / 18px (表格行)
 
 ## 布局
 
@@ -274,8 +298,8 @@ easing:
   <aside class="sidebar" style="width: 240px">
     <div class="sidebar-logo"><!-- Logo 28px --></div>
     <nav class="sidebar-nav">
-      <!-- 一级菜单项 40px -->
-      <!-- 二级菜单项 40px -->
+      <!-- 一级菜单项 40px，Medium 16px -->
+      <!-- 二级菜单项 40px，Regular 16px -->
     </nav>
     <div class="sidebar-collapse"><!-- 收起按钮 50px --></div>
   </aside>
@@ -303,7 +327,7 @@ easing:
 </div>
 ```
 
-- 侧栏固定 240px 宽度
+- 侧栏固定 240px 宽度，深蓝底色 #102348
 - Header 固定 64px 高度
 - 内容区 padding 20px
 - 主操作卡片白色背景 + 1px #DFE0E5 边框
@@ -325,7 +349,7 @@ easing:
 | Token | 值 | 用途 |
 |--------|-----|------|
 | `{rounded.none}` | 0px | 侧栏项 |
-| `{rounded.sm}` | 4px | 按钮、输入框、标签、筛选器、表头 |
+| `{rounded.sm}` | 4px | 按钮、输入框、标签、筛选器、下拉面板 |
 | `{rounded.md}` | 8px | 标准卡片 |
 | `{rounded.lg}` | 20px | KPI 指标卡片 |
 | `{rounded.full}` | 50px | 面包屑 pill |
@@ -334,7 +358,7 @@ easing:
 | Token | 值 | 用途 |
 |--------|-----|------|
 | `{controlHeight.sm}` | 28px | 小标签/徽章 |
-| `{controlHeight.md}` | 32px | 标准筛选器 |
+| `{controlHeight.md}` | 32px | 标准筛选器/输入框/下拉选项 |
 | `{controlHeight.lg}` | 36px | 主按钮 |
 | `{controlHeight.xl}` | 40px | 导航菜单项 |
 | `{controlHeight.header}` | 64px | 顶部 Header |
@@ -358,14 +382,13 @@ easing:
 
 **导航菜单 (.sidebar-nav)**：
 - Flex column 布局，gap 16px
-- 一级菜单项高度 40px，宽度 208px
+- 菜单项高度 40px，宽度 208px
 - 左侧图标 24×24px，距左 12px
-- 文字距左 44px，PingFang SC Medium 16px
-- 未激活：文字色 rgba(255,255,255,0.65)
-- 激活（展开）：文字色 #FFFFFF
-- 二级菜单项缩进对齐，Regular 字重
-- 二级选中态：背景 `{colors.sidebar-item-active}` (#1657DC)，4px 圆角，白色 Medium 文字
-- 菜单项间距：一级间 16px，二级间 8px
+- 图标 + 8px 间距 + 文字布局
+- **一级菜单**: `{typography.nav-level1}` — PingFang SC Medium 16px，白色文字
+- **二级菜单**: `{typography.nav-level2}` — PingFang SC Regular 16px，白色文字
+- **二级选中**: `{typography.nav-level2-active}` — background `{colors.sidebar-item-active}` (#1657DC)，4px 圆角，白色 Medium 16px
+- 选中态背景撑满 208px 宽度
 
 **收起按钮 (.sidebar-collapse)**：
 - 高度 50px，全宽
@@ -387,10 +410,10 @@ easing:
 **面包屑 Pill (.breadcrumb-pill)**：
 - 圆角 `{rounded.full}` (50px)
 - 边框 2px solid `{colors.brand-500}` (#1657DC)
-- 内边距：2px 15px 2px 4px
-- 内容：返回箭头 (20×20px) + 文字
-- 文字：PingFang SC Semibold 14px
-- 当前页品牌色文字 + " / " 分隔 + 上级页默认色文字
+- 内边距：2px(上下) 15px(右) 5px(左)
+- 内容：返回箭头 SVG 图标 (20×20px) + 路径文字
+- 文字：`{typography.breadcrumb}` — PingFang SC Bold 14px, `{colors.brand-500}`
+- gap 10px
 
 **右侧图标组 (.header-icons)**：
 - Flex row，gap 24px
@@ -423,7 +446,7 @@ easing:
 - 图标 16×16px + 文字 "刷新"
 - 文字：PingFang SC Regular 14px
 
-### KPI 指标卡片
+### KPI 指标卡片 (KPI Card)
 
 **Grid 容器**：
 - Flex row 布局，gap 16px
@@ -431,21 +454,23 @@ easing:
 
 **Card (.kpi-card)**：
 - 背景 `{colors.surface-soft}` (#F8F9FA)
+- 边框 1px solid `{colors.kpi-border}` (#E8EBEF)
 - 圆角 `{rounded.lg}` (20px)
 - 内边距 `{spacing.8}` (30px)
 - Flex column 布局，gap 8px
+- 固定高度 112px
 
 **内部结构**：
 
 | 元素 | 样式 |
 |------|------|
 | **标题行** | Flex row, gap 10px, align-items: center |
-| **Label** | `{typography.kpi-label}` — PingFang SC Regular 14px, #9A9794 |
-| **提示图标** | 16×16px，可选 |
-| **数值行** | Flex row, gap 10px, align-items: end, padding-top 3px |
-| **主数值** | `{typography.kpi-value}` — PingFang SC Semibold 34px, #333333 |
-| **变化率** | PingFang SC Regular 14px, `{colors.ink-cyan}` (#006A6E) |
-| **变化图标** | 16×16px |
+| **Label** | `{typography.kpi-label}` — PingFang SC Regular 14px, `{colors.kpi-label}` (#949999) |
+| **提示图标** | 18×18px，可选 |
+| **数值行** | Flex row, gap 4px, align-items: end |
+| **主数值** | `{typography.kpi-value}` — PingFang SC Bold 34px, `{colors.ink}` (#313333), 行高 22px |
+| **单位** | PingFang SC Regular 14px, `{colors.ink}` |
+| **变化率** | PingFang SC Regular 14px, `{colors.ink-cyan}` (#006A6E), 行高 22px |
 
 ### 主按钮 (Primary Button)
 
@@ -455,7 +480,7 @@ easing:
 |------|------|--------|
 | **Default** | `{colors.brand-500}` (#1657DC) | #FFFFFF |
 | **Hover** | `{colors.brand-400}` (#2E7AE5) | #FFFFFF |
-| **Active** | `{colors.brand-500}` (#1657DC) 加深 | #FFFFFF |
+| **Active** | 加深 | #FFFFFF |
 | **Disabled** | `{colors.brand-100}` (#D9E8FD) | rgba 变淡 |
 
 - 内边距：8px (左右) + 7px (上下)
@@ -464,112 +489,197 @@ easing:
 - 可选带下拉箭头图标 (16×16px) 的变体
 - Transition: `{easing.fast}`
 
-### 筛选器 / 下拉选择 (Form Select)
+### 文本框 (Form Text)
 
-**Trigger 容器**：
-- Flex row 布局，justify-content: space-between
-- 边框 1px solid `{colors.line-input}` (#E2EAF6)
+**新增组件**。内嵌标签 + 输入提示的文本输入组件，4 态变体。
+
+**容器**：
+- Flex row 布局
+- 边框 1px solid
 - 圆角 `{rounded.sm}` (4px)
 - 内边距 5px 10px
-- flex: 1，最小宽度 0
 - 高度 `{controlHeight.md}` (32px)
+- 宽度 347px (标准)
 
 **Label (左侧)**：
 - `{typography.label}` — PingFang SC Regular 14px, `{colors.ink-muted}` (#9A9794)
 - flex-shrink: 0
 
-**Value (中间)**：
-- `{typography.body}` — PingFang SC Regular 14px, `{colors.ink}` (#333333)
-- flex: 1，左对齐
-- Placeholder 态：`{colors.ink-secondary}` (#666666)
+**Value/Placeholder (右侧)**：
+- `{typography.body}` — PingFang SC Regular 14px
+- 左侧 padding 10px 与 Label 分隔
+- flex: 1
 
-**Chevron (右侧)**：
-- 12×12px 下拉箭头图标
-- 向下展开
+#### 四态变体
 
-**Hover 态**: 边框色不变 (无 hover 效果)
-**展开态**: 边框色可加深
+| 状态 | 容器边框 | 背景 | 文字色 |
+|------|---------|------|--------|
+| **Normal** | `{colors.line-input}` (#E2EAF6) | `{colors.surface}` (#FFFFFF) | Placeholder `{colors.ink-placeholder}` (#CCD1D6) |
+| **Active (Focus)** | `{colors.line-active}` (#AFC5F1) | `{colors.surface}` (#FFFFFF) | Value `{colors.ink}` (#313333) |
+| **Error** | `{colors.line-error}` (#F28989) | `{colors.surface}` (#FFFFFF) | Placeholder `{colors.ink-placeholder}` |
+| **Disabled** | `{colors.line-input}` (#E2EAF6) | `{colors.surface-disabled}` (#F5F5F5) | 50% opacity |
 
-### 日期范围选择器
+Label 颜色在所有状态下保持 `{colors.ink-muted}` (#9A9794) 不变（Disabled 态 50% opacity）。
 
-**容器**：
-- 边框 1px solid `{colors.line-input}` (#E2EAF6)
+### 筛选器 / 下拉选择 (Form Select)
+
+**Trigger 容器** (2 态)：
+- Flex row 布局，justify-content: space-between
+- 高度 `{controlHeight.md}` (32px)
+- 宽度 347px (标准)
 - 圆角 `{rounded.sm}` (4px)
 - 内边距 5px 10px
-- Flex row，gap 8px
+- Label (左侧) + Value区域 (中间, flex:1) + Chevron (右侧)
 
-**内部结构**：
-- 日历图标 16×16px
-- "开始日期" placeholder (色 `{colors.line-soft}` #CBD5E1)
-- " - " 分隔符
-- "结束日期" placeholder
-- 下拉箭头 12×12px
+| 状态 | 边框 | 用途 |
+|------|------|------|
+| **Normal** | 1px `{colors.line-input}` (#E2EAF6) | 默认收起 |
+| **Active** | 1px `{colors.line-active}` (#AFC5F1) | 展开时 |
+
+**Label (左侧)**：
+- `{typography.label}` — PingFang SC Regular 14px, `{colors.ink-muted}` (#9A9794)
+
+**Value (中间)**：
+- `{typography.body}` — PingFang SC Regular 14px, `{colors.ink}` (#313333)
+- 左侧 padding 10px
+
+**Chevron (右侧)**：
+- 12×12px 下拉箭头 SVG 图标
+
+**下拉面板 (Dropdown Panel)**：
+- 绝对定位 / 紧跟 Trigger
+- 背景 `{colors.surface}` (#FFFFFF)
+- 边框 1px solid `{colors.line-active}` (#AEC3EF)
+- 圆角 `{rounded.sm}` (4px)
+- 内边距 5px 10px
+- 阴影 `0px 0px 15px rgba(0,0,0,0.06)`
+- Flex column 布局，gap 8px
+
+**下拉选项 (Option)**：
+- 高度 32px，全宽
+- 内边距 5px 10px
+- 圆角 `{rounded.sm}` (4px)
+- 文字：PingFang SC Regular 14px, `{colors.ink}` (#313333)
+
+| 状态 | 背景 | 文字色 |
+|------|------|--------|
+| **Normal** | `{colors.surface}` (#FFFFFF) | `{colors.ink}` (#313333) |
+| **Hover/Selected** | `{colors.surface-soft}` (#F8F9FA) | `{colors.ink-link}` (#1657DC) |
+
+### 日期选择器 (Date Picker)
+
+**Trigger 容器**：
+- Flex row 布局
+- 高度 `{controlHeight.md}` (32px)
+- 圆角 `{rounded.sm}` (4px)
+- 内边距 5px 10px
+- gap 8px
+
+**内部结构 (从左到右)**：
+- Label：PingFang SC Regular 14px, `{colors.ink-muted}` (#9A9794)
+- 日历图标：16×16px
+- "开始日期" + " - " + "结束日期" (placeholder 色 `{colors.ink-placeholder}` #CCD1D6)
+- Chevron 下拉箭头：12×12px
+
+| 状态 | 边框 |
+|------|------|
+| **Normal** | 1px `{colors.line-input}` (#E2EAF6) |
+| **Active** | 1px `{colors.line-active}` (#AFC5F1) |
+
+**展开面板**：
+- 高度约 206px
+- 背景白色 + 圆角 4px
+- 边框 1px `{colors.line-active}` (#AEC3EF)
+- 阴影 `0px 0px 30px rgba(0,0,0,0.06)`
 
 ### 表格 (Table)
 
 **表头行 (thead)**：
 - 背景 `{colors.surface-table-header}` (#EAF1FF)
 - 底部 3px solid `{colors.brand-500}` (#1657DC)
-- 高度由内容撑开（约 42px）
+- 高度 42px
 - 内边距 12px 10px
-- 字体 `{typography.table-header}` — Poppins Bold 14px (wght 700)
-- 文字色 `{colors.ink}` (#333333)
+- 字体 `{typography.table-header}` — Poppins SemiBold 14px (wght 700)
+- 文字色 `{colors.ink}` (#313333)
 - 行高 18px
-- 复选框列：padding 13px 5px，16×16px 复选框
+
+**复选框列**：
+- 宽度 26px
+- 内边距 12px 10px
+- **表头复选框**: 16×16px，白色背景 + 1px `{colors.line-input}` (#E2EAF6) 边框，2px 圆角
+- **数据行复选框**: 同上规格
 
 **数据行 (tbody)**：
 - 白色背景
-- 行间 border: 1px dashed `{colors.line-dash}` (#949999)
-- 内边距 9px 10px（上下）/ 12px 5px（复选框列）
-- 高度由内容自适应
+- 行间边框：上下左右 1px dashed `{colors.line-dash}` (#CCD1D6)
+- 高度 42px
+- 内边距 12px 10px
+- 字体 `{typography.table-cell}` — Poppins Regular 14px (wght 400)
+- 文字色 `{colors.ink}` (#313333)
+- 行高 18px
 
-**复选框列**：宽度 26px，居中对齐
-
-**酒店信息列**：宽度约 467px，含酒店卡片组件
-
-**状态列 / 集团列 / 评分列 / 城市列 / POI列 / 原因列 / 操作列**：flex: 1 平分
+**列配置 (8列)**：
+- 复选框 (26px 固定) + 酒店信息 + 状态 + 酒店集团/品牌 + OTA评分 + 省份/城市 + 最近POI信息 + 推荐邀约原因 + 操作
+- 除复选框和酒店信息列外，其余列 flex: 1 平分
 
 **操作列**：
 - 文字色 `{colors.ink-link}` (#1657DC)
 - Poppins Regular 14px
 - 两行排列："报价详情" + "快速邀约"
 
-### 酒店卡片
+### 酒店卡片 (Hotel Card)
 
 表格内嵌的酒店信息展示组件。
 
 **卡片结构**：
 - Flex row，gap 16px
-- 酒店图片：100×63px，圆角 4px，底部渐变遮罩标签
-- 信息区：Flex column
 
-**信息区内容**：
+**酒店图片**：
+- 100×63px，圆角 4px
+- 底色 `{colors.brand-50}` (#EAF1FF)
+
+**信息区 (Flex column)**：
+
 | 元素 | 样式 |
 |------|------|
-| **酒店名称** | PingFang SC Medium 14px, #333333 |
-| **品牌标签组** | 图片标签 45×19px / 45×18px，gap 8px |
-| **星级** | 五星图标组，12×12px 每颗 |
-| **地址** | PingFang SC Regular 12px, #666666，行高 20px |
-| **价格** | PingFang SC Semibold 14px, #333333，"¥ 600.00" 格式 |
+| **名称行** (Flex row, gap 8px) | |
+| **酒店名称** | PingFang SC Medium 14px, `{colors.ink}` (#333333), 行高 22px |
+| **星级** | 文字字符 "⭑" 组，`{colors.star-gold}` (#F5B640), Bold 18px, 行高 26px |
+| **品牌标签1** | 45×18px, `{colors.warning-100}` (#FBEBDF) 背景, 2px 圆角 |
+| **品牌标签2** | 45×18px, #E0E5EB 背景, 2px 圆角 |
+| **地址** | PingFang SC Regular 12px, `{colors.ink-secondary}` (#666666), 行高 20px |
+| **价格** | PingFang SC Bold 14px, `{colors.price-text}` (#CC2A4D), 行高 20px, "¥ 600.00" 格式 |
 
 ### 状态标签 (Status Tag)
 
 胶囊形状态标签，用于表格中展示报价/签约状态。
 
 **未报价 (Warning 变体)**：
-- 背景 `{colors.surface-tag-warning}` (#FBEBDF)
-- 文字 `{colors.ink-danger}` (#CC2A4D)
+- 背景 `{colors.warning-100}` (#FBEBDF)
+- 文字 `{colors.danger-700}` (#CC2A4D)
 - 内边距 0 8px，圆角 4px
 - Inter Regular 14px，行高 24px
 
+**签约中 (Outline Warning 变体)**：
+- 背景透明
+- 边框 1px solid `{colors.ink-warning}` (#F5841F)
+- 文字 `{colors.ink-warning}` (#F5841F)
+- 内边距 0 8px，圆角 4px
+- PingFang SC Regular 14px，行高 24px
+
 ### 评分徽章 (Rating Badge)
 
-**OTA 评分**：
-- 背景 `{colors.surface-badge-success}` (#D1FAE5)
-- 文字 `{colors.ink-success}` (#047857)
-- 内边距 2.167px，圆角 2.167px
+紧凑型数值徽章，支持 3 种颜色变体。用于 OTA 评分等场景。
+
+**通用规格**：
+- 内边距 2px 4px，圆角 4px
 - Inter Bold 14px
-- 紧凑型展示，如 "4.7"
+
+| 变体 | 背景 | 文字色 | 典型用途 |
+|------|------|--------|---------|
+| **绿色 (Success)** | `{colors.rating-green-bg}` (#D1FAE5) | `{colors.rating-green-text}` (#6F9B8E) | 高评分 (≥4.5) |
+| **橙色 (Warning)** | `{colors.rating-orange-bg}` (#FBEBDF) | `{colors.rating-orange-text}` (#AB896A) | 中等评分 |
+| **蓝色 (Info)** | `{colors.rating-blue-bg}` (#EAF1FF) | `{colors.rating-blue-text}` (#4C628A) | 信息/通用评分 |
 
 ### 分页器 (Pagination)
 
@@ -583,9 +693,10 @@ easing:
 ### 面包屑导航 (Breadcrumb)
 
 - 位于 Header 左侧
-- Pill 样式：50px 圆角，2px 品牌色边框
-- 返回箭头 (20×20px) + 页面路径文字
-- 文字 Semibold 14px，当前页品牌色
+- Pill 样式：50px 圆角，2px `{colors.brand-500}` 边框
+- 返回箭头 SVG 图标 (20×20px) + 页面路径文字
+- 文字：`{typography.breadcrumb}` — PingFang SC Bold 14px, `{colors.brand-500}` (#1657DC), 行高 26px
+- 布局：左对齐，图标与文字 gap 10px
 
 ### 地图/列表模式切换
 
@@ -602,33 +713,44 @@ easing:
 - **Active**: 背景继续加深
 
 ### 导航
-- **一级菜单默认**: 白色半透明文字 rgba(255,255,255,0.65)
-- **一级菜单展开**: 白色文字 + 箭头旋转 180°
-- **二级菜单默认**: 白色 Regular 文字
-- **二级菜单选中**: `{colors.sidebar-item-active}` 背景 + 白色 Medium 文字
+- **一级菜单**: `{typography.nav-level1}` — 白色 Medium 16px
+- **二级菜单**: `{typography.nav-level2}` — 白色 Regular 16px
+- **二级选中**: `{colors.sidebar-item-active}` 背景 + 白色 Medium 16px
 
-### 筛选器
-- **默认**: `{colors.line-input}` 边框 + `{colors.ink-muted}` Label
-- **展开**: 边框不变（简洁策略）
-- **选项 Hover**: 浅蓝底
+### 文本框 (Form Text)
+- **Normal → Active**: 边框 `{colors.line-input}` → `{colors.line-active}`，placeholder 消失显示输入值
+- **Error**: 边框变为 `{colors.line-error}` (#F28989)
+- **Disabled**: 背景变灰 `{colors.surface-disabled}`，整体 50% opacity
+
+### 筛选器 / 下拉选择
+- **Normal**: `{colors.line-input}` 边框 + `{colors.ink-muted}` Label
+- **Active (展开)**: `{colors.line-active}` 边框 + 下拉面板弹出
+- **Option Normal**: 白色背景 + `{colors.ink}` 文字
+- **Option Hover/Selected**: `{colors.surface-soft}` 背景 + `{colors.ink-link}` 文字
+
+### 日期选择器
+- **Normal**: `{colors.line-input}` 边框
+- **Active**: `{colors.line-active}` 边框 + 日历面板弹出
 
 ### 表格
 - **表头**: `{colors.surface-table-header}` 蓝底 + 3px 品牌色底线
-- **数据行**: 白色背景 + 虚线分隔
-- **操作链接**: 品牌色文字
+- **数据行**: 白色背景 + dashed `{colors.line-dash}` 分隔
+- **操作链接**: `{colors.ink-link}` 品牌色文字
 
 ### 过渡动效
 - 快速过渡: `{easing.fast}` (0.12s)
 - 标准过渡: `{easing.base}` (0.18s)
+- 缓出曲线: `{easing.out}`
 
 ## 已知缺口
 
 - **图表组件**: 当前页面以表格为主，暂无图表组件定义
 - **分页组件**: 当前为图片形式，需抽象为标准组件
-- **图标库**: Icon/面形 和 Icon/线形 图标集需统一整理
+- **图标库**: Icon/面形 和 Icon/线形 图标集需统一整理，目前以 SVG 占位为主
 - **加载状态**: 无骨架屏或加载指示器
 - **空状态**: 无数据时的空状态提示未覆盖
 - **暗色模式**: 仅支持浅色主题
 - **响应式**: 当前为桌面端固定布局 (1920px 基准)
 - **酒店图片**: 图片资源为占位图，需统一规范
 - **品牌标签**: 酒店品牌徽章为图片形式，需 SVG 化
+- **日历面板**: 日期选择器展开面板为占位框，需填充实际日历 UI
