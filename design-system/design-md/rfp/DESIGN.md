@@ -1,5 +1,5 @@
 ---
-version: v4
+version: v5
 name: 协议通 (RFP)
 description: 协议通 (RFP) 是阿里巴巴酒店招采系统的核心业务模块，用于酒店签约报价的全流程管理。页面采用左侧深色导航 + 右侧内容区的经典后台布局，内容区域以浅灰底色承载白色主操作区。品牌色为 #1657DC 蓝，辅以语义状态色和克制的数据色板。字体使用 PingFang SC + Poppins/Inter 双字体体系。设计语言延续企业级 B2B 后台的严谨专业调性，聚焦于数据表格、筛选操作、指标卡片和酒店信息展示。
 
@@ -56,6 +56,32 @@ colors:
   # --- KPI 专用 ---
   kpi-label: "#949999"
   kpi-border: "#E8EBEF"
+  # --- 图表专用 ---
+  chart-heading: "#0F172A"
+  chart-card-bg: "rgba(255,255,255,0.96)"
+  chart-card-border: "#E2E8F0"
+  chart-card-border-alt: "#D8E3F6"
+  chart-card-shadow: "0px 18px 40px rgba(29,116,234,0.08)"
+  chart-card-shadow-sm: "0px 0px 15px rgba(0,0,0,0.08)"
+  chart-section-shadow: "0px 18px 20px rgba(29,116,234,0.08)"
+  chart-page-bg: "radial-gradient(ellipse at top left, #F8FBFF, #F4F8FD, #EFF5FC)"
+  chart-toggle-bg: "#F2F3F5"
+  chart-toggle-border: "#EFEFF3"
+  chart-toggle-active-text: "#165DFF"
+  chart-toggle-inactive-text: "#1D2129"
+  chart-toggle-inactive-muted: "#4E5969"
+  chart-legend-text: "#64748B"
+  chart-bar: "#4080FF"
+  chart-axis-label: "#334155"
+  chart-section-title: "#1D2129"
+  chart-donut-1: "#2E67E8"
+  chart-donut-2: "#3F7BF0"
+  chart-donut-3: "#6697F1"
+  chart-donut-4: "#8AB1F1"
+  chart-donut-5: "#A8C3F2"
+  chart-donut-6: "#C0D3F4"
+  chart-donut-7: "#D2DFF6"
+  chart-donut-8: "#E7EEF9"
 
 typography:
   page-title:
@@ -148,6 +174,47 @@ typography:
     fontWeight: 500
     lineHeight: 22px
     color: "#FFFFFF"
+  chart-page-title:
+    fontFamily: "'Inter', 'Noto Sans SC', sans-serif"
+    fontSize: 32px
+    fontWeight: 800
+    lineHeight: normal
+    letterSpacing: -0.55px
+    color: "{colors.chart-heading}"
+  chart-card-title:
+    fontFamily: "'Inter', 'Noto Sans SC', sans-serif"
+    fontSize: 22px
+    fontWeight: 800
+    lineHeight: normal
+    letterSpacing: -0.7px
+    color: "{colors.chart-heading}"
+  chart-section-title:
+    fontFamily: "'Inter', 'Noto Sans SC', sans-serif"
+    fontSize: 18px
+    fontWeight: 600
+    lineHeight: 28px
+    letterSpacing: -0.44px
+    color: "{colors.chart-section-title}"
+  chart-legend:
+    fontFamily: "'Inter', 'Noto Sans SC', sans-serif"
+    fontSize: 15px
+    fontWeight: 700
+    lineHeight: 15px
+    letterSpacing: -0.23px
+    color: "{colors.chart-legend-text}"
+  chart-axis:
+    fontFamily: "'Inter', 'Noto Sans SC', sans-serif"
+    fontSize: 16px
+    fontWeight: 700
+    lineHeight: 16px
+    letterSpacing: -0.31px
+    color: "{colors.chart-axis-label}"
+  chart-toggle:
+    fontFamily: "'Inter', 'Noto Sans SC', sans-serif"
+    fontSize: 14px
+    fontWeight: 400
+    lineHeight: 20px
+    letterSpacing: -0.15px
 
 rounded:
   none: 0px
@@ -742,9 +809,152 @@ Label 颜色在所有状态下保持 `{colors.ink-muted}` (#9A9794) 不变（Dis
 - 标准过渡: `{easing.base}` (0.18s)
 - 缓出曲线: `{easing.out}`
 
+## 图表集合 (EChart)
+
+数据可视化图表组件集，用于数据分析仪表盘页面。包含环形图、饼图、对比柱状图、折线图/面积图等。图表卡片统一使用白色半透明背景 + 柔和阴影，圆角 24px。
+
+### 图表页面容器
+
+- 圆角 28px
+- 背景：径向渐变 `{colors.chart-page-bg}` (从左上角 #F8FBFF → #F4F8FD → #EFF5FC)
+- 内边距 32px
+- Flex column 布局，gap 28px
+
+### 图表卡片 (Chart Card)
+
+**标准卡片**：
+- 背景 `{colors.chart-card-bg}` (rgba(255,255,255,0.96))
+- 边框 1px solid `{colors.chart-card-border}` (#E2E8F0)
+- 圆角 24px
+- 内边距 25px
+- 阴影 `{colors.chart-card-shadow}` (0px 18px 40px rgba(29,116,234,0.08))
+- Flex column 布局，gap 20px
+
+**紧凑卡片 (Alt)**：
+- 背景 `{colors.surface}` (#FFFFFF)
+- 边框 1px solid `{colors.chart-card-border-alt}` (#D8E3F6)
+- 圆角 8px
+- 内边距 20px (仅顶部和左右)
+- 阴影 `{colors.chart-card-shadow-sm}` (0px 0px 15px rgba(0,0,0,0.08))
+- Flex column 布局，gap 16px
+
+### 分段控制器 / 图表维度切换 (Chart Toggle)
+
+图表卡片内的维度切换器，用于切换 "酒店 / 间夜量 / 金额" 等数据维度。
+
+**容器**：
+- 背景 `{colors.chart-toggle-bg}` (#F2F3F5)
+- 边框 1px solid `{colors.chart-toggle-border}` (#EFEFF3)
+- 高度 30px，宽度 215px
+- 圆角 `{rounded.full}` (50px)
+- Flex row 布局，3 等分
+
+**激活段 (Active)**：
+- 背景 `{colors.surface}` (#FFFFFF)
+- 边框 1px solid `{colors.chart-toggle-border}` (#EFEFF3)
+- 圆角 `{rounded.full}` (50px)
+- 内边距 4px 11px
+- 文字：`{typography.chart-toggle}` — Inter Regular 14px, `{colors.chart-toggle-active-text}` (#165DFF)
+- 居中
+
+**非激活段 (Inactive)**：
+- 透明背景
+- 内边距 4px 12px
+- 文字：`{typography.chart-toggle}` — Inter Regular 14px
+  - 中间段 `{colors.chart-toggle-inactive-text}` (#1D2129)
+  - 右侧段 `{colors.chart-toggle-inactive-muted}` (#4E5969)
+
+### 环形图 (Donut Chart)
+
+多段环形图，用于展示报价状态分布。
+
+**图表容器**：
+- 320×320px 画布区域
+- Donut 环形由 8 段 SVG 组成
+- 中心留白形成环形
+
+**环形段色板 (8 色)**：
+| 索引 | 颜色 | 令牌 | 标签 |
+|------|------|------|------|
+| 1 | #2E67E8 | `{colors.chart-donut-1}` | 新报价 |
+| 2 | #3F7BF0 | `{colors.chart-donut-2}` | 议价中 |
+| 3 | #6697F1 | `{colors.chart-donut-3}` | 修订报价 |
+| 4 | #8AB1F1 | `{colors.chart-donut-4}` | 保持原价 |
+| 5 | #A8C3F2 | `{colors.chart-donut-5}` | 已中签 |
+| 6 | #C0D3F4 | `{colors.chart-donut-6}` | 已拒绝 |
+| 7 | #D2DFF6 | `{colors.chart-donut-7}` | 未报价 |
+| 8 | #E7EEF9 | `{colors.chart-donut-8}` | 放弃报价 |
+
+颜色由深到浅递减，与品牌蓝 (#1657DC) 同色系。
+
+**图例 (Legend)**：
+- 位于图表右侧
+- Flex column 布局，gap 18px
+- 每项：颜色色块 (42×18px, 4px 圆角) + 标签文字
+- 标签：`{typography.chart-legend}` — Inter Bold 15px, `{colors.chart-legend-text}` (#64748B)
+
+### 饼图/环形占比图 (Pie Chart)
+
+- 存放于标准图表卡片中
+- 标题：`{typography.chart-card-title}` — Inter Extra Bold 22px
+- 图表区域由 Canvas/SVG 渲染
+- 支持维度切换 Toggle
+
+### 折线/面积趋势图 (Line/Area Chart)
+
+用于展示 "报价涨跌平趋势" 等时间序列数据。
+
+- 存放于标准图表卡片中
+- 标题 + Toggle 组件
+- 图表区域由 Canvas/SVG 渲染
+- 支持多维度切换
+
+### 对比柱状图 / 蝶形图 (Comparison Bar Chart)
+
+用于 "酒店签约价格分布" 等今年 vs 去年对比场景。
+
+**容器**：
+- 标准图表卡片
+- 标题：`{typography.chart-card-title}` — Inter Extra Bold 22px
+- 无 Toggle（固定对比维度）
+
+**年份标签行**：
+- 居中布局
+- "今年" + "VS" + "去年"
+- 文字：Inter Semi Bold 14px, `{colors.chart-axis-label}` (#334155)
+
+**柱状图** (左右对比)：
+- 每行为一对柱子（左=今年, 右=去年）
+- 柱体宽度 16px
+- 柱体颜色：`{colors.chart-bar}` (#4080FF)
+- 柱体高度反映该价格区间的酒店数量
+- Y 轴标签：`{typography.chart-axis}` — Inter Bold 16px, `{colors.chart-axis-label}` (#334155)
+- 价格区间从 ¥0～200 到 ¥800 共 13 段
+
+### 图表标题层级
+
+| 层级 | 样式 | 用途 |
+|------|------|------|
+| 页面标题 | `{typography.chart-page-title}` — Inter Extra Bold 32px | 整个图表仪表盘标题 |
+| 卡片标题 | `{typography.chart-card-title}` — Inter Extra Bold 22px | 单个图表卡片标题 |
+| 区块标题 | `{typography.chart-section-title}` — Inter Semi Bold 18px | 紧凑卡片标题 |
+
+### 图表色板总览
+
+| 令牌 | 色值 | 用途 |
+|------|------|------|
+| `chart-bar` | #4080FF | 柱状图/蝶形图柱体色 |
+| `chart-donut-1` | #2E67E8 | 环形图 — 新报价 |
+| `chart-donut-2` | #3F7BF0 | 环形图 — 议价中 |
+| `chart-donut-3` | #6697F1 | 环形图 — 修订报价 |
+| `chart-donut-4` | #8AB1F1 | 环形图 — 保持原价 |
+| `chart-donut-5` | #A8C3F2 | 环形图 — 已中签 |
+| `chart-donut-6` | #C0D3F4 | 环形图 — 已拒绝 |
+| `chart-donut-7` | #D2DFF6 | 环形图 — 未报价 |
+| `chart-donut-8` | #E7EEF9 | 环形图 — 放弃报价 |
+
 ## 已知缺口
 
-- **图表组件**: 当前页面以表格为主，暂无图表组件定义
 - **分页组件**: 当前为图片形式，需抽象为标准组件
 - **图标库**: Icon/面形 和 Icon/线形 图标集需统一整理，目前以 SVG 占位为主
 - **加载状态**: 无骨架屏或加载指示器
@@ -754,3 +964,5 @@ Label 颜色在所有状态下保持 `{colors.ink-muted}` (#9A9794) 不变（Dis
 - **酒店图片**: 图片资源为占位图，需统一规范
 - **品牌标签**: 酒店品牌徽章为图片形式，需 SVG 化
 - **日历面板**: 日期选择器展开面板为占位框，需填充实际日历 UI
+- **图表交互**: 图表为静态渲染，缺少 hover tooltip、点击下钻等交互
+- **图表数据绑定**: 图表数据为 SVG/Canvas 静态占位，需接入实际 EChart 数据源

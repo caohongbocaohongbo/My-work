@@ -52,6 +52,14 @@
 | 酒店 | price-text | #CC2A4D | 价格文字色 |
 | KPI | kpi-label | #949999 | KPI 标签文字 |
 | KPI | kpi-border | #E8EBEF | KPI 卡片边框 |
+| 图表 | chart-bar | #4080FF | 柱状图柱体色 |
+| 图表 | chart-card-bg | rgba(255,255,255,0.96) | 图表卡片背景 |
+| 图表 | chart-card-border | #E2E8F0 | 图表卡片边框 |
+| 图表 | chart-heading | #0F172A | 图表页面/卡片标题 |
+| 图表 | chart-donut-1~8 | #2E67E8→#E7EEF9 | 环形图 8 段色板 (深→浅) |
+| 图表 | chart-legend-text | #64748B | 图例标签文字 |
+| 图表 | chart-toggle-bg | #F2F3F5 | 维度切换器背景 |
+| 图表 | chart-toggle-active-text | #165DFF | 切换器激活文字 |
 
 ## 关键组件规范索引
 
@@ -71,6 +79,9 @@ DESIGN.md 中已定义的组件（按组件库顺序）:
 - **评分徽章 (Rating Badge)** — 4px 圆角, 3 色变体 (绿/橙/蓝), Inter Bold 14px
 - **面包屑 (Breadcrumb)** — Pill 样式, 2px 品牌色边框, 返回 SVG 箭头, Bold 14px
 - **导航项 (Nav Items)** — 一级 Medium 16px / 二级 Regular 16px, 选中态 #1657DC 背景
+- **图表集合 (EChart)** — 环形图/饼图/折线图/蝶形对比柱状图, 24px 圆角卡片, 8 色 Donut 色板, 维度切换 Toggle
+- **图表卡片 (Chart Card)** — 标准卡片 24px 圆角 + 阴影, 紧凑卡片 8px 圆角 + #D8E3F6 边框
+- **图表维度切换 (Chart Toggle)** — 3 段 pill 切换器, 30px 高, #F2F3F5 底, 50px 圆角
 - **分页器 (Pagination)** — 54px 底栏, 待组件化
 - **地图/列表模式切换** — 并排按钮组
 
@@ -86,3 +97,6 @@ DESIGN.md 中已定义的组件（按组件库顺序）:
 8. **评分徽章按场景选色** — 高评分用绿色，中等用橙色，通用/信息用蓝色
 9. **文本框 4 态全覆盖** — Normal/Active/Error/Disabled，边框色分别为 #E2EAF6/#AFC5F1/#F28989/#E2EAF6
 10. **表格数据行** — 用 Poppins Regular (wght 400)，不是 SemiBold
+11. **图表色板** — 环形图用 8 段蓝色系 (#2E67E8 → #E7EEF9 递减)，柱状图用 #4080FF
+12. **图表卡片** — 标准用 24px 圆角 + rgba 阴影；紧凑用 8px 圆角 + #D8E3F6 边框
+13. **图表标题字体** — Inter Extra Bold 32px (页面) / 22px (卡片) / Semi Bold 18px (紧凑)
