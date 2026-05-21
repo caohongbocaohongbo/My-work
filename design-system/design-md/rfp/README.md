@@ -68,7 +68,7 @@ DESIGN.md 中已定义的组件（按组件库顺序）:
 - **Sidebar** — 240px 深蓝侧栏 (#102348)，多级导航（一级 Medium/二级 Regular），品牌色选中背景
 - **Header** — 64px 白色顶栏，含面包屑 pill (2px 品牌色边框, 50px 圆角) + 图标按钮
 - **页面标题区** — 18px Semibold 标题 + 状态标签 + 信息描述 + 刷新按钮
-- **KPI 指标卡片** — 20px 圆角, 灰底 (#F8F9FA) + 1px #E8EBEF 边框, 30px 内边距, 34px Bold 数值
+- **KPI 指标卡片** — 标准变体 (20px 圆角, 30px 内边距) + 图标变体 (左侧 48×48px 圆形图标, 20px 左右内边距)，灰底 + #E8EBEF 边框, 34px Bold 数值
 - **主按钮 (Primary Button)** — 品牌色实心填充, 4px 圆角, 14px Medium 白色文字, 8px/7px 内边距
 - **文本框 (Form Text)** — 32px 高, 内嵌标签 + placeholder, 4 态 (normal/active/error/disabled)
 - **筛选器 / 下拉选择 (Form Select)** — 32px 高, 内嵌标签 + 值 + chevron, 带下拉面板 (选项 hover 选中态)

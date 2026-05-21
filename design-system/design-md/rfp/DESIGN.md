@@ -515,19 +515,20 @@ easing:
 
 ### KPI 指标卡片 (KPI Card)
 
+两种变体：**标准卡片** 和 **图标卡片**。
+
 **Grid 容器**：
 - Flex row 布局，gap 16px
 - 每个卡片 flex: 1 平分空间
 
-**Card (.kpi-card)**：
+#### 标准卡片 (Standard)
+
 - 背景 `{colors.surface-soft}` (#F8F9FA)
 - 边框 1px solid `{colors.kpi-border}` (#E8EBEF)
 - 圆角 `{rounded.lg}` (20px)
-- 内边距 `{spacing.8}` (30px)
+- 内边距 `{spacing.8}` (30px) 四周
 - Flex column 布局，gap 8px
 - 固定高度 112px
-
-**内部结构**：
 
 | 元素 | 样式 |
 |------|------|
@@ -538,6 +539,21 @@ easing:
 | **主数值** | `{typography.kpi-value}` — PingFang SC Bold 34px, `{colors.ink}` (#313333), 行高 22px |
 | **单位** | PingFang SC Regular 14px, `{colors.ink}` |
 | **变化率** | PingFang SC Regular 14px, `{colors.ink-cyan}` (#006A6E), 行高 22px |
+
+#### 图标卡片 (Icon Variant)
+
+左侧带图标的 KPI 卡片变体，适用于需要视觉引导的关键指标。
+
+- 背景/边框/圆角/高度 同标准卡片
+- 内边距：`px-[20px] py-[30px]` (左右 20px，上下 30px)
+- **Flex row 布局**，gap 20px（图标与内容区间距）
+
+| 元素 | 样式 |
+|------|------|
+| **图标容器** | 48×48px，圆角 9999px (全圆), 背景 `{colors.brand-50}` (#EAF1FF) |
+| **内容区** | Flex column，gap 8px（同标准卡片结构） |
+| **标题行** | 同标准：Label + 18×18px 提示图标 |
+| **数值行** | 同标准：主数值 Bold 34px + 单位/变化率 |
 
 ### 主按钮 (Primary Button)
 
