@@ -167,6 +167,29 @@ easing:
 - 极克制阴影策略，仅 3 级
 - 图表色板 5+1 色，覆盖柱状图、折线图、进度条等场景
 
+## 画布与视口
+
+### 设计基准宽度
+
+- **设计基准宽度：1920px** — 所有页面以 1920px 宽度为设计稿标准，开发还原时以 1920px 为参考
+- **弹窗/对话框例外**：弹窗、对话框、抽屉、tooltip、下拉菜单等浮层组件不受 1920px 约束，按其自身内容宽度设计
+- **最小内容宽度：1024px** — 低于此宽度触发 Tablet 响应式断点
+
+### 自适应自动布局策略
+
+页面采用**约束型全宽布局**，通过自动布局引擎实现视口自适应：
+
+- **内容容器**：使用 `max-width: 1920px` + `margin: 0 auto` 居中，确保超宽屏幕（>1920px）内容不无限拉伸
+- **收缩策略**：视口 <1920px 时，内容区域通过 Flex/Grid 自动收缩，不出现水平滚动条
+- **自动布局引擎**：优先使用 CSS Grid（卡片网格、图表区）+ Flexbox（工具栏、表单行），所有子元素尺寸由 `fr` / `flex` / `%` 定义，禁止固定 `width` 像素值用于布局容器
+- **内边距自适应**：使用 `clamp()` 函数或响应式断点控制页面级水平内边距，1920px 时为 `40px`，1024px 时缩减为 `24px`
+
+### 基础网格
+
+- 页面底层使用 **12 列网格**，列宽 `1fr`，列间距 `{spacing.6}` (24px)
+- 1920px 基准下，内容可用宽度约 **1840px**（扣除左右各 40px 水平内边距），单列宽度约 **131px**
+- 卡片、图表、表格等区块按列跨度放置，不设固定像素宽度
+
 ## 颜色
 
 ### 页面底色
@@ -253,17 +276,39 @@ easing:
 
 ## 布局
 
+### 自动布局引擎
+
+页面全局采用 **CSS Grid + Flexbox 双引擎自动布局**，杜绝固定像素宽度在布局容器上的使用。
+
+#### Flexbox 场景
+- **工具栏 (toolbar-v2)**：`display: flex; align-items: center; gap: {spacing.3}; flex-wrap: wrap`
+- **表单行/筛选区**：`display: flex; gap: {spacing.4}`，子元素以 `flex` 比例分配空间
+- **按钮组**：`display: inline-flex; gap: {spacing.2}`
+- **页面面板切换**：`display: flex; flex-direction: column`
+
+#### CSS Grid 场景
+- **指标卡片网格 (kpi-grid-v2)**：`display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: {spacing.6}` — 自动计算列数，卡片宽度自适应
+- **图表 + 表格双栏区**：`display: grid; grid-template-columns: 1fr 1fr; gap: {spacing.6}` — 等分两列，自动跟随容器宽度
+- **页面整体 12 列网格**：`display: grid; grid-template-columns: repeat(12, 1fr); gap: {spacing.6}` — 区块按列跨度放置
+
+#### 约束与自适应规则
+- 所有布局容器宽度使用 `%` / `fr` / `auto` / `minmax()` 定义，不设固定 `px` 值
+- 内容最大宽度约束：`max-width: 1920px; margin: 0 auto` 在 `<main>` 级别
+- 最小内容宽度约束：`min-width: 1024px`（低于此值触发响应式断点重排）
+- 卡片、表格等内部使用 `width: 100%` 撑满父容器
+- 间距统一使用 `gap` 属性，不依赖 `margin` 控制子元素间距（便于自动布局计算）
+
 ### 页面结构
 ```
 <body class="bg-[#f4f7fb]">
   <div class="min-h-screen">
-    <main>
+    <main style="max-width: 1920px; margin: 0 auto; min-width: 1024px">
       <!-- 页面面板 (page-panel) -->
       <section class="page-panel active" id="...">
         <div class="page-canvas-v2">
           <!-- Tab 导航 (tabs-v2) -->
           <!-- 工具栏 (toolbar-v2) -->
-          <!-- 指标卡片区 -->
+          <!-- 指标卡片区 (kpi-grid-v2, CSS Grid auto-fill) -->
           <!-- 图表区 (chart-board) -->
           <!-- 数据表格区 -->
         </div>
@@ -275,7 +320,8 @@ easing:
 
 - 无侧边栏，无顶部 Header
 - 主容器 `min-h-screen` 全视口高度
-- `<main>` 区域带内边距 `px-4 py-5 md:px-6 md:py-6`
+- `<main>` 带 `max-width: 1920px; margin: 0 auto; min-width: 1024px` 实现画布居中与自适应
+- `<main>` 水平内边距响应式：1920px 基准为 `40px`，1024px 时缩减为 `24px`
 - 页面面板通过 `display: none/block` 切换显示
 
 ### 间距系统
