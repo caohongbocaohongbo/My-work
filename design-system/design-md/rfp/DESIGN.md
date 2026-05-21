@@ -1,5 +1,5 @@
 ---
-version: v5
+version: v6
 name: 协议通 (RFP)
 description: 协议通 (RFP) 是阿里巴巴酒店招采系统的核心业务模块，用于酒店签约报价的全流程管理。页面采用左侧深色导航 + 右侧内容区的经典后台布局，内容区域以浅灰底色承载白色主操作区。品牌色为 #1657DC 蓝，辅以语义状态色和克制的数据色板。字体使用 PingFang SC + Poppins/Inter 双字体体系。设计语言延续企业级 B2B 后台的严谨专业调性，聚焦于数据表格、筛选操作、指标卡片和酒店信息展示。
 
@@ -82,6 +82,59 @@ colors:
   chart-donut-6: "#C0D3F4"
   chart-donut-7: "#D2DFF6"
   chart-donut-8: "#E7EEF9"
+  # --- 按钮专用 ---
+  btn-outline-bg: "#FBFCFE"
+  btn-outline-border: "#E1EEF5"
+  btn-outline-hover-bg: "#F4F9FE"
+  btn-outline-hover-border: "#AEC8FD"
+  btn-outline-active-border: "#D9E7F6"
+  btn-outline-disabled-border: "#F0F4F7"
+  btn-outline-disabled-text: "#AEC8FD"
+  btn-filled-hover-bg: "#0340BC"
+  btn-filled-active-bg: "#4080FF"
+  btn-filled-disabled-bg: "#AEC8FD"
+  btn-secondary-text: "#4D6278"
+  btn-secondary-hover-bg: "#F8FAFC"
+  btn-secondary-active-bg: "#F1F5F9"
+  btn-secondary-border: "#D5DDE7"
+  btn-secondary-active-border: "#C0CAD5"
+  btn-secondary-disabled-border: "#EEF3F7"
+  btn-secondary-disabled-text: "#B6C0CD"
+  btn-text-default: "#131B2C"
+  btn-text-hover: "#0340BC"
+  btn-text-active: "#4080FF"
+  btn-text-disabled: "#97A6B8"
+  # --- 状态标签专用 ---
+  tag-paid-bg: "#F4FAF6"
+  tag-paid-border: "#DAEBDF"
+  tag-paid-text: "#6A9F62"
+  tag-pending-bg: "#FFECE6"
+  tag-pending-border: "#ECBBBA"
+  tag-pending-text: "#C66261"
+  tag-cancelled-bg: "#F5F7FA"
+  tag-cancelled-border: "#E1E7EE"
+  tag-cancelled-text: "#647487"
+  tag-warning-bg: "#FFF3E6"
+  tag-warning-border: "#FFDEBA"
+  tag-warning-text: "#E67E22"
+  tag-info-bg: "#F4FBFE"
+  tag-info-border: "#D9EDF6"
+  tag-info-text: "#2F87AC"
+  tag-feature-bg: "#FEFAF4"
+  # --- Tab 专用 ---
+  tab-active-text: "#131B2C"
+  tab-default-text: "#97A6B8"
+  tab-underline: "#2F87AC"
+  tab-border: "#F0F4F7"
+  tab-hover-bg: "#F5F7FB"
+  # --- 操作链接专用 ---
+  link-primary: "#2F87AC"
+  link-primary-hover: "#1F6D8A"
+  link-danger: "#C66261"
+  link-danger-hover: "#A64D4D"
+  link-danger-active: "#803333"
+  link-muted: "#647487"
+  link-muted-hover: "#5F6D7C"
 
 typography:
   page-title:
@@ -169,11 +222,36 @@ typography:
     lineHeight: 26px
     color: "{colors.brand-500}"
   btn-primary:
-    fontFamily: "'PingFang SC', 'Microsoft YaHei', sans-serif"
-    fontSize: 14px
-    fontWeight: 500
-    lineHeight: 22px
+    fontFamily: "'Inter', 'Noto Sans SC', sans-serif"
+    fontSize: 13px
+    fontWeight: 600
+    lineHeight: 18px
+  btn-primary-filled:
+    fontFamily: "'Inter', 'Noto Sans SC', sans-serif"
+    fontSize: 13px
+    fontWeight: 600
+    lineHeight: 18px
     color: "#FFFFFF"
+  tag-label:
+    fontFamily: "'Inter', 'Noto Sans SC', sans-serif"
+    fontSize: 12px
+    fontWeight: 700
+    lineHeight: 16px
+  tab-label:
+    fontFamily: "'Inter', 'Noto Sans SC', sans-serif"
+    fontSize: 13px
+    fontWeight: 700
+    lineHeight: 18px
+  tab-label-default:
+    fontFamily: "'Inter', 'Noto Sans SC', sans-serif"
+    fontSize: 13px
+    fontWeight: 500
+    lineHeight: 18px
+  action-link:
+    fontFamily: "'Inter', 'Noto Sans SC', sans-serif"
+    fontSize: 14px
+    fontWeight: 700
+    lineHeight: 19px
   chart-page-title:
     fontFamily: "'Inter', 'Noto Sans SC', sans-serif"
     fontSize: 32px
@@ -555,22 +633,70 @@ easing:
 | **标题行** | 同标准：Label + 18×18px 提示图标 |
 | **数值行** | 同标准：主数值 Bold 34px + 单位/变化率 |
 
-### 主按钮 (Primary Button)
+### 按钮 (Button Components)
 
-实心填充品牌色按钮，用于主要操作。
+三层按钮体系，统一 Inter SemiBold 13px，行高 18px，transition `{easing.fast}`。
+
+#### button-outline-primary（品牌描边按钮）
+
+用于需要品牌色引导的主要操作，如查询、导出、发票申请。
+
+| 状态 | 背景 | 边框 (0.6px) | 文字色 |
+|------|------|------|--------|
+| **Default** | `{colors.btn-outline-bg}` (#FBFCFE) | `{colors.btn-outline-border}` (#E1EEF5) | `{colors.brand-500}` (#1657DC) |
+| **Hover** | `{colors.btn-outline-hover-bg}` (#F4F9FE) | `{colors.btn-outline-hover-border}` (#AEC8FD) | `{colors.btn-text-active}` (#4080FF) |
+| **Active** | `{colors.btn-outline-hover-bg}` (#F4F9FE) | `{colors.btn-outline-active-border}` (#D9E7F6) | `{colors.btn-text-active}` (#4080FF) |
+| **Disabled** | `{colors.btn-outline-bg}` (#FBFCFE) | `{colors.btn-outline-disabled-border}` (#F0F4F7) | `{colors.btn-outline-disabled-text}` (#AEC8FD) |
+
+- 内边距：15px (左右) + 8px (上下)，圆角 4px
+
+#### button-secondary（中性描边按钮）
+
+用于需要降低视觉权重的次要操作，如取消、重置、返回。
+
+| 状态 | 背景 | 边框 (1px) | 文字色 |
+|------|------|------|--------|
+| **Default** | `{colors.surface}` (#FFFFFF) | `{colors.btn-secondary-border}` (#D5DDE7) | `{colors.btn-secondary-text}` (#4D6278) |
+| **Hover** | `{colors.btn-secondary-hover-bg}` (#F8FAFC) | `{colors.btn-secondary-border}` (#D5DDE7) | `{colors.btn-secondary-text}` (#4D6278) |
+| **Active** | `{colors.btn-secondary-active-bg}` (#F1F5F9) | `{colors.btn-secondary-active-border}` (#C0CAD5) | `{colors.btn-secondary-text}` (#4D6278) |
+| **Disabled** | `{colors.surface}` (#FFFFFF) | `{colors.btn-secondary-disabled-border}` (#EEF3F7) | `{colors.btn-secondary-disabled-text}` (#B6C0CD) |
+
+- 内边距：14px (左右) + 8px (上下)，圆角 8px
+
+#### button-text（纯文字按钮）
+
+无背景无边框，用于工具条或轻量级操作。
 
 | 状态 | 背景 | 文字色 |
 |------|------|--------|
-| **Default** | `{colors.brand-500}` (#1657DC) | #FFFFFF |
-| **Hover** | `{colors.brand-400}` (#2E7AE5) | #FFFFFF |
-| **Active** | 加深 | #FFFFFF |
-| **Disabled** | `{colors.brand-100}` (#D9E8FD) | rgba 变淡 |
+| **Default** | 透明 | `{colors.btn-text-default}` (#131B2C) |
+| **Hover** | 透明 | `{colors.btn-text-hover}` (#0340BC) |
+| **Active** | 透明 | `{colors.btn-text-active}` (#4080FF) |
+| **Disabled** | 透明 | `{colors.btn-text-disabled}` (#97A6B8) |
 
-- 内边距：8px (左右) + 7px (上下)
-- 圆角 `{rounded.sm}` (4px)
-- 文字：`{typography.btn-primary}` — PingFang SC Medium 14px, 行高 22px, 居中
-- 可选带下拉箭头图标 (16×16px) 的变体
-- Transition: `{easing.fast}`
+- 内边距：14px (左右) + 6px (上下)，圆角 8px
+
+#### button-primary-filled（高强调实心 CTA）
+
+品牌色实心填充，**仅 CTA 场景使用**。
+
+| 状态 | 背景 | 文字色 |
+|------|------|--------|
+| **Default** | `{colors.brand-500}` (#1657DC) | `{colors.surface}` (#FFFFFF) |
+| **Hover** | `{colors.btn-filled-hover-bg}` (#0340BC) | `{colors.surface}` (#FFFFFF) |
+| **Active** | `{colors.btn-filled-active-bg}` (#4080FF) | `{colors.surface}` (#FFFFFF) |
+| **Disabled** | `{colors.btn-filled-disabled-bg}` (#AEC8FD) | `{colors.surface}` (#FFFFFF) |
+
+- 内边距：15px (左右) + 11px (上下)，圆角 8px
+
+#### 按钮使用场景速查
+
+| 操作 | 组件 | 理由 |
+|------|------|------|
+| 发票申请/查询/导出 | `button-outline-primary` | 品牌主操作 |
+| 取消/返回/重置 | `button-secondary` | 中性次操作 |
+| 刷新/更多 | `button-text` | 工具条轻量操作 |
+| 立即升级/提交 | `button-primary-filled` | CTA (需显式指定) |
 
 ### 文本框 (Form Text)
 
@@ -733,22 +859,27 @@ Label 颜色在所有状态下保持 `{colors.ink-muted}` (#9A9794) 不变（Dis
 | **地址** | PingFang SC Regular 12px, `{colors.ink-secondary}` (#666666), 行高 20px |
 | **价格** | PingFang SC Bold 14px, `{colors.price-text}` (#CC2A4D), 行高 20px, "¥ 600.00" 格式 |
 
-### 状态标签 (Status Tag)
+### 状态标签 (Status Tags)
 
-胶囊形状态标签，用于表格中展示报价/签约状态。
+Pill 形状标签（圆角 9999px），Inter Bold 12px，行高 16px，内边距 5px 10px，border 1px solid。6 种语义变体。
 
-**未报价 (Warning 变体)**：
-- 背景 `{colors.warning-100}` (#FBEBDF)
-- 文字 `{colors.danger-700}` (#CC2A4D)
-- 内边距 0 8px，圆角 4px
-- Inter Regular 14px，行高 24px
+| 变体 | 背景 | 边框 | 文字色 |
+|------|------|------|--------|
+| **已支付** | `{colors.tag-paid-bg}` (#F4FAF6) | `{colors.tag-paid-border}` (#DAEBDF) | `{colors.tag-paid-text}` (#6A9F62) |
+| **待支付** | `{colors.tag-pending-bg}` (#FFECE6) | `{colors.tag-pending-border}` (#ECBBBA) | `{colors.tag-pending-text}` (#C66261) |
+| **已取消** | `{colors.tag-cancelled-bg}` (#F5F7FA) | `{colors.tag-cancelled-border}` (#E1E7EE) | `{colors.tag-cancelled-text}` (#647487) |
+| **紧急** | `{colors.tag-pending-bg}` (#FFECE6) | `{colors.tag-pending-border}` (#ECBBBA) | `{colors.tag-pending-text}` (#C66261) |
+| **待确认** | `{colors.tag-warning-bg}` (#FFF3E6) | `{colors.tag-warning-border}` (#FFDEBA) | `{colors.tag-warning-text}` (#E67E22) |
+| **待填写** | `{colors.tag-info-bg}` (#F4FBFE) | `{colors.tag-info-border}` (#D9EDF6) | `{colors.tag-info-text}` (#2F87AC) |
 
-**签约中 (Outline Warning 变体)**：
-- 背景透明
-- 边框 1px solid `{colors.ink-warning}` (#F5841F)
-- 文字 `{colors.ink-warning}` (#F5841F)
-- 内边距 0 8px，圆角 4px
-- PingFang SC Regular 14px，行高 24px
+### Badge（推荐/特性标签）
+
+圆角 9999px，Inter Bold/Medium 12px，行高 16px。
+
+| 变体 | 背景 | 文字色 | 字重 | 内边距 |
+|------|------|--------|------|--------|
+| **推荐** | `{colors.tag-warning-bg}` (#FFF3E6) | `{colors.tag-warning-text}` (#E67E22) | Bold | 4px 12px |
+| **实时更新** | `{colors.tag-feature-bg}` (#FEFAF4) | `{colors.tag-warning-text}` (#E67E22) | Medium | 4px 8px |
 
 ### 评分徽章 (Rating Badge)
 
@@ -763,6 +894,34 @@ Label 颜色在所有状态下保持 `{colors.ink-muted}` (#9A9794) 不变（Dis
 | **绿色 (Success)** | `{colors.rating-green-bg}` (#D1FAE5) | `{colors.rating-green-text}` (#6F9B8E) | 高评分 (≥4.5) |
 | **橙色 (Warning)** | `{colors.rating-orange-bg}` (#FBEBDF) | `{colors.rating-orange-text}` (#AB896A) | 中等评分 |
 | **蓝色 (Info)** | `{colors.rating-blue-bg}` (#EAF1FF) | `{colors.rating-blue-text}` (#4C628A) | 信息/通用评分 |
+
+### Tab 导航 (Tab Components)
+
+#### tab-bar（水平 Tab 栏）
+
+- 容器高度 54px，底部 border-bottom: 1px solid `{colors.tab-border}` (#F0F4F7)，上 padding 6px
+- Tab 间距 30px
+
+#### tab-item（Tab 项）
+
+| 状态 | 背景 | 文字 | 指示线 |
+|------|------|------|--------|
+| **Default** | 透明 | `{typography.tab-label-default}` — Inter Medium 13px, `{colors.tab-default-text}` (#97A6B8) | 无 |
+| **Hover** | `{colors.tab-hover-bg}` (#F5F7FB), 4px 圆角, pl 4px | Inter Medium 13px, `{colors.tab-active-text}` (#131B2C) | 无 |
+| **Active** | 透明 | `{typography.tab-label}` — Inter Bold 13px, `{colors.tab-active-text}` (#131B2C) | 2px solid `{colors.tab-underline}` (#2F87AC), 宽 50px, 圆角 1px |
+
+- Tab 项高度 42px，宽 90px (Active pb 6px, Default/Hover pb 8px)
+
+### 操作链接 (Action Links)
+
+文字链接组件，3 种语义变体，Inter Bold 14px，行高 19px。
+
+| 变体 | Default | Hover (下划线) | Active |
+|------|---------|---------------|--------|
+| **primary** | `{colors.link-primary}` (#2F87AC) | `{colors.link-primary-hover}` (#1F6D8A) | `{colors.link-primary-hover}` (#1F6D8A) |
+| **danger** | `{colors.link-danger}` (#C66261) | `{colors.link-danger-hover}` (#A64D4D) | `{colors.link-danger-active}` (#803333) |
+| **muted** | `{colors.link-muted}` (#647487) | `{colors.link-muted-hover}` (#5F6D7C) | — |
+| **disabled** | `{colors.link-muted-hover}` (#5F6D7C), Regular 字重 | — | — |
 
 ### 分页器 (Pagination)
 
@@ -791,9 +950,20 @@ Label 颜色在所有状态下保持 `{colors.ink-muted}` (#9A9794) 不变（Dis
 ## 交互状态
 
 ### 按钮
-- **默认**: `{colors.brand-500}` 实心背景 + 白色文字
-- **Hover**: 背景加深至 `{colors.brand-400}`
-- **Active**: 背景继续加深
+- **outline-primary**: 背景 `{colors.btn-outline-bg}` / hover `{colors.btn-outline-hover-bg}`，描边 0.6px `{colors.btn-outline-border}` / hover `{colors.btn-outline-hover-border}`
+- **secondary**: 背景 `{colors.surface}` / hover `{colors.btn-secondary-hover-bg}` / active `{colors.btn-secondary-active-bg}`，描边 1px `{colors.btn-secondary-border}`
+- **text**: 透明背景，文字 `{colors.btn-text-default}` / hover `{colors.btn-text-hover}` / active `{colors.btn-text-active}`
+- **primary-filled**: 背景 `{colors.brand-500}` / hover `{colors.btn-filled-hover-bg}` / active `{colors.btn-filled-active-bg}`，白色文字
+
+### Tab
+- **默认**: Inter Medium 13px, `{colors.tab-default-text}`，无指示线
+- **Hover**: `{colors.tab-hover-bg}` 背景，文字变为 `{colors.tab-active-text}`
+- **激活**: Inter Bold 13px, `{colors.tab-active-text}` + 2px `{colors.tab-underline}` 底部指示线
+
+### 操作链接
+- **primary**: `{colors.link-primary}` / hover underline `{colors.link-primary-hover}`
+- **danger**: `{colors.link-danger}` / hover underline `{colors.link-danger-hover}`
+- **muted**: `{colors.link-muted}` / hover underline `{colors.link-muted-hover}`
 
 ### 导航
 - **一级菜单**: `{typography.nav-level1}` — 白色 Medium 16px
