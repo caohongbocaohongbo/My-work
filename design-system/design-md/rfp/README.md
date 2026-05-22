@@ -60,6 +60,9 @@
 | 图表 | chart-legend-text | #64748B | 图例标签文字 |
 | 图表 | chart-toggle-bg | #F2F3F5 | 维度切换器背景 |
 | 图表 | chart-toggle-active-text | #165DFF | 切换器激活文字 |
+| 图表 | chart-card-shadow | 0px 18px 40px rgba(29,116,234,0.08) | 图表卡片标准阴影 |
+| 图表 | chart-section-shadow | 0px 18px 20px rgba(29,116,234,0.08) | 报价涨跌趋势玫瑰图卡片阴影 |
+| 图表 | chart-axis-label | #334155 | 图表坐标轴/引导线标签 |
 
 ## 关键组件规范索引
 
@@ -86,9 +89,10 @@ DESIGN.md 中已定义的组件（按组件库顺序）:
 - **评分徽章 (Rating Badge)** — 4px 圆角, 3 色变体 (绿/橙/蓝), Inter Bold 14px
 - **面包屑 (Breadcrumb)** — Pill 样式, 2px 品牌色边框, 返回 SVG 箭头, Bold 14px
 - **导航项 (Nav Items)** — 一级 Medium 16px / 二级 Regular 16px, 选中态 #1657DC 背景
-- **图表集合 (EChart)** — 环形图/饼图/折线图/蝶形对比柱状图, 24px 圆角卡片, 8 色 Donut 色板, 维度切换 Toggle
+- **图表集合 (EChart)** — 环形图/饼图/玫瑰图/折线图/蝶形对比柱状图, 24px 圆角卡片, 8 色 Donut 色板, 维度切换 Toggle
+- **报价涨跌趋势玫瑰图 (Quote Change Rose)** — 三扇区玫瑰图变体（涨价/降价/持平），3 色扇区 (#2E67E8/#6697F1/#A8C3F2)，含引导线+百分比标签+底部图例，支持酒店/间夜量/金额维度切换
 - **图表卡片 (Chart Card)** — 标准卡片 24px 圆角 + 阴影, 紧凑卡片 8px 圆角 + #D8E3F6 边框
-- **图表维度切换 (Chart Toggle)** — 3 段 pill 切换器, 30px 高, #F2F3F5 底, 50px 圆角
+- **图表维度切换 (Chart Toggle)** — 3 段 pill 切换器, 30px 高, #F2F3F5 底, 15px 圆角, 激活段白色背景 14px 圆角, 支持酒店/间夜量/金额等维度切换
 - **分页器 (Pagination)** — 54px 底栏, 待组件化
 - **地图/列表模式切换** — 并排按钮组
 
@@ -111,3 +115,4 @@ DESIGN.md 中已定义的组件（按组件库顺序）:
 15. **状态标签 6 种** — 已支付/待支付/已取消/紧急/待确认/待填写，Pill 形状 9999px 圆角
 16. **Tab 激活色** — 指示线和激活文字统一使用品牌色 #1657DC
 17. **操作链接** — primary 用 #2F87AC，danger 用 #C66261，muted 用 #647487
+18. **报价涨跌趋势用玫瑰图** — 涨价/降价/持平三扇区，色板用 #2E67E8(持平)/#6697F1(涨价)/#A8C3F2(降价)，配合引导线+百分比标签+底部图例，卡片阴影用 chart-section-shadow
