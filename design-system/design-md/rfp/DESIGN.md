@@ -1,5 +1,5 @@
 ---
-version: v6
+version: v7
 name: 协议通 (RFP)
 description: 协议通 (RFP) 是阿里巴巴酒店招采系统的核心业务模块，用于酒店签约报价的全流程管理。页面采用左侧深色导航 + 右侧内容区的经典后台布局，内容区域以浅灰底色承载白色主操作区。品牌色为 #1657DC 蓝，辅以语义状态色和克制的数据色板。字体使用 PingFang SC + Poppins/Inter 双字体体系。设计语言延续企业级 B2B 后台的严谨专业调性，聚焦于数据表格、筛选操作、指标卡片和酒店信息展示。
 
@@ -122,9 +122,9 @@ colors:
   tag-info-text: "#2F87AC"
   tag-feature-bg: "#FEFAF4"
   # --- Tab 专用 ---
-  tab-active-text: "#131B2C"
+  tab-active-text: "#1657DC"
   tab-default-text: "#97A6B8"
-  tab-underline: "#2F87AC"
+  tab-underline: "#1657DC"
   tab-border: "#F0F4F7"
   tab-hover-bg: "#F5F7FB"
   # --- 操作链接专用 ---
@@ -908,7 +908,7 @@ Pill 形状标签（圆角 9999px），Inter Bold 12px，行高 16px，内边距
 |------|------|------|--------|
 | **Default** | 透明 | `{typography.tab-label-default}` — Inter Medium 13px, `{colors.tab-default-text}` (#97A6B8) | 无 |
 | **Hover** | `{colors.tab-hover-bg}` (#F5F7FB), 4px 圆角, pl 4px | Inter Medium 13px, `{colors.tab-active-text}` (#131B2C) | 无 |
-| **Active** | 透明 | `{typography.tab-label}` — Inter Bold 13px, `{colors.tab-active-text}` (#131B2C) | 2px solid `{colors.tab-underline}` (#2F87AC), 宽 50px, 圆角 1px |
+| **Active** | 透明 | `{typography.tab-label}` — Inter Bold 13px, `{colors.brand-500}` (#1657DC) | 2px solid `{colors.brand-500}` (#1657DC), 宽 50px, 圆角 1px |
 
 - Tab 项高度 42px，宽 90px (Active pb 6px, Default/Hover pb 8px)
 
@@ -958,7 +958,7 @@ Pill 形状标签（圆角 9999px），Inter Bold 12px，行高 16px，内边距
 ### Tab
 - **默认**: Inter Medium 13px, `{colors.tab-default-text}`，无指示线
 - **Hover**: `{colors.tab-hover-bg}` 背景，文字变为 `{colors.tab-active-text}`
-- **激活**: Inter Bold 13px, `{colors.tab-active-text}` + 2px `{colors.tab-underline}` 底部指示线
+- **激活**: Inter Bold 13px, `{colors.brand-500}` + 2px `{colors.brand-500}` 底部指示线
 
 ### 操作链接
 - **primary**: `{colors.link-primary}` / hover underline `{colors.link-primary-hover}`

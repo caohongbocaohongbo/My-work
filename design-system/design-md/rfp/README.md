@@ -75,7 +75,7 @@ DESIGN.md 中已定义的组件（按组件库顺序）:
 - **CTA 按钮 (Primary Filled)** — 品牌色实心填充, 仅 CTA 场景, 15px/11px 内边距, 8px 圆角
 - **状态标签 (Status Tags)** — 6 种语义 Pill 标签 (已支付/待支付/已取消/紧急/待确认/待填写), 9999px 圆角, Inter Bold 12px
 - **Badge** — 推荐标签 (橙色/无边框) + 实时更新标签 (橙色, 特性标记)
-- **Tab 导航** — 54px Tab 栏, 3 态 (default/hover/active), 2px #2F87AC 激活指示线
+- **Tab 导航** — 54px Tab 栏, 3 态 (default/hover/active), 2px #1657DC 激活指示线
 - **操作链接 (Action Links)** — 3 态文字链接 (primary/danger/muted), Inter Bold 14px, hover 下划线
 - **文本框 (Form Text)** — 32px 高, 内嵌标签 + placeholder, 4 态 (normal/active/error/disabled)
 - **筛选器 / 下拉选择 (Form Select)** — 32px 高, 内嵌标签 + 值 + chevron, 带下拉面板 (选项 hover 选中态)
@@ -109,5 +109,5 @@ DESIGN.md 中已定义的组件（按组件库顺序）:
 13. **图表标题字体** — Inter Extra Bold 32px (页面) / 22px (卡片) / Semi Bold 18px (紧凑)
 14. **按钮统一字体** — 全部使用 Inter SemiBold 13px / 行高 18px，不再使用 PingFang SC + Medium 14px
 15. **状态标签 6 种** — 已支付/待支付/已取消/紧急/待确认/待填写，Pill 形状 9999px 圆角
-16. **Tab 激活色** — 指示线用 #2F87AC（非品牌色 #1657DC），激活文字 #131B2C
+16. **Tab 激活色** — 指示线和激活文字统一使用品牌色 #1657DC
 17. **操作链接** — primary 用 #2F87AC，danger 用 #C66261，muted 用 #647487
