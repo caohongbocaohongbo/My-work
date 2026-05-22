@@ -4,21 +4,16 @@
 
 ## 使用规则
 
-### 1. Skill 按需加载（最高优先级）
+### 1. Skill 按需加载
 
-**Skill 默认不加载。** 遵循 `~/.claude/CLAUDE.md` 中"Skill 按需加载策略"：
-
-- 会话启动时 skill 列表为空，不消耗 token
-- 只有 Agent 确定任务需要某 skill 时，才通过 `Skill` 工具显式加载
-- 禁止因"可能用到"而预加载 skill
-- 各 Agent 的推荐 skill 清单见 `agents/CLAUDE.md`
+遵循 `~/.claude/CLAUDE.md` 中的按需加载策略。禁止预加载或打包加载。
 
 ### 2. Skills 可由 Agent 自由组合
 
-Agent 执行任务时，根据实际需要自行组合所需 Skills。典型组合示例：
-- Figma 设计任务: `figma-use` + `figma-generate-design` + `design-md`
-- 前端动效任务: `gsap-advanced-animation` + `make-interfaces-feel-better` + `emil-design-eng`
-- UI 审查任务: `web-design-guidelines` + `ui-ux-pro-max` + `interaction-design`
+Agent 执行任务时自行组合所需 Skills。典型组合：
+- Figma 设计: `figma-use` + `figma-generate-design` + `ui-ux-pro-max`
+- 前端动效: `make-interfaces-feel-better` + `frontend-design`
+- UI 审查: `ui-ux-pro-max` + `interaction-design` + `style-design`
 
 ### 3. Skill 缺失时的处理流程
 
@@ -61,29 +56,31 @@ skills/<skill-name>/
     └── ...
 ```
 
-### 7. 当前 Skills 清单（按需加载）
+### 7. 当前 Skills 清单
 
 | 类别 | Skill | 用途 |
 |------|-------|------|
-| Figma | figma-use | Figma Plugin API 操作（ux-agent 核心） |
-| Figma | figma-generate-design | 从代码到 Figma 设计（ux-agent 核心） |
+| Figma | figma-use | Figma Plugin API 操作 |
+| Figma | figma-generate-design | 从代码到 Figma 设计 |
 | Figma | figma-create-new-file | 创建新 Figma 文件 |
-| 设计 | design-md | 设计系统文档生成（ux-agent 核心） |
 | 设计 | design-system | 设计规范与组件库搭建 |
 | 设计 | style-design | UI 风格分析与提炼 |
-| 前端 | frontend-design | 高质量前端界面生成（front-agent 核心） |
-| 前端 | gsap-advanced-animation | GSAP 动效开发（front-agent） |
-| 前端 | ui-ux-pro-max | UI/UX 设计智能辅助（front-agent 核心） |
-| 前端 | make-interfaces-feel-better | 界面精致化优化（front-agent） |
-| 前端 | web-design-guidelines | Web 界面最佳实践审查 |
-| UX | ux-research | 用户研究与需求分析 |
+| 前端 | frontend-design | 高质量前端界面生成 |
+| 前端 | ui-ux-pro-max | UI/UX 设计智能辅助 |
+| 前端 | make-interfaces-feel-better | 界面精致化优化 |
 | UX | interaction-design | 交互逻辑与微交互设计 |
-| 工具 | agent-browser | 浏览器自动化（test-agent 核心） |
+| 工具 | agent-browser | 浏览器自动化 |
 | 工具 | find-skills | 搜索可用 Skills |
 | 工具 | skill-creator | 创建/优化 Skills |
-| 工具 | brainstorming | 复杂任务规划 |
 | 工具 | token-optimizer | Token 消耗诊断与优化 |
-| 工具 | self-improving-agent | 自优化学习系统 |
+| 工程 | systematic-debugging | 系统化调试 |
+| 工程 | test-driven-development | TDD 流程 |
+| 工程 | verification-before-completion | 完成前验证 |
+| 工程 | writing-plans | 多步骤任务规划 |
+| 工程 | executing-plans | 实施计划执行 |
+| 工程 | dispatching-parallel-agents | 并行任务分发 |
+| 工程 | subagent-driven-development | 子代理驱动开发 |
+| 工程 | using-git-worktrees | Git worktree 隔离 |
 
 ### 8. 已归档 Skills
 
@@ -102,3 +99,9 @@ skills/<skill-name>/
 | figma-use-figjam | 与 figma-use 重叠 |
 | hotel-admin-blue | 酒店 SaaS 后台，领域极窄 |
 | information-architecture | ux-agent 已内建此能力 |
+| brainstorming | 创意前讨论，实践中常跳过 |
+| design-md | 仅 Stitch 项目专用 |
+| gsap-advanced-animation | 仅 GSAP 特定动画库 |
+| ux-research | 用户研究项目专用 |
+| web-design-guidelines | 无障碍审查专用 |
+| self-improving-agent | 自动化运行，但描述仍占 token |
