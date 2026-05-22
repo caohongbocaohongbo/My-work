@@ -74,7 +74,6 @@
       "Bash(claude plugin *)",
       "Bash(claude auth *)",
       "Bash(claude --version)",
-      "Bash(figma-developer-mcp *)",
       "Bash(xcrun --sdk macosx swiftc -o /tmp/ocr2 -framework Vision -framework CoreImage -framework Foundation /tmp/ocr.swift)",
       "Bash(/tmp/ocr2)",
       "Bash(tesseract --version)",
@@ -98,8 +97,6 @@
       "Skill(hotel-admin-blue)",
       "Skill(update-config)",
 
-      "mcp__figma__get_figma_data",
-      "mcp__figma__download_figma_images",
       "mcp__figma-desktop__get_design_context",
       "mcp__figma-desktop__get_screenshot",
       "mcp__figma-desktop__get_metadata",
@@ -109,14 +106,7 @@
       "mcp__figma-hosted__get_screenshot",
       "mcp__figma-hosted__get_metadata",
       "mcp__figma-hosted__use_figma",
-      "mcp__figma-hosted__generate_figma_design",
-      "mcp__figma-official__authenticate",
-      "mcp__figma-official__complete_authentication",
-      "mcp__figma-official__get_design_context",
-      "mcp__figma-official__get_screenshot",
-      "mcp__figma-official__get_metadata",
-
-      "mcp__pencil__get_editor_state"
+      "mcp__figma-hosted__generate_figma_design"
     ],
     "defaultMode": "bypassPermissions"
   },
