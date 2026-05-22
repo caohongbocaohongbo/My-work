@@ -1,6 +1,6 @@
 {
   "enabledPlugins": {
-    "superpowers@superpowers-marketplace": true,
+    "superpowers@superpowers-marketplace": false,
     "claude-code-setup@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
@@ -100,13 +100,7 @@
       "mcp__figma-desktop__get_design_context",
       "mcp__figma-desktop__get_screenshot",
       "mcp__figma-desktop__get_metadata",
-      "mcp__figma-hosted__authenticate",
-      "mcp__figma-hosted__complete_authentication",
-      "mcp__figma-hosted__get_design_context",
-      "mcp__figma-hosted__get_screenshot",
-      "mcp__figma-hosted__get_metadata",
-      "mcp__figma-hosted__use_figma",
-      "mcp__figma-hosted__generate_figma_design"
+      "mcp__figma-hosted__*"
     ],
     "defaultMode": "bypassPermissions"
   },
