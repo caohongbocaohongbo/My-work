@@ -8,6 +8,7 @@
 |-------|------|------|------|
 | req-agent | 需求分析 | 用户原始描述 | 需求规格说明.md |
 | ux-agent | UX 设计 (Figma) | 需求文档 + DESIGN.md | Figma 设计链接 |
+| design-director | 设计审查 (Figma) | ux-agent 的 Figma 链接 + DESIGN.md | 审查报告.md + PASS/FAIL 判定 |
 | front-agent | 前端开发 | Figma 链接 + 需求文档 | index.html + 还原度对比表 |
 | back-agent | 后端设计 | 需求文档 | API 文档 + DB Schema |
 | test-agent | 联调测试 | 前后端产物 | 测试报告.md |
@@ -39,6 +40,7 @@
 |-------|----------|----------|----------|
 | req-agent | 需求覆盖度 | ≥95% | 3 次 |
 | ux-agent | 设计方案确认 + DESIGN.md 读取 | 用户确认 + ≥2 方案 | 3 次 |
+| design-director | 设计合规度 >=99% + 高危违规=0 + 审查报告已输出 | 综合合规度数值 + 高危违规数 + 审查报告 8 章节完整 | 2 次 |
 | front-agent | UI 还原度 + 对比表 | ≥95% + 对比表已输出 | 3 次 |
 | back-agent | API 契约符合需求 | 功能接口覆盖率 100% | 3 次 |
 | test-agent | 功能覆盖率 | ≥95% | 3 次 |
@@ -93,6 +95,7 @@
 |-------|-----------|----------|
 | req-agent | 无（纯文本分析） | — |
 | ux-agent | figma-use, figma-generate-design, design-md | 开始 Figma 设计时 |
+| design-director | figma-use, style-design, design-system | 开始 Figma 设计审查时 |
 | front-agent | frontend-design, ui-ux-pro-max, gsap-advanced-animation | 开始前端编码时 |
 | back-agent | 无（纯后端设计） | — |
 | test-agent | agent-browser | 需要浏览器测试时 |
@@ -108,6 +111,7 @@
 ### 7. 重试与人工介入
 
 - 同一 Agent 连续 3 次 KPI 不达标 → **暂停流程** + 输出错误报告 + 请求人工介入
+- **design-director 特殊规则**：同一设计稿连续 2 次审查不通过 → 暂停 + 输出升级报告 + 请求人工介入（设计阶段返工成本高，比普通 Agent 少 1 次重试机会）
 - 卡住方案用户全部否决 → 请求人工介入
 - 严禁在 KPI 未验证的情况下标记任务完成
 
@@ -117,5 +121,35 @@
 
 快速流转检查清单：
 ```
-req-agent KPI ✓ → ux-agent KPI ✓ → front-agent KPI ✓ → back-agent KPI ✓ → test-agent KPI ✓ → github-agent KPI ✓
+req-agent KPI ✓ → ux-agent KPI ✓ → design-director KPI ✓ → front-agent KPI ✓ → back-agent KPI ✓ → test-agent KPI ✓ → github-agent KPI ✓
+```
+
+### 8. Agent 内部 Skill 查找规则（去重后）
+
+以下 Skill 与 `skills/` 去重后仅保留在 Agent 子目录中：
+
+| Skill | 所在 Agent |
+|-------|-----------|
+| `frontend-design` | `front-agent/skills/` |
+| `ui-ux-pro-max` | `front-agent/skills/` |
+| `interaction-design` | `ux-agent/skills/` |
+| `design-spec-compliance` | `design-director/skills/` |
+| `component-consistency-check` | `design-director/skills/` |
+| `design-review-report` | `design-director/skills/` |
+
+当 Agent 需要某个 Skill 时，按以下层级查找：
+
+```
+需要 Skill: <name>
+├── 1. ${CLAUDE_HOME}/.claude/skills/<name>/          ← 先查 skills/
+├── 2. ${CLAUDE_HOME}/.claude/agents/*/skills/<name>  ← 再查 agent 内部
+├── 3. ${CLAUDE_HOME}/.claude/skills-archive/<name>/  ← 最后查归档
+└── 未找到 → 使用 find-skills 搜索或 skill-creator 创建
+```
+
+所有 Agent 在执行任务前应检查所需 Skill 是否已在上下文中；若缺失则从上述路径加载。
+
+快速流转检查清单：
+```
+req-agent KPI ✓ → ux-agent KPI ✓ → design-director KPI ✓ → front-agent KPI ✓ → back-agent KPI ✓ → test-agent KPI ✓ → github-agent KPI ✓
 ```
