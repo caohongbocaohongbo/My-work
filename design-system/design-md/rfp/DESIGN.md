@@ -105,6 +105,9 @@ colors:
   btn-text-active: "#4080FF"
   btn-text-disabled: "#97A6B8"
   # --- 状态标签专用 ---
+  tag-paid-blue-bg: "#F4F9FE"
+  tag-paid-blue-border: "#AEC8FD"
+  tag-paid-blue-text: "#4080FF"
   tag-paid-bg: "#F4FAF6"
   tag-paid-border: "#DAEBDF"
   tag-paid-text: "#6A9F62"
@@ -887,11 +890,12 @@ Label 颜色在所有状态下保持 `{colors.ink-muted}` (#9A9794) 不变（Dis
 
 ### 状态标签 (Status Tags)
 
-Pill 形状标签（圆角 9999px），Inter Bold 12px，行高 16px，内边距 5px 10px，border 1px solid。6 种语义变体。
+Pill 形状标签（圆角 9999px），Inter Bold 12px，行高 16px，内边距 5px 10px，border 1px solid。7 种语义变体（已支付有两套配色：蓝色用于信息型场景，绿色用于成功型场景）。
 
 | 变体 | 背景 | 边框 | 文字色 |
 |------|------|------|--------|
-| **已支付** | `{colors.tag-paid-bg}` (#F4FAF6) | `{colors.tag-paid-border}` (#DAEBDF) | `{colors.tag-paid-text}` (#6A9F62) |
+| **已支付（蓝）** | `{colors.tag-paid-blue-bg}` (#F4F9FE) | `{colors.tag-paid-blue-border}` (#AEC8FD) | `{colors.tag-paid-blue-text}` (#4080FF) |
+| **已支付（绿）** | `{colors.tag-paid-bg}` (#F4FAF6) | `{colors.tag-paid-border}` (#DAEBDF) | `{colors.tag-paid-text}` (#6A9F62) |
 | **待支付** | `{colors.tag-pending-bg}` (#FFECE6) | `{colors.tag-pending-border}` (#ECBBBA) | `{colors.tag-pending-text}` (#C66261) |
 | **已取消** | `{colors.tag-cancelled-bg}` (#F5F7FA) | `{colors.tag-cancelled-border}` (#E1E7EE) | `{colors.tag-cancelled-text}` (#647487) |
 | **紧急** | `{colors.tag-pending-bg}` (#FFECE6) | `{colors.tag-pending-border}` (#ECBBBA) | `{colors.tag-pending-text}` (#C66261) |

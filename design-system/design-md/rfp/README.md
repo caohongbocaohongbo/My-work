@@ -52,6 +52,12 @@
 | 酒店 | price-text | #CC2A4D | 价格文字色 |
 | KPI | kpi-label | #949999 | KPI 标签文字 |
 | KPI | kpi-border | #E8EBEF | KPI 卡片边框 |
+| 标签 | tag-paid-blue-bg/border/text | #F4F9FE / #AEC8FD / #4080FF | 已支付标签蓝色变体 |
+| 标签 | tag-paid-bg/border/text | #F4FAF6 / #DAEBDF / #6A9F62 | 已支付标签绿色变体 |
+| 标签 | tag-pending-bg/border/text | #FFECE6 / #ECBBBA / #C66261 | 待支付/紧急标签 |
+| 标签 | tag-cancelled-bg/border/text | #F5F7FA / #E1E7EE / #647487 | 已取消标签 |
+| 标签 | tag-warning-bg/border/text | #FFF3E6 / #FFDEBA / #E67E22 | 待确认标签 |
+| 标签 | tag-info-bg/border/text | #F4FBFE / #D9EDF6 / #2F87AC | 待填写标签 |
 | 图表 | chart-bar | #4080FF | 柱状图柱体色 |
 | 图表 | chart-card-bg | rgba(255,255,255,0.96) | 图表卡片背景 |
 | 图表 | chart-card-border | #E2E8F0 | 图表卡片边框 |
@@ -76,7 +82,7 @@ DESIGN.md 中已定义的组件（按组件库顺序）:
 - **次按钮 (Secondary)** — 中性描边按钮, 1px #D5DDE7 边框, 白色背景, 14px/8px 内边距, 8px 圆角
 - **文字按钮 (Text)** — 透明无边框, 14px/6px 内边距, 8px 圆角
 - **CTA 按钮 (Primary Filled)** — 品牌色实心填充, 仅 CTA 场景, 15px/11px 内边距, 8px 圆角
-- **状态标签 (Status Tags)** — 6 种语义 Pill 标签 (已支付/待支付/已取消/紧急/待确认/待填写), 9999px 圆角, Inter Bold 12px
+- **状态标签 (Status Tags)** — 7 种语义 Pill 标签 (已支付蓝/已支付绿/待支付/已取消/紧急/待确认/待填写), 9999px 圆角, Inter Bold 12px
 - **Badge** — 推荐标签 (橙色/无边框) + 实时更新标签 (橙色, 特性标记)
 - **Tab 导航** — 54px Tab 栏, 3 态 (default/hover/active), 2px #1657DC 激活指示线
 - **操作链接 (Action Links)** — 3 态文字链接 (primary/danger/muted), Inter Bold 14px, hover 下划线
@@ -85,7 +91,6 @@ DESIGN.md 中已定义的组件（按组件库顺序）:
 - **日期选择器 (Date Picker)** — 32px 高, 日历图标 + 开始/结束日期, 带展开日历面板
 - **表格 (Table)** — 42px 蓝底表头 + 3px 品牌色底线 + 复选框列, 虚线行分隔, Poppins SemiBold 表头/Regular 数据
 - **酒店卡片 (Hotel Card)** — 100×63px 图片, "⭑" 字符星级 (#F5B640), 品牌标签, 价格 (#CC2A4D)
-- **状态标签 (Status Tag)** — 4px 圆角, 语义色变体 (填充橙底/描边橙框)
 - **评分徽章 (Rating Badge)** — 4px 圆角, 3 色变体 (绿/橙/蓝), Inter Bold 14px
 - **面包屑 (Breadcrumb)** — Pill 样式, 2px 品牌色边框, 返回 SVG 箭头, Bold 14px
 - **导航项 (Nav Items)** — 一级 Medium 16px / 二级 Regular 16px, 选中态 #1657DC 背景
@@ -112,7 +117,7 @@ DESIGN.md 中已定义的组件（按组件库顺序）:
 12. **图表卡片** — 标准用 24px 圆角 + rgba 阴影；紧凑用 8px 圆角 + #D8E3F6 边框
 13. **图表标题字体** — Inter Extra Bold 32px (页面) / 22px (卡片) / Semi Bold 18px (紧凑)
 14. **按钮统一字体** — 全部使用 Inter SemiBold 13px / 行高 18px，不再使用 PingFang SC + Medium 14px
-15. **状态标签 6 种** — 已支付/待支付/已取消/紧急/待确认/待填写，Pill 形状 9999px 圆角
+15. **状态标签 7 种** — 已支付(蓝)/已支付(绿)/待支付/已取消/紧急/待确认/待填写，Pill 形状 9999px 圆角
 16. **Tab 激活色** — 指示线和激活文字统一使用品牌色 #1657DC
 17. **操作链接** — primary 用 #2F87AC，danger 用 #C66261，muted 用 #647487
 18. **报价涨跌趋势用玫瑰图** — 涨价/降价/持平三扇区，色板用 #2E67E8(持平)/#6697F1(涨价)/#A8C3F2(降价)，配合引导线+百分比标签+底部图例，卡片阴影用 chart-section-shadow
