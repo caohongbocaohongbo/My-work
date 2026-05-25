@@ -89,7 +89,7 @@ DESIGN.md 中已定义的组件（按组件库顺序）:
 - **文本框 (Form Text)** — 32px 高, 内嵌标签 + placeholder, 4 态 (normal/active/error/disabled)
 - **筛选器 / 下拉选择 (Form Select)** — 32px 高, 内嵌标签 + 值 + chevron, 带下拉面板 (选项 hover 选中态)
 - **日期选择器 (Date Picker)** — 32px 高, 日历图标 + 开始/结束日期, 带展开日历面板
-- **表格 (Table)** — 42px 蓝底表头 + 3px 品牌色底线 + 复选框列, 虚线行分隔, Poppins SemiBold 表头/Regular 数据
+- **表格 (Table)** — 42px 蓝底表头 + 3px 品牌色底线 + 复选框列, 虚线行分隔, Poppins SemiBold 表头/Regular 数据, 状态列支持紧凑标签叠加
 - **酒店卡片 (Hotel Card)** — 100×63px 图片, "⭑" 字符星级 (#F5B640), 品牌标签, 价格 (#CC2A4D)
 - **评分徽章 (Rating Badge)** — 4px 圆角, 3 色变体 (绿/橙/蓝), Inter Bold 14px
 - **面包屑 (Breadcrumb)** — Pill 样式, 2px 品牌色边框, 返回 SVG 箭头, Bold 14px
