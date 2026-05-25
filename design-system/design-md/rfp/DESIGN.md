@@ -105,23 +105,19 @@ colors:
   btn-text-active: "#4080FF"
   btn-text-disabled: "#97A6B8"
   # --- 状态标签专用 ---
-  tag-paid-blue-bg: "#F4F9FE"
-  tag-paid-blue-border: "#AEC8FD"
-  tag-paid-blue-text: "#4080FF"
+  tag-paying-bg: "#EAF1FF"
+  tag-paying-text: "#4080FF"
+  tag-failed-bg: "#FFECE6"
+  tag-failed-text: "#C66261"
   tag-paid-bg: "#F4FAF6"
-  tag-paid-border: "#DAEBDF"
   tag-paid-text: "#6A9F62"
   tag-pending-bg: "#FFECE6"
-  tag-pending-border: "#ECBBBA"
   tag-pending-text: "#C66261"
   tag-cancelled-bg: "#F5F7FA"
-  tag-cancelled-border: "#E1E7EE"
   tag-cancelled-text: "#647487"
   tag-warning-bg: "#FFF3E6"
-  tag-warning-border: "#FFDEBA"
   tag-warning-text: "#E67E22"
   tag-info-bg: "#F4FBFE"
-  tag-info-border: "#D9EDF6"
   tag-info-text: "#2F87AC"
   tag-feature-bg: "#FEFAF4"
   # --- Tab 专用 ---
@@ -860,6 +856,12 @@ Label 颜色在所有状态下保持 `{colors.ink-muted}` (#9A9794) 不变（Dis
 - 复选框 (26px 固定) + 酒店信息 + 状态 + 酒店集团/品牌 + OTA评分 + 省份/城市 + 最近POI信息 + 推荐邀约原因 + 操作
 - 除复选框和酒店信息列外，其余列 flex: 1 平分
 
+**表格内标签 (Cell Tags)**：
+- 状态列中可使用紧凑型状态标签展示报价/权益变动信息
+- 标签规格：4px 圆角，无边框，Inter Bold 12px / 行高 16px，内边距 2px 4px
+- 同列支持多个标签叠加，间距 4px
+- 标签色板参见 [状态标签](#状态标签-status-tags) 组件
+
 **操作列**：
 - 文字色 `{colors.ink-link}` (#1657DC)
 - Poppins Regular 14px
@@ -890,17 +892,18 @@ Label 颜色在所有状态下保持 `{colors.ink-muted}` (#9A9794) 不变（Dis
 
 ### 状态标签 (Status Tags)
 
-Pill 形状标签（圆角 9999px），Inter Bold 12px，行高 16px，内边距 5px 10px，border 1px solid。7 种语义变体（已支付有两套配色：蓝色用于信息型场景，绿色用于成功型场景）。
+紧凑型圆角矩形标签，4px 圆角，无边框。用于状态标记、表格单元格内标签、筛选标签等场景。Inter Bold 12px，行高 16px，内边距 2px(上下) 4px(左右)。共 6 种语义变体。
 
-| 变体 | 背景 | 边框 | 文字色 |
-|------|------|------|--------|
-| **已支付（蓝）** | `{colors.tag-paid-blue-bg}` (#F4F9FE) | `{colors.tag-paid-blue-border}` (#AEC8FD) | `{colors.tag-paid-blue-text}` (#4080FF) |
-| **已支付（绿）** | `{colors.tag-paid-bg}` (#F4FAF6) | `{colors.tag-paid-border}` (#DAEBDF) | `{colors.tag-paid-text}` (#6A9F62) |
-| **待支付** | `{colors.tag-pending-bg}` (#FFECE6) | `{colors.tag-pending-border}` (#ECBBBA) | `{colors.tag-pending-text}` (#C66261) |
-| **已取消** | `{colors.tag-cancelled-bg}` (#F5F7FA) | `{colors.tag-cancelled-border}` (#E1E7EE) | `{colors.tag-cancelled-text}` (#647487) |
-| **紧急** | `{colors.tag-pending-bg}` (#FFECE6) | `{colors.tag-pending-border}` (#ECBBBA) | `{colors.tag-pending-text}` (#C66261) |
-| **待确认** | `{colors.tag-warning-bg}` (#FFF3E6) | `{colors.tag-warning-border}` (#FFDEBA) | `{colors.tag-warning-text}` (#E67E22) |
-| **待填写** | `{colors.tag-info-bg}` (#F4FBFE) | `{colors.tag-info-border}` (#D9EDF6) | `{colors.tag-info-text}` (#2F87AC) |
+| 变体 | 背景 | 文字色 | 典型用途 |
+|------|------|--------|---------|
+| **支付中** | `{colors.tag-paying-bg}` (#EAF1FF) | `{colors.tag-paying-text}` (#4080FF) | 支付处理中、报价变更中、权益变动中 |
+| **已失败** | `{colors.tag-failed-bg}` (#FFECE6) | `{colors.tag-failed-text}` (#C66261) | 支付失败、签约失败、报价失败 |
+| **已支付** | `{colors.tag-paid-bg}` (#F4FAF6) | `{colors.tag-paid-text}` (#6A9F62) | 支付成功、签约成功、已中签 |
+| **已取消** | `{colors.tag-cancelled-bg}` (#F5F7FA) | `{colors.tag-cancelled-text}` (#647487) | 已取消、已关闭 |
+| **待支付** | `{colors.tag-warning-bg}` (#FFF3E6) | `{colors.tag-warning-text}` (#E67E22) | 待支付、待确认、待处理 |
+| **待填写** | `{colors.tag-info-bg}` (#F4FBFE) | `{colors.tag-info-text}` (#2F87AC) | 待填写、待补充信息 |
+
+标签可叠加多个使用（如"签约价降低"+"增加早餐权益"），间距 4px。
 
 ### Badge（推荐/特性标签）
 
