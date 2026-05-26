@@ -100,13 +100,34 @@
     ],
     "defaultMode": "bypassPermissions"
   },
+  "disabledMcpjsonServers": ["pencil", "open-design", "stitch"],
   "statusLine": {
     "type": "command",
     "command": "npx -y ccstatusline@latest",
     "padding": 0,
     "refreshInterval": 10
   },
-  "autoUpdatesChannel": "latest",
+  "autoUpdatesChannel": "stable",
+  "skillOverrides": {
+    "agent-browser": "user-invocable-only",
+    "agent-reach": "user-invocable-only",
+    "design-md": "user-invocable-only",
+    "emblem-market-research": "user-invocable-only",
+    "emil-design-eng": "user-invocable-only",
+    "gsap-advanced-animation": "user-invocable-only",
+    "design-system": "name-only",
+    "figma-create-new-file": "name-only",
+    "find-skills": "name-only",
+    "hotel-admin-blue": "name-only",
+    "information-architecture": "name-only",
+    "interaction-design": "name-only",
+    "skill-creator": "name-only",
+    "test-driven-development": "name-only",
+    "update-config": "name-only",
+    "using-git-worktrees": "name-only",
+    "ux-research": "name-only",
+    "web-design-guidelines": "name-only"
+  },
   "skipDangerousModePermissionPrompt": true,
   "hooks": {
     "SessionStart": [
