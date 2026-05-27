@@ -532,34 +532,48 @@ There are no progressive elevation tiers — the system either has the one shado
 
 # New France Customizations
 
-Adaptations made for the New France 尾盘涨停选股系统 project:
+New France 尾盘涨停选股系统是金融数据工作台，不是资讯首页或营销页。设计需要继承百度财经的白底、高信息密度、蓝色主操作、红涨绿跌和细分割线，同时把后端已有的监控列表、个股详情、推荐结果、手动筛选和审核降级能力串成完整闭环。
 
-## Card Border Radius
+## 1920px 金融工作台画板
 
-All card components use `{rounded.card}` (24px) instead of the default Baidu Finance `{rounded.sm}` (4px):
-- `.panel`, `.metric-card`, `.rec-card` — 24px border-radius
-- Buttons, inputs, tags keep `{rounded.sm}` (4px)
+- 所有 Figma 页面画板统一使用 `1920px` 宽度；常规首屏高度为 `1080px`，个股详情页允许扩展到 `1280px` 以容纳多图表。
+- 内容区最大宽度为 `1776px`，左右安全边距各 `72px`；这个宽度来自百度财经宽屏骨架的 `max-width:1776px`，适合承载高密度表格和 ECharts 图表。
+- 顶部导航固定高度 `67px`，白底、底部 1px `{colors.hairline}` 分割线。导航优先放置产品名、主流程入口、全局搜索、日期范围、数据源状态和“执行筛选”主按钮。
+- 主工作区背景使用 `#f5f6fa`；页面不要使用深色侧边栏。业务流程通过顶部导航和页面内 tabs 串联：Dashboard 总览 → 监控列表 → 个股详情 → 推荐结果 → 手动筛选。
+- 页面必须显性展示“数据口径条”：数据源、涨停池原始数量、展示数量、过滤数量、采集时间和说明。今日涨停池数量不是策略筛选通过数，必须通过文案解释清楚。
 
-## Data Table Row Height
+## 容器、圆角和表格密度
 
-All table rows are unified at 44px height (`height: 44px; vertical-align: middle`) for visual consistency across pages. Exception: recommendation cards on the 推荐结果 page use a card layout, not tables.
+- 工作台卡片使用白底 `{colors.surface-card}`，1px `#ededf0` 边框，轻阴影 `rgba(0,0,0,0.04) 0 2px 8px`。不要叠卡片，页面区块应是全宽工作区内的独立面板。
+- 输入框、按钮、标签和表格内控件保持 `{rounded.sm}`（4px），延续百度财经的克制工具感。
+- 常规数据面板圆角使用 `10px`；复杂图表容器和页面级重点面板可使用 `16px`；不要继续使用 24px 作为默认卡片圆角，避免后台页面显得过软。
+- 表格表头高度 `36px`，数据行高度 `44px` 到 `48px`。监控列表和推荐结果必须优先保证扫描效率，列宽固定、数字右对齐、状态与操作列保持稳定宽度。
+- 筛选栏高度以 `38px` 控件为基准，按钮高度使用 `30px`、`36px`、`40px` 三档：表格行内小操作 30px，工具栏按钮 36px，主操作按钮 40px。
 
-| Element | Height |
-|---------|--------|
-| `.data-table td` | 44px |
-| `.data-table th` | 36px |
+## 图表和历史价格数据
 
-## Button Spacing
+- 个股详情页必须从加入关注日期开始展示历史价格数据，默认范围为“从加入关注日起”，并提供近 7 日、近 14 日、近 30 日和自定义日期切换。
+- ECharts 图表容器使用白底、`16px` 圆角、`#ededf0` 网格线。价格主线使用 `{colors.primary}`，回撤线使用 `{colors.up}` 并可用虚线表达风险，成交量柱按涨跌色区分。
+- 个股详情至少包含：价格走势 + 回撤双轴图、成交量柱状图、MA5/MA10/MA20/MA60 均线图、每日涨跌幅图、回撤分布图。
+- 推荐结果列表中的每只股票必须展示历史价格 mini chart 或最近每日价格/回撤表，不允许只展示代码、名称和推荐等级。
 
-Action buttons inside panels (e.g., 保存配置) require explicit margin:
-- `margin-left: 20px; margin-bottom: 20px` to separate from form content above
+## 审核降级和状态提示
+
+- 推荐卡片必须展示审核原始等级、调整后等级、失败项、警告项、通过项。降级原因需要列出具体不满足的字段和原因，例如“封板时间为 0，数据缺失，涨停质量因子不可信”“PE/量比/换手率缺失”。
+- 空态不能只写“暂无数据”。STRONG BUY、BUY、WATCH 三个列表都需要保留结构，并说明当前为空是因为评分不足、审核降级、数据缺失还是筛选条件过严。
+- 手动筛选页必须展示四种运行状态：未运行、运行中、完成、异常。运行中需要明确 `/screening/run` 已启动、前端正在轮询 `/screening/latest`。
+- 数据源健康区需要展示东方财富主数据、Tushare 历史 K 线、AkShare/新浪兜底或交叉验证状态。任何来源失败都应降级为可读告警，而不是隐藏。
 
 ## API Integration
 
 Backend API endpoints used by the frontend:
 - `GET /api/v1/system/health` — health check
 - `GET /api/v1/system/status` — system trading status
+- `GET /api/v1/system/audit` — watchlist audit summary
 - `POST /api/v1/system/test-email` — send test email
+- `GET /api/v1/watchlist` — fetch watchlist data with status, search, sort, pagination
+- `GET /api/v1/watchlist/stats` — watchlist totals and newly added count
+- `GET /api/v1/watchlist/{code}/detail` — stock detail with `chart_data.dates`, `closes`, `volumes`, `changes`, `drawdowns`, `ma5`, `ma10`, `ma20`, `ma60`, `drawdown_distribution`
 - `POST /api/v1/screening/run` — trigger manual screening run
-- `GET /api/v1/watchlist` — fetch watchlist data
-- `GET /api/v1/screening/latest` — fetch latest recommendations
+- `GET /api/v1/screening/latest` — fetch latest recommendations and `zt_meta`
+- `GET /api/v1/screening/history` — fetch historical screening reports
