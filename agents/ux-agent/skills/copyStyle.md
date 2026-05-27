@@ -1,11 +1,11 @@
 ---
-name: hue
-description: "Meta-skill that generates new design language skills. Works on Claude Code and Codex. Use when the user says 'create a design skill', 'generate design language', 'new design system skill', 'design skill inspired by X', 'design skill from this screenshot', '/hue', or 'use hue'. Also triggers for 'remix my design skill' or 'make my skill more X'."
-version: 1.1.0
+name: copyStyle
+description: "根据品牌/截图/URL/代码库/描述，自动分析视觉语言并生成可复用的设计风格 skill。触发词：'复制风格'、'提取设计语言'、'copyStyle'、'copy style'、'生成设计技能'、'创建风格 skill'。"
+version: 1.0.0
 allowed-tools: [Read, Write, Edit, Glob, Grep, WebFetch, WebSearch]
 ---
 
-# Design Skill Generator
+# copyStyle — 设计风格复制与技能生成器
 
 You are a senior product designer who creates design language specifications for AI coding assistants (Claude Code, Codex, and compatible tools). You don't design interfaces — you design the *system* that designs interfaces. Every skill you generate must be opinionated enough that two different sessions using it would produce visually indistinguishable output.
 
@@ -13,21 +13,7 @@ Your reference material lives in `references/`. Use it.
 
 ## Platform Tools
 
-This skill runs on multiple AI coding assistants. Use whichever tool exists in your session — prefer the left column when available.
-
-| Capability | Claude Code | Codex / other |
-|---|---|---|
-| Read file | `Read` | shell: `cat -n`, `sed -n` |
-| Write new file | `Write` | `apply_patch` or shell |
-| Edit existing file | `Edit` | `apply_patch` |
-| Find files by pattern | `Glob` | shell: `find`, `rg --files` |
-| Search file contents | `Grep` | shell: `rg` |
-| Fetch a URL | `WebFetch` | shell: `curl` (returns raw HTML, not summaries — parse with `rg`) |
-| Web search | `WebSearch` | web search tool or shell |
-| Open in browser | `open file.html` | `open file.html` (macOS) or print the absolute path for the user |
-| Browser DevTools | `mcp__chrome-devtools__*` | MCP if configured, else skip — fall back to URL fetch |
-
-When this skill says "fetch the URL", "search the web", or "read the file", use whatever tool from this table is available. Don't fail because a specific tool name doesn't exist — use the equivalent.
+See `references/platform-tools.md` for cross-platform tool mapping. When this skill says "fetch the URL", "search the web", or "read the file", use whatever equivalent tool is available. Don't fail because a specific tool name doesn't exist.
 
 ---
 
@@ -291,217 +277,15 @@ After the user approves the direction, present the core foundational tokens for 
 This gives the user a low-cost opportunity to correct a foundational value that would otherwise cascade incorrectly through all generated files.
 
 ### Phase 7: Build Design Model
-Create a `design-model.yaml` in the skill folder as the **Single Source of Truth**. This file captures every design decision in a structured, machine-readable format. All subsequent files (tokens.md, components.md, platform-mapping.md, previews) are generated FROM this model.
+Create a `design-model.yaml` from the schema in `references/design-model-schema.yaml`. Two token layers: **Primitives** (raw ramps: 11-step neutral + brand + status colors, spacing, radii) and **Semantic** (role-based tokens referencing primitives via `{path}` notation: background/surface/border/text/accent for light+dark, spacing scale, radii set, typography trio, elevation strategy, motion personality, hero stage, iconography fallback, component specs, app screen config).
 
-The YAML has two token layers: **Primitives** (raw ramps) and **Semantic** (role-based tokens referencing primitives).
+**Primitive generation rules:**
+- **Neutral ramp:** Match brand's gray temperature (warm/cool/pure), 50-950 scale.
+- **Brand ramp:** Accent color = 500. Lighter (50-400) and darker (600-950) variants.
+- **Status colors:** Minimal (50, 500, 900) for red/green/amber.
+- **Radii:** Trim the superset scale to only values the brand actually uses. Unreferenced primitives must be removed.
 
-```yaml
-name: "Vector"
-philosophy: "Precision tooling. Dense, keyboard-first, violet-accented."
-primary_mode: "dark"
-brand_domain: "project management / issue tracking"
-brand_type: "ui-rich"    # or "content-rich"
-mono_for_code: true      # code blocks, file paths, shell commands, inline technical tokens
-mono_for_metrics: true   # pricing, counts, timestamps, percentages, ID strings
-# locked_weight: 400     # OPTIONAL. Set only when the brand genuinely uses a single font weight across all text. Most brands do not — leave unset. If set, ALL type scale rows use this weight; the `weight` column becomes "—" in the scale table (or a single row at the top of the table).
-# Backwards-compat: older skills may have `mono_for_data: true/false`. Treat `mono_for_data: true` as `mono_for_code: true + mono_for_metrics: true`, and `false` as both false.
-
-# ── PRIMITIVES ── Raw scales derived from brand analysis
-primitives:
-  colors:
-    neutral:    # Temperature matches the brand (warm/cool/pure)
-      50: "#FAFAFA"
-      100: "#F4F4F5"
-      200: "#E4E4E7"
-      300: "#D4D4D8"
-      400: "#A1A1AA"
-      500: "#71717A"
-      600: "#52525B"
-      700: "#3F3F46"
-      800: "#27272A"
-      900: "#18181B"
-      950: "#09090B"
-    brand:      # Accent hue, 500 = primary
-      50: "#EEF2FF"
-      100: "#E0E7FF"
-      200: "#C7D2FE"
-      300: "#A5B4FC"
-      400: "#818CF8"
-      500: "#5E6AD2"
-      600: "#4F46E5"
-      700: "#4338CA"
-      800: "#3730A3"
-      900: "#312E81"
-      950: "#1E1B4B"
-    red:   { 50: "#FEF2F2", 500: "#E5484D", 900: "#7F1D1D" }
-    green: { 50: "#F0FDF4", 500: "#4AB66A", 900: "#14532D" }
-    amber: { 50: "#FFFBEB", 500: "#E5A73B", 900: "#78350F" }
-  spacing: [0, 1, 2, 4, 6, 8, 12, 16, 20, 24, 32, 40, 48, 64, 96]
-  radii: [0, 2, 4, 6, 8, 12, 16, 24, 999]
-  # NOTE: The default radii scale above is a SUPERSET — trim unused values for the brand.
-  #   Pill-first brands (Cursor, Stripe pill CTAs)    → radii: [0, 4, 8, 999]
-  #   Sharp / hard-edge brands (Linear, Nothing)      → radii: [0, 2, 4]
-  #   Soft-but-not-round brands (Notion, Apple)       → radii: [0, 4, 8, 12, 16]
-  # RULE: Radii primitives should only contain values the brand actually uses. A scale
-  # with 9 values but only 2 referenced is a signal that you over-sampled. After generating
-  # semantic tokens, audit the primitives — any primitive value not referenced by a semantic
-  # token must be removed.
-
-# ── SEMANTIC TOKENS ── Roles that reference primitives
-tokens:
-  colors:
-    light:
-      background: "{neutral.50}"
-      surface1: "{neutral.100}"
-      surface2: "{neutral.200}"
-      surface3: "{neutral.300}"
-      border: "{neutral.200}"
-      border_visible: "{neutral.300}"
-      text1: "{neutral.900}"
-      text2: "{neutral.600}"
-      text3: "{neutral.500}"
-      text4: "{neutral.400}"
-      accent: "{brand.500}"
-      accent_subtle: "{brand.50}"
-    dark:
-      background: "{neutral.950}"
-      surface1: "{neutral.900}"
-      surface2: "{neutral.800}"
-      surface3: "{neutral.700}"
-      border: "{neutral.800}"
-      border_visible: "{neutral.700}"
-      text1: "{neutral.50}"
-      text2: "{neutral.400}"
-      text3: "{neutral.500}"
-      text4: "{neutral.600}"
-      accent: "{brand.400}"
-      accent_subtle: "{brand.950}"
-    success: "{green.500}"
-    warning: "{amber.500}"
-    error: "{red.500}"
-
-  spacing:
-    2xs: 2
-    xs: 4
-    sm: 8
-    md: 16
-    lg: 24
-    xl: 32
-    2xl: 48
-    3xl: 64
-    4xl: 96
-
-  radii:
-    element: 4      # small controls, checkboxes
-    control: 6      # buttons, inputs
-    component: 8    # cards, panels
-    container: 12   # modals, sheets
-    pill: 999       # pills, tags (if brand uses them)
-
-  typography:
-    display: { family: "Inter", size: "36px", weight: 500, line_height: 1.1 }
-    body: { family: "Inter", size: "14px", weight: 400, line_height: 1.5 }
-    mono: { family: "JetBrains Mono", size: "12px", weight: 400 }
-
-  elevation:
-    strategy: "flat"
-    # ...
-
-  motion:
-    personality: "mechanical"
-    easing: "ease-out"
-    duration_fast: "100ms"
-    duration_normal: "150ms"
-
-  # Hero stage — composed background + optional hero subject + relation.
-  # Mandatory. Replaces the older `background_graphics` block.
-  # See references/hero-stage.md for the full dial reference.
-  hero_stage:
-    preset: "painterly-no-hero"   # or null for fully manual
-    observed_style:
-      description: "Hand-painted warm landscape scenes; no foreground subject — the background IS the hero."
-      where_used: ["hero", "feature sections"]
-    background:
-      medium: "painterly"         # gradient / mesh / painterly / shader / pattern / bokeh / sculptural / noise / photo / absent
-      color_mode: "palette"       # monochrome / dual-tone / palette / brand-tinted-neutral
-      saturation: "muted"         # flat / muted / vibrant / neon
-      light_source: "ambient"     # top / bottom / top-l..br / center / ambient / none
-      falloff: "soft"             # hard / soft / radial / linear
-      vignette: "off"             # off / subtle / strong
-      texture: "paint"            # clean / grain / paper / paint / pixel
-      motion: "static"            # static / drift / pulse / reactive
-      intensity: "subtle"         # subtle / bold / blown-out  ← default subtle
-      safe_zone: "full-bleed"     # full-bleed / masked-for-text / edge-only
-      color_palette: ["#FFA47C", "#FFE926", "#FF7DD3", "#FFC2A8", "#5CB13E"]
-    hero:
-      subject: "none"             # none / luminous / object / device / composition / photo-cutout  ← intent, not form
-      # form: "sphere"            # sphere / disc / ring / torus — ONLY for luminous. Ignored for everything else.
-      # placement, scale, tint ignored when subject: none
-      # NOTE for `object`: concrete physical products render as a generic warm metallic
-      #                    form (decorative placeholder). The user swaps it for their
-      #                    own 3D render / product photo before shipping. The form
-      #                    doesn't resemble the product — it just holds the slot.
-    relation:
-      type: "flat"                # flat / glow / halo / reflection / emissive / shadow-only
-      bleed: 0                    # 0-100, how much subject light spills into background
-      # Compat: see subject × relation matrix in references/hero-stage.md.
-      # Disallowed pairs: luminous+shadow-only, object+emissive, device+emissive, composition+emissive.
-    disclaimer: "Approximated with SVG + CSS. The real brand uses commissioned illustrations not redistributed with this skill."
-
-  # Dual-track iconography — brand reality + our fallback.
-  # The skill renders `fallback_kit`; `observed_style` documents truth.
-  iconography:
-    observed_style:
-      description: "Custom 1.75px outline icons with rounded terminals. Humanist with slight irregularity. Not from any standard kit."
-      stroke_weight: "regular"
-      corner_treatment: "soft"
-      fill_style: "outline"
-      form_language: "humanist"
-      visual_density: "balanced"
-    fallback_kit:
-      name: "Phosphor"
-      weight: "regular"        # thin / light / regular / bold / fill / duotone
-      match_score: "high"      # high / medium / low
-      match_reasoning: "Phosphor regular matches the observed stroke weight (~1.5px), rounded terminals, and humanist form language. Iconoir would be second choice for a closer hand-drawn feel, but Phosphor's broader glyph set wins."
-      cdn: "https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css"
-      icon_class_prefix: "ph ph-"
-    disclaimer: "Icons in the generated preview are a best-match fallback from the Phosphor kit. The brand's actual icons are proprietary and not redistributed with this skill."
-
-components:
-  button_primary:
-    source: "observed"
-    background: "{brand.500}"
-    color: "#FFFFFF"
-    padding: "10px 16px"
-    radius: "{radii.control}"
-    font_weight: 500
-    hover: { background: "{brand.600}" }
-  # ...
-
-# App screen — product UI rendered inside a device frame.
-# Required for Phase 13 generation.
-app_screen:
-  archetype: "dashboard"    # dashboard / editor / list-detail / feed / conversational / canvas
-  frame: "browser"          # browser / phone / desktop / tablet
-  frame_params:
-    url: "app.vector.dev/projects"   # browser only — fictional domain
-    title: "Vector — Projects"
-  content_seed: "SLO dashboard for checkout-api"   # one-line description of what the screen shows
-  required_tokens_checklist:
-    - "background, surface1, surface2, surface3, border, border_visible"
-    - "text1, text2, text3, text4"
-    - "accent, accent_subtle, success, warning, error"
-    - "all typography scale tokens"
-    - "all spacing tokens used in components"
-```
-
-**How to generate the primitives:**
-- **Neutral ramp:** Extract the brand's gray temperature (warm/cool/pure) from the analysis. Generate a 50-950 ramp that matches. Warm brand → warm-tinted grays. Cool brand → cool-tinted.
-- **Brand ramp:** The accent color becomes 500. Generate lighter (50-400) and darker (600-950) variants around it.
-- **Status colors:** Minimal ramps (50, 500, 900) for red/green/amber. Enough for bg-tint + foreground + dark-mode.
-- **Spacing/radii primitives:** A superset scale. Semantic tokens pick from this scale.
-
-Write the YAML first. Then generate all other files by reading from it. This ensures tokens.md, components.md, platform-mapping.md, and preview.html all use the exact same values.
+All subsequent files (tokens.md, components.md, platform-mapping.md, previews) are generated FROM this YAML — write it first, then generate downstream.
 
 ### Phase 8: Generate Skill Files from Design Model
 Read the `design-model.yaml` and generate all 4 files. Fill every placeholder. No empty sections, no TODOs. Use the templates from `references/` as the exact structure:
@@ -596,32 +380,19 @@ Read `references/app-screen-template.md` for the full specification. Key rules:
 7. **Same floating Light/Dark bar** and click-disabled anchors as the other three views.
 8. **Add the new view to the sticky TOC** in the component library so all four views are reachable from each other.
 
-**Current status:** Phase 13 is live with two canonical proofs, both using the `dashboard` archetype inside a `browser` frame.
-
-- `examples/ridge/app-screen.html` — SLO overview for `checkout-api`. 8-service sidebar, 3 KPI tiles with sparklines, a 30-day error-budget burn-down chart, 8 log events, and a fake cursor hovering on the selected service. Dev-platform vocabulary (services, alerts, SLO, incidents).
-- `examples/stint/app-screen.html` — stint 07 detail view for the `paper` workspace. Sidebar of 7 recent stints with status dots, 3 KPI tiles (completion / days left / at risk), a 14-day burn-down chart with actual vs dashed ideal line, 8-row activity feed, and a fake cursor hovering on the selected stint. Project-tracker vocabulary (stints, tasks, cycles, carryover).
-
-Both render in light + dark mode, use every required token from the checklist, and serve as patterns to copy for the next brand that adopts Phase 13. A third proof should exercise a *different* archetype (not `dashboard`) to keep the template honest — Halcyon with a `conversational` (reasoning-graph chat) archetype is the best next target because it tests both a new archetype and the `sculptural-field` backdrop in a product context.
-
 ### Phase 14: Self-Validation
-After generating all outputs, validate every HTML file against the Design Model. This covers `preview.html`, `component-library.html`, `landing-page.html`, and `app-screen.html`.
+After generating all outputs, validate every HTML file against the Design Model.
 
 **Automated checks (run all before declaring done):**
+1. Parse `design-model.yaml` — no YAML syntax errors.
+2. Grep for unresolved `{{...}}` placeholders in all generated files.
+3. CSS selector coverage: every class-selector must match at least one element.
+4. Token coverage: every `var(--token)` must be defined in `:root`.
+5. Open each HTML in browser, verify both light + dark mode visually.
 
-1. **Parse `design-model.yaml`** — verify no YAML syntax errors. If the YAML is malformed, nothing downstream can be trusted.
-2. **Grep for unresolved `{{...}}` placeholders** in all generated files. Any remaining `{{placeholder}}` is a generation bug — fill it or remove it.
-3. **CSS selector coverage.** For each HTML output: grep every CSS class-selector and verify it matches at least one element in the HTML. Orphan selectors mean styles are silently not applying.
-4. **Token coverage.** Check that every `var(--token)` used in the HTML/CSS is actually defined in the `:root` block of that file. A missing definition means the value falls through to `initial` — invisible breakage.
-5. **Open each HTML in the browser** and verify visually. Check both light and dark mode. Look for: correct font-family on headings, correct accent color on interactive elements, no unstyled fallback text, no broken layouts.
+**Manual cross-checks:** accent color hex matching, font family consistency, spacing values, component vs Tear-Down Sheet fidelity.
 
-**Manual cross-checks per file:**
-
-6. **Verify accent color** in YAML matches the hex used for interactive elements across all previews.
-7. **Verify font families** in YAML match what's loaded and used in all outputs.
-8. **Verify spacing values** are consistent between model and all outputs.
-9. **Compare each component** in the preview against its Tear-Down Sheet or Derived Design from Phase 2.
-
-If anything doesn't match — fix it before showing to the user.
+If anything doesn't match — fix before showing to the user.
 
 ### Phase 15: Offer Iteration
 After writing, tell the user what was created and ask if they want adjustments. Common requests: "more contrast", "warmer tones", "different font", "more playful motion", "add a glow effect", "less padding."
@@ -639,133 +410,68 @@ After generating, tell the user:
 These are non-negotiable. Every generated skill must meet all of them.
 
 ### Preview
-- The `preview.html` must look like a real app dashboard, not a component library. Use real-looking content, proper hierarchy, proper density.
+- `preview.html` must look like a real app dashboard with real content, proper hierarchy, proper density — not a component library.
 
-### Philosophy
-- 2-4 sentences that capture the *attitude*, not just the aesthetics. "Subtract, don't add" is a philosophy. "Clean and modern" is not.
-- Reference the design lineage — what real-world objects, brands, movements, or eras this draws from.
-- Include the primary tension that gives the language its character.
-
-### Design Principles
-- 5-7 principles. Each: **Bold Title.** + one sentence.
-- Every principle must be falsifiable — you can point at a screen and say "this violates principle 3."
-- No platitudes. "User-friendly" is not a principle. "Type does the heavy lifting — hierarchy comes from scale and weight, never from color or icons" is.
-
-### Craft Rules
-- 5-6 rules in Section 2 of SKILL.md. Each is a *how-to-compose* instruction.
-- Include: visual hierarchy layers, typography discipline (font budget per screen), spacing semantics, color strategy, composition approach.
-- Use tables for layer/hierarchy definitions — they're scannable and unambiguous.
-- Include the squint test or equivalent quick-validation method.
+### Philosophy & Principles
+- **Philosophy:** 2-4 sentences capturing attitude + design lineage + primary tension. "Subtract, don't add" not "Clean and modern."
+- **Design Principles:** 5-7 falsifiable principles. Each: **Bold Title.** + one sentence. No platitudes.
+- **Craft Rules:** 5-6 how-to-compose rules covering visual hierarchy layers, typography discipline, spacing semantics, color strategy. Use tables for layer definitions. Include squint test.
 
 ### Anti-Patterns
-- 8-12 specific bans. Each starts with "No" and names the exact thing.
-- Be precise: "No border-radius > 16px on cards" not "avoid large corners."
-- Include both visual anti-patterns (gradients, shadows) and behavioral ones (toast popups, skeleton screens).
-- Anti-patterns are what prevent the skill from producing generic output. They're the immune system.
+- 8-12 specific bans. Each starts with "No" and names the exact thing: "No border-radius > 16px on cards." Cover both visual (gradients, shadows) and behavioral (toast popups, skeleton screens). Anti-patterns are the immune system.
 
-### Colors
-- Coherent palette. Every color must have a *role*, not just a hex code.
-- Mentally verify contrast: text on background must exceed 4.5:1 for body, 3:1 for large text.
-- Both dark and light mode values. Derive secondary mode from primary — don't just invert. Warm light mode needs warm dark mode.
-- Include semantic colors: accent, success, warning, error.
-- Token names follow this schema:
+### CSS Token Schema
 
-| Token | Role |
-|-------|------|
-| `--background` | Page/canvas background |
-| `--bg` | Alias for `--background` (short form used in hero/landing templates) |
-| `--surface1` | Primary elevated surface (cards) |
-| `--surface2` | Secondary surface (nested, grouped) |
-| `--surface3` | Tertiary surface (inputs, wells) |
-| `--border` | Subtle/decorative borders |
-| `--border-visible` | Intentional borders |
-| `--text1` | Primary text (headings, body) |
-| `--text2` | Secondary text (descriptions, labels) |
-| `--text3` | Tertiary text (placeholders, timestamps) |
-| `--text4` | Disabled text |
-| `--accent` | Primary interactive color |
-| `--accent-subtle` | Tinted backgrounds for accent |
-| `--success` | Positive states |
-| `--warning` | Caution states |
-| `--error` | Destructive/error states |
+Every generated skill must emit these CSS custom properties. `--bg` = alias for `--background`. `--accent-subtle` (not deprecated `--accent-bg`).
 
-**Platform mapping must emit all tokens above.** `--bg` is an alias for `--background` — emit both in the `:root` block. `--border-visible` must be emitted alongside `--border`. `--accent-subtle` must be emitted (not `--accent-bg` — that's a deprecated name). See `references/platform-mapping-template.md`.
+| Token | Role | Token | Role |
+|-------|------|-------|------|
+| `--background` / `--bg` | Page canvas | `--text1` | Primary text |
+| `--surface1` | Cards | `--text2` | Secondary text |
+| `--surface2` | Nested surfaces | `--text3` | Placeholders, timestamps |
+| `--surface3` | Inputs, wells | `--text4` | Disabled text |
+| `--border` | Decorative borders | `--accent` | Primary interactive |
+| `--border-visible` | Intentional borders | `--accent-subtle` | Accent tinted bg |
+| `--success` / `--warning` / `--error` | Status colors | | |
 
-### Fonts
-- Display, body, and mono roles. Always three.
-- **Google Fonts only** for web skills. Name the exact font and weights needed.
-- **System fonts** for SwiftUI skills (SF Pro, SF Rounded, SF Mono, New York).
-- Include fallback stacks. Always.
-- State *why* the font fits the aesthetic. "Geometric sans with humanist details" tells Claude how to judge edge cases.
-- **`mono_for_code` + `mono_for_metrics`:** Two independent flags decide where the mono font applies. `mono_for_code` covers code blocks, file paths, shell commands, inline technical tokens. `mono_for_metrics` covers pricing, counts, timestamps, percentages, ID strings. Many brands use mono for code but NOT for metrics (e.g. Cursor: mono inside IDE screenshots, but `$20` pricing stays in the sans). Decide each flag by checking the brand's actual site.
+### Fonts & Type Scale
 
-  | Brand type | Example | `mono_for_code` | `mono_for_metrics` |
-  |------------|---------|-----------------|--------------------|
-  | Dev-tool / terminal | Linear, Nothing | `true` | `true` |
-  | Dev-tool with editorial marketing | Cursor, Vercel, Raycast | `true` | `false` |
-  | Consumer / editorial | Apple, mymind, Notion | `false` | `false` |
+- Display, body, mono — always three roles. Google Fonts for web, system fonts for SwiftUI. State *why* each fits.
+- **`mono_for_code`:** code blocks, file paths, shell commands. **`mono_for_metrics`:** pricing, counts, timestamps, IDs. Decide each independently by checking the brand's site. Backwards compat: `mono_for_data: true` = both true.
+- **`locked_weight`:** Set only when brand uses single weight across ALL text (rare).
+- **Type scale:** 8 sizes minimum (display/h1/h2/h3/body/body-sm/caption/label). Each: px, line-height, letter-spacing, weight, use case. Generate the table from `references/tokens-template.md`.
 
-  **Backwards compat:** older skills may have `mono_for_data: true/false`. Treat `true` as both new flags true, `false` as both false.
-- **`locked_weight`** (optional, top-level): Set only when the brand genuinely uses a single font weight across all text (h1 through body all at the same weight). Most brands do not — leave unset. If set, ALL type scale rows use this weight; see Type Scale section below for the table treatment.
+| Brand type | `mono_for_code` | `mono_for_metrics` |
+|------------|-----------------|--------------------|
+| Dev-tool / terminal (Linear, Nothing) | `true` | `true` |
+| Dev-tool with editorial (Cursor, Vercel) | `true` | `false` |
+| Consumer / editorial (Apple, Notion) | `false` | `false` |
 
-### Type Scale
-- 8 sizes minimum: display, h1, h2, h3, body, body-sm, caption, label.
-- Every size gets: px value, line-height ratio, letter-spacing, weight, and use case.
-- Follow this structure:
+### Spacing & Radii
+- **Spacing:** 8px grid. Scale: 2xs(2) xs(4) sm(8) md(16) lg(24) xl(32) 2xl(48) 3xl(64) 4xl(96).
+- **Radii philosophy:** sharp(0-4px) / soft(8-16px) / round(20-24px) / pill(999px). iOS: use `.continuous`.
 
-| Token | Size | Line Height | Letter Spacing | Weight | Use |
-|-------|------|-------------|----------------|--------|-----|
-| `--display` | Npx | ratio | em | weight | use case |
-| `--h1` | Npx | ratio | em | weight | use case |
-| `--h2` | Npx | ratio | em | weight | use case |
-| `--h3` | Npx | ratio | em | weight | use case |
-| `--body` | Npx | ratio | em | weight | use case |
-| `--body-sm` | Npx | ratio | em | weight | use case |
-| `--caption` | Npx | ratio | em | weight | use case |
-| `--label` | Npx | ratio | em | weight | use case |
-
-- **Locked-weight variant:** If `locked_weight` is set in the model, the weight column in the type scale table becomes a single row at the top (e.g. "All sizes: weight 400") instead of repeating per row. Drop the `Weight` column from the table or set every cell to `—`. Use this only for brands that genuinely run a single weight across all text (Cursor is one example).
-
-### Spacing
-- 8px base grid. Always.
-- Scale: `2xs` (2px), `xs` (4px), `sm` (8px), `md` (16px), `lg` (24px), `xl` (32px), `2xl` (48px), `3xl` (64px), `4xl` (96px).
-- Every value gets a semantic use case.
-
-### Radii
-- Define separately for: cards, buttons, inputs, tags/pills.
-- State the corner philosophy — sharp (0-4px), soft (8-16px), round (20-24px), pill (999px).
-- If the platform is iOS, note `RoundedRectangle(cornerRadius:, style: .continuous)`.
-
-### Elevation
-- Pick one primary elevation strategy:
+### Elevation (pick one)
 
 | Strategy | When | How |
 |----------|------|-----|
-| **Flat** | Industrial, minimal | No shadows. Borders or background change only. |
-| **Subtle** | Warm, friendly | Small y-offset (1-3px), diffused blur, low opacity. |
-| **Glow** | Dark-mode-forward, premium | Colored shadow matching accent, no y-offset. |
-| **Material** | Glass, depth-heavy | Blur + transparency + saturation. |
+| **Flat** | Industrial, minimal | No shadows. Border + bg change only |
+| **Subtle** | Warm, friendly | 1-3px y-offset, diffused blur, low opacity |
+| **Glow** | Dark-mode, premium | Colored shadow matching accent, no y-offset |
+| **Material** | Glass, depth-heavy | Blur + transparency + saturation |
 
-### Motion
-- Pick one motion personality:
+### Motion (pick one)
 
 | Personality | Easing | Duration | Behavior |
 |-------------|--------|----------|----------|
-| **Mechanical** | `ease-out` or linear | 120-200ms | Precise, no overshoot. Click, not swoosh. |
-| **Smooth** | `ease-in-out` | 200-350ms | Calm transitions, no bounce. |
-| **Playful** | Spring (damping 0.7-0.8) | 300-500ms | Overshoot + settle. Things feel alive. |
-| **None** | Instant | 0-100ms | Content appears, no choreography. |
+| **Mechanical** | ease-out / linear | 120-200ms | Precise, no overshoot |
+| **Smooth** | ease-in-out | 200-350ms | Calm transitions |
+| **Playful** | Spring (0.7-0.8) | 300-500ms | Overshoot + settle |
+| **None** | Instant | 0-100ms | No choreography |
 
-### Platform Mapping
-- Generate REAL, valid, copy-paste-ready code. Not pseudocode.
-- CSS: `:root` block with all custom properties. Include dark mode via `[data-theme="dark"]` or `@media (prefers-color-scheme: dark)`.
-- SwiftUI: `Color` extension with static properties, `Font` extension with static methods, relevant `ViewModifier`s.
-- Tailwind: `extend` block for `tailwind.config.js` mapping all tokens.
-
-### Components
-- Every component gets: when to use, variants, exact token mapping per variant.
-- Minimum components: cards, buttons (4 variants), inputs, lists, navigation, tags/chips, overlays (modal + bottom sheet), state patterns (empty, loading, error, disabled).
-- Use tables for variant specifications — scannable, unambiguous.
+### Platform Mapping & Components
+- **Code:** Real, copy-pasteable. CSS `:root` + `[data-theme="dark"]`, SwiftUI `Color`/`Font` extensions, Tailwind `extend` block.
+- **Components:** when to use, variants, exact token mapping. Minimum: cards, buttons (4 variants), inputs, lists, nav, tags, overlays (modal + bottom sheet), state patterns (empty/loading/error/disabled). Use tables for variant specs.
 
 ---
 
@@ -790,17 +496,11 @@ The description must include the explicit trigger phrases. Never allow automatic
 
 ## 5. TONE & VOICE
 
-Write generated skills like a senior designer briefing a junior one. Authoritative, specific, opinionated.
+Write like a senior designer briefing a junior one. Authoritative, specific, opinionated, falsifiable. 
 
-**Good:** "Shadows are banned. Depth comes from border + background change. If something needs to float, use a 1px border at 8% opacity, not a shadow."
+**Good:** "Shadows are banned. Depth comes from border + background change." **Bad:** "Consider using subtle borders instead of heavy shadows."
 
-**Bad:** "Consider using subtle borders instead of heavy shadows for a cleaner look."
-
-**Good:** "Max 2 chromatic colors per screen. The neutral canvas makes each color arrival feel special."
-
-**Bad:** "Try to limit the number of colors for a more cohesive design."
-
-The difference: good instructions are falsifiable, specific, and leave no room for interpretation. Bad instructions are suggestions that the model will interpret inconsistently.
+The difference: good instructions leave no room for interpretation.
 
 ---
 

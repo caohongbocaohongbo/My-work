@@ -1,0 +1,183 @@
+# 示例值仅为说明格式，生成时按品牌实际分析替换
+name: "Vector"
+philosophy: "Precision tooling. Dense, keyboard-first, violet-accented."
+primary_mode: "dark"
+brand_domain: "project management / issue tracking"
+brand_type: "ui-rich"    # or "content-rich"
+mono_for_code: true      # code blocks, file paths, shell commands, inline technical tokens
+mono_for_metrics: true   # pricing, counts, timestamps, percentages, ID strings
+# locked_weight: 400     # OPTIONAL. Set only when the brand genuinely uses a single font weight across all text.
+# Backwards-compat: older skills may have `mono_for_data: true/false`. Treat `mono_for_data: true` as `mono_for_code: true + mono_for_metrics: true`.
+
+# ── PRIMITIVES ── Raw scales derived from brand analysis
+primitives:
+  colors:
+    neutral:    # Temperature matches the brand (warm/cool/pure)
+      50: "#FAFAFA"
+      100: "#F4F4F5"
+      200: "#E4E4E7"
+      300: "#D4D4D8"
+      400: "#A1A1AA"
+      500: "#71717A"
+      600: "#52525B"
+      700: "#3F3F46"
+      800: "#27272A"
+      900: "#18181B"
+      950: "#09090B"
+    brand:      # Accent hue, 500 = primary
+      50: "#EEF2FF"
+      100: "#E0E7FF"
+      200: "#C7D2FE"
+      300: "#A5B4FC"
+      400: "#818CF8"
+      500: "#5E6AD2"
+      600: "#4F46E5"
+      700: "#4338CA"
+      800: "#3730A3"
+      900: "#312E81"
+      950: "#1E1B4B"
+    red:   { 50: "#FEF2F2", 500: "#E5484D", 900: "#7F1D1D" }
+    green: { 50: "#F0FDF4", 500: "#4AB66A", 900: "#14532D" }
+    amber: { 50: "#FFFBEB", 500: "#E5A73B", 900: "#78350F" }
+  spacing: [0, 1, 2, 4, 6, 8, 12, 16, 20, 24, 32, 40, 48, 64, 96]
+  radii: [0, 2, 4, 6, 8, 12, 16, 24, 999]
+  # NOTE: The default radii scale above is a SUPERSET — trim unused values for the brand.
+  #   Pill-first brands → radii: [0, 4, 8, 999]
+  #   Sharp / hard-edge brands → radii: [0, 2, 4]
+  #   Soft-but-not-round brands → radii: [0, 4, 8, 12, 16]
+  # RULE: After generating semantic tokens, audit primitives — any value not referenced must be removed.
+
+# ── SEMANTIC TOKENS ── Roles that reference primitives via {path} notation
+tokens:
+  colors:
+    light:
+      background: "{neutral.50}"
+      surface1: "{neutral.100}"
+      surface2: "{neutral.200}"
+      surface3: "{neutral.300}"
+      border: "{neutral.200}"
+      border_visible: "{neutral.300}"
+      text1: "{neutral.900}"
+      text2: "{neutral.600}"
+      text3: "{neutral.500}"
+      text4: "{neutral.400}"
+      accent: "{brand.500}"
+      accent_subtle: "{brand.50}"
+    dark:
+      background: "{neutral.950}"
+      surface1: "{neutral.900}"
+      surface2: "{neutral.800}"
+      surface3: "{neutral.700}"
+      border: "{neutral.800}"
+      border_visible: "{neutral.700}"
+      text1: "{neutral.50}"
+      text2: "{neutral.400}"
+      text3: "{neutral.500}"
+      text4: "{neutral.600}"
+      accent: "{brand.400}"
+      accent_subtle: "{brand.950}"
+    success: "{green.500}"
+    warning: "{amber.500}"
+    error: "{red.500}"
+
+  spacing:
+    2xs: 2
+    xs: 4
+    sm: 8
+    md: 16
+    lg: 24
+    xl: 32
+    2xl: 48
+    3xl: 64
+    4xl: 96
+
+  radii:
+    element: 4      # small controls, checkboxes
+    control: 6      # buttons, inputs
+    component: 8    # cards, panels
+    container: 12   # modals, sheets
+    pill: 999       # pills, tags (if brand uses them)
+
+  typography:
+    display: { family: "Inter", size: "36px", weight: 500, line_height: 1.1 }
+    body: { family: "Inter", size: "14px", weight: 400, line_height: 1.5 }
+    mono: { family: "JetBrains Mono", size: "12px", weight: 400 }
+
+  elevation:
+    strategy: "flat"
+
+  motion:
+    personality: "mechanical"
+    easing: "ease-out"
+    duration_fast: "100ms"
+    duration_normal: "150ms"
+
+  # Mandatory. Full dial reference: references/hero-stage.md
+  hero_stage:
+    preset: "painterly-no-hero"   # or null for fully manual
+    observed_style:
+      description: "Hand-painted warm landscape scenes; no foreground subject — the background IS the hero."
+      where_used: ["hero", "feature sections"]
+    background:
+      medium: "painterly"         # gradient / mesh / painterly / shader / pattern / bokeh / sculptural / noise / photo / absent
+      color_mode: "palette"       # monochrome / dual-tone / palette / brand-tinted-neutral
+      saturation: "muted"         # flat / muted / vibrant / neon
+      light_source: "ambient"     # top / bottom / top-l..br / center / ambient / none
+      falloff: "soft"             # hard / soft / radial / linear
+      vignette: "off"             # off / subtle / strong
+      texture: "paint"            # clean / grain / paper / paint / pixel
+      motion: "static"            # static / drift / pulse / reactive
+      intensity: "subtle"         # subtle / bold / blown-out  ← default subtle
+      safe_zone: "full-bleed"     # full-bleed / masked-for-text / edge-only
+      color_palette: ["#FFA47C", "#FFE926", "#FF7DD3", "#FFC2A8", "#5CB13E"]
+    hero:
+      subject: "none"             # none / luminous / object / device / composition / photo-cutout
+      # form: "sphere"            # sphere / disc / ring / torus — ONLY for luminous
+    relation:
+      type: "flat"                # flat / glow / halo / reflection / emissive / shadow-only
+      bleed: 0                    # 0-100
+      # Disallowed: luminous+shadow-only, object+emissive, device+emissive, composition+emissive
+    disclaimer: "Approximated with SVG + CSS. The real brand uses commissioned illustrations not redistributed with this skill."
+
+  # Dual-track iconography — brand reality + our fallback
+  iconography:
+    observed_style:
+      description: "Custom 1.75px outline icons with rounded terminals."
+      stroke_weight: "regular"
+      corner_treatment: "soft"
+      fill_style: "outline"
+      form_language: "humanist"
+      visual_density: "balanced"
+    fallback_kit:
+      name: "Phosphor"
+      weight: "regular"
+      match_score: "high"
+      match_reasoning: "Phosphor regular matches the observed stroke weight, rounded terminals, and humanist form language."
+      cdn: "https://unpkg.com/@phosphor-icons/web@2/src/regular/style.css"
+      icon_class_prefix: "ph ph-"
+    disclaimer: "Icons in the generated preview are a best-match fallback. The brand's actual icons are proprietary."
+
+components:
+  button_primary:
+    source: "observed"
+    background: "{brand.500}"
+    color: "#FFFFFF"
+    padding: "10px 16px"
+    radius: "{radii.control}"
+    font_weight: 500
+    hover: { background: "{brand.600}" }
+  # ... (add more components based on Phase 2 inventory)
+
+app_screen:
+  archetype: "dashboard"    # dashboard / editor / list-detail / feed / conversational / canvas
+  frame: "browser"          # browser / phone / desktop / tablet
+  frame_params:
+    url: "app.vector.dev/projects"
+    title: "Vector — Projects"
+  content_seed: "SLO dashboard for checkout-api"
+  required_tokens_checklist:
+    - "background, surface1, surface2, surface3, border, border_visible"
+    - "text1, text2, text3, text4"
+    - "accent, accent_subtle, success, warning, error"
+    - "all typography scale tokens"
+    - "all spacing tokens used in components"
