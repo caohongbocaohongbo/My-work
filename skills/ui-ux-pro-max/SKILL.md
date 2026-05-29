@@ -1,6 +1,9 @@
 ---
 name: ui-ux-pro-max
-description: "UI/UX design intelligence for web and mobile. Includes 50+ styles, 161 color palettes, 57 font pairings, 161 product types, 99 UX guidelines, and 25 chart types across 10 stacks (React, Next.js, Vue, Svelte, SwiftUI, React Native, Flutter, Tailwind, shadcn/ui, and HTML/CSS). Actions: plan, build, create, design, implement, review, fix, improve, optimize, enhance, refactor, and check UI/UX code. Projects: website, landing page, dashboard, admin panel, e-commerce, SaaS, portfolio, blog, and mobile app. Elements: button, modal, navbar, sidebar, card, table, form, and chart. Styles: glassmorphism, claymorphism, minimalism, brutalism, neumorphism, bento grid, dark mode, responsive, skeuomorphism, and flat design. Topics: color systems, accessibility, animation, layout, typography, font pairing, spacing, interaction states, shadow, and gradient. Integrations: shadcn/ui MCP for component search and examples."
+description: "UI/UX 设计智能辅助（按需条件加载）。当用户指令中未明确引用 DESIGN.md / Figma链接 / 风格URL / copyStyle 时自动启用，提供 50+ 风格、161 套色板、57 组字体配对、99 条 UX 准则。触发词：'设计一个页面'、'做一个 Dashboard'、'UI 风格'、'配色方案'、'交互优化'——仅在缺少明确设计参考时生效。加载规则见 config/skill-triggers.md。"
+version: 2.0.0
+load_strategy: conditional-auto
+condition: "用户指令中缺少 DESIGN.md / Figma链接 / 品牌风格名 / 风格参考URL / copyStyle"
 ---
 
 # UI/UX Pro Max - Design Intelligence
@@ -9,17 +12,20 @@ Comprehensive design guide for web and mobile applications. Contains 50+ styles,
 
 ## When to Apply
 
-This Skill should be used when the task involves **UI structure, visual design decisions, interaction patterns, or user experience quality control**.
+**Auto-load rule（见 config/skill-triggers.md）：** 用户指令中缺少 DESIGN.md / Figma 链接 / 品牌风格名 / 风格参考 URL / copyStyle 时自动启用。
+
+### Do NOT Use (skip)
+
+- 用户已提供 DESIGN.md 文件路径
+- 用户已提供 Figma 设计稿链接（figma.com/design/ 或 figma.com/file/）
+- 用户已指定明确的品牌风格名或参考网站 URL
+- 用户调用了 copyStyle 提取风格（copyStyle 已覆盖色板/字体/组件规范）
 
 ### Must Use
 
-This Skill must be invoked in the following situations:
-
-- Designing new pages (Landing Page, Dashboard, Admin, SaaS, Mobile App)
-- Creating or refactoring UI components (buttons, modals, forms, tables, charts, etc.)
-- Choosing color schemes, typography systems, spacing standards, or layout systems
-- Reviewing UI code for user experience, accessibility, or visual consistency
-- Implementing navigation structures, animations, or responsive behavior
+- 从零设计新页面，无设计稿、无 DESIGN.md、无风格参考
+- 需要选择配色、字体、间距、布局系统
+- 审查 UI 代码的 UX 质量、无障碍性、视觉一致性
 - Making product-level design decisions (style, information hierarchy, brand expression)
 - Improving perceived quality, clarity, or usability of interfaces
 

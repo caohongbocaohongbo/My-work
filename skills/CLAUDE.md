@@ -8,6 +8,14 @@
 
 遵循 `~/.claude/CLAUDE.md` 中的按需加载策略。禁止预加载或打包加载。
 
+**条件自动加载：** 部分 Skill 支持根据用户指令内容自动判断是否需要加载。规则定义在 `config/skill-triggers.md`，所有智能体（Claude Code / Codex / Trae / Comate）共用。
+
+| Skill | 加载策略 | 触发条件 |
+|-------|---------|---------|
+| ui-ux-pro-max | 条件自动加载 | 用户指令中**缺少** DESIGN.md / Figma链接 / 风格URL / copyStyle |
+| frontend-design | Agent 显式加载 | 已有设计参考 + 需要生成可运行页面代码 |
+| copyStyle (hue) | Agent 显式加载 | ux-agent 分析品牌/截图/URL 风格时 |
+
 ### 2. Skills 可由 Agent 自由组合
 
 Agent 执行任务时自行组合所需 Skills。典型组合：

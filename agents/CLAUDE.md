@@ -85,27 +85,48 @@
 #### 加载原则
 
 - **默认零加载**：会话启动时不自动加载 skill，节省 token 给实际任务
-- **Agent 显式声明**：Agent 执行任务前，分析所需能力，显式通过 `Skill` 工具加载对应 skill
+- **条件自动加载**：部分 Skill 支持根据用户指令自动判断，规则见 `config/skill-triggers.md`，所有智能体共用
+- **Agent 显式声明**：Agent 执行任务前，分析所需能力 + 条件规则，显式通过 `Skill` 工具加载对应 skill
 - **用完即释放**：skill 使用完毕后不保留在上下文，下次需要时重新加载
 - **禁止预加载**：不得"可能用到就提前加载"，只在确定需要时加载
+
+#### 条件自动加载规则
+
+| Skill | 策略 | 条件 |
+|-------|------|------|
+| ui-ux-pro-max | **auto-load** 仅当无设计参考 | 指令中缺少 DESIGN.md / Figma链接 / 风格名 / 风格URL / copyStyle |
+| frontend-design | Agent 显式加载 | 已有设计参考 + 需生成可运行页面 |
+
+**判定流程（Agent 启动时执行）：**
+
+```
+分析用户指令 → 
+├── 含 DESIGN.md → skip ui-ux-pro-max，直接用 DESIGN.md 的色板/字体/间距
+├── 含 Figma 链接 → skip ui-ux-pro-max，从 Figma 提取视觉规范
+├── 含 "XX风格" / 风格URL → skip ui-ux-pro-max，用 copyStyle 提取
+└── 无以上信号 → auto-load ui-ux-pro-max（50+ 风格/161 色板备选）
+```
 
 #### 各 Agent 推荐 Skill 清单
 
 | Agent | 常需 Skill | 加载时机 |
 |-------|-----------|----------|
 | req-agent | 无（纯文本分析） | — |
-| ux-agent | figma-use, figma-generate-design, design-md | 开始 Figma 设计时 |
+| ux-agent | figma-use, figma-generate-design, copyStyle | 开始 Figma 设计时 |
 | design-director | figma-use, style-design, design-system | 开始 Figma 设计审查时 |
-| front-agent | frontend-design, ui-ux-pro-max, gsap-advanced-animation | 开始前端编码时 |
+| front-agent | frontend-design, ui-ux-pro-max(条件), gsap-advanced-animation | 开始前端编码时 |
 | back-agent | 无（纯后端设计） | — |
 | test-agent | agent-browser | 需要浏览器测试时 |
 | github-agent | 无 | — |
 | project-conductor | 无（纯编排） | — |
 
+> **front-agent 的 ui-ux-pro-max 加载规则：** 如果用户已提供 DESIGN.md / Figma 链接 / 明确风格参考 → **跳过** ui-ux-pro-max，直接用现有色板/字体/间距写代码。仅在用户只说"做一个 XX 页面"而无任何设计输入时才加载。
+
 #### 禁止行为
 
 - **禁止一次性加载所有 skill** — 只加载当前阶段需要的
 - **禁止 skill 链式预加载** — 不能"当前阶段加载下个阶段的 skill"
+- **禁止在设计参考已有时代加载 ui-ux-pro-max** — DESIGN.md / Figma / 风格URL 已提供视觉约束，重复加载 44KB 浪费 token
 - **禁止空载运行** — Agent 启动时必须检查是否有多余 skill 占用上下文
 
 ### 7. 重试与人工介入
