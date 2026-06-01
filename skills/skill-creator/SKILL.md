@@ -1,20 +1,26 @@
 ---
 name: skill-creator
+...
 description: 帮用户设计、创建或优化 Claude Code skill，并把 skill 写到正确位置。
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
-  - Bash(ls *)
-  - Bash(which *)
-  - AskUserQuestion
-when_to_use: 当用户想创建、重写、优化、迁移或排查 Claude Code skill 时使用。典型触发词包括："创建一个 skill"、"帮我写个 skill"、"优化这个 SKILL.md"、"把这个流程做成 slash command"、"做一个 /xxx 命令"、"检查 skill 为什么没生效"。
-argument-hint: "<skill-name>"
-arguments:
-  - skill-name
+...
+allowed-tools: - Read
+- Write
+- Edit
+- Glob
+- Grep
+- Bash(ls *)
+- Bash(which *)
+- AskUserQuestion
+argument-hint: <skill-name>
+...
+arguments: - skill-name
+load_strategy: manual
+...
+triggers: - 创建 skill
+- 新建技能
+- skill-creator
 ---
+
 
 # Skill Creator
 

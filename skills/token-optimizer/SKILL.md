@@ -1,22 +1,19 @@
 ---
 name: token-optimizer
+...
 description: Token 消耗优化工具包。当需要降低 AI 使用成本、优化上下文窗口、减少 Token 浪费、组织代码库以适配 AI、或诊断 Token 消耗时使用。触发词包括"优化 Token"、"降低成本"、"上下文满了"、"Token 太多"、"组织代码"、"prompt 缓存"、"API 成本"等。涵盖文件组织、CLAUDE.md 优化、上下文管理、模型选择策略、MCP 管理、Prompt 架构、API 缓存 / Batch 等全部维度。所有建议均有实验数据支撑。
-when_to_use:
-  - 用户抱怨或询问 Claude Code 运行慢、费用高、Token 消耗大
-  - 上下文窗口频繁满、需要 /compact 或 /clear
-  - 项目 CLAUDE.md 超过 500 行需要优化
-  - 代码文件超过 150 行需要拆分
-  - 活跃 MCP 超过 10 个需要精简
-  - 用户想了解 API 层面的 Prompt 缓存或 Batch API 省钱技巧
-  - 每次会话开始时主动检查上下文基线（SessionStart 触发）
-  - 子代理任务完成后检查 Token 浪费情况（SubagentStop 触发）
-argument-hint: "[diagnose | optimize | audit]"
+...
+argument-hint: '[diagnose | optimize | audit]'
 compatibility: Claude Code
+...
 license: MIT
-metadata:
-  author: amunozdev
-  version: 1.4.0
+...
+metadata: author: amunozdev
+version: 1.4.0
+load_strategy: always
+...
 ---
+
 
 # Token Optimizer
 

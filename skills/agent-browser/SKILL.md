@@ -1,22 +1,24 @@
 ---
 name: agent-browser
+...
 description: 浏览器自动化工具，用于 AI Agent 的网页交互。当需要打开网站、填写表单、点击按钮、截图、数据抓取、测试 Web 应用或任何浏览器自动化任务时使用。触发词包括"打开网站"、"填表"、"点击按钮"、"截图"、"抓取数据"、"测试页面"、"登录网站"、"浏览器自动化"等。也适用于探索性测试、QA、Bug 排查或 App 质量审查。也支持 Electron 桌面应用（VS Code、Slack、Discord、Figma、Notion、Spotify）和 Vercel Sandbox 微虚拟机 / AWS Bedrock AgentCore 云浏览器环境。
-when_to_use:
-  - 用户要求打开/访问某个网站或 URL
-  - 用户要求填写表单、点击按钮、提交数据
-  - 用户要求对网页截图或提取页面数据
-  - 用户要求测试 Web 应用或排查 UI Bug
-  - 用户要求登录网站或执行浏览器自动化
-  - 前端开发完成后需要浏览器验证 UI 还原度
-  - 部署后需要验证线上页面可访问性
-  - 需要对 Electron 桌面应用进行自动化操作
-argument-hint: "<url | action>"
+...
+argument-hint: <url | action>
+...
 compatibility: Claude Code / Codex / Cursor
+...
 license: MIT
-metadata:
-  source: vercel-labs/agent-browser
-  version: 1.0.0
+...
+metadata: source: vercel-labs/agent-browser
+version: 1.0.0
+load_strategy: manual
+...
+triggers: - 浏览器自动化
+- 打开网页
+- 截图
+- 网页抓取
 ---
+
 
 # Agent Browser
 

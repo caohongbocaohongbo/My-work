@@ -1,7 +1,15 @@
 ---
 name: information-architecture
+...
 description: 搭建产品信息架构，规划导航与内容布局，优化用户信息查找效率，规范产品结构
+...
+load_strategy: manual
+...
+triggers: - 信息架构
+- 导航规划
+- 内容布局
 ---
+
 # 信息架构设计
 ## 适用场景
 APP/网站结构规划、复杂产品功能梳理、导航栏设计、内容分类体系搭建、用户流程路径优化

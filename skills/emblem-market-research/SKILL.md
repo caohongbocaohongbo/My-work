@@ -1,20 +1,24 @@
 ---
 name: emblem-market-research
-description: >
-  Crypto market intelligence via EmblemAI. Trending tokens, on-chain analytics, derivatives data,
-  and smart money tracking from CoinGecko, CoinGlass, Birdeye, and Nansen. Use when the user wants
-  market data, trending tokens, derivatives analytics, or on-chain intelligence.
+...
+description: "Crypto market intelligence via EmblemAI. Trending tokens, on-chain analytics, derivatives data, and smart money tracking from CoinGecko, CoinGlass, Birdeye, and Nansen. Use when the user wants market data, trending tokens, derivatives analytics, or on-chain intelligence.
+"
 license: MIT
-compatibility: >
-  Requires Node.js >= 18.0.0, @emblemvault/agentwallet CLI, and internet access.
-  Works on Claude Code, Cursor, Codex, OpenClaw, and other agents following the Agent Skills spec.
-metadata:
-  author: EmblemAI
-  version: "1.1.0"
-  homepage: https://emblemvault.ai
-  docs: https://emblemvault.ai/docs
-  docs-interactive: https://emblemvault.dev
+...
+compatibility: "Requires Node.js >= 18.0.0, @emblemvault/agentwallet CLI, and internet access. Works on Claude Code, Cursor, Codex, OpenClaw, and other agents following the Agent Skills spec.
+"
+metadata: author: EmblemAI
+docs: https://emblemvault.ai/docs
+docs-interactive: https://emblemvault.dev
+homepage: https://emblemvault.ai
+version: 1.1.0
+load_strategy: manual
+...
+triggers: - 加密货币
+- 链上数据
+- token 分析
 ---
+
 
 # Emblem Market Research
 

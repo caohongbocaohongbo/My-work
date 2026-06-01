@@ -1,7 +1,15 @@
 ---
 name: ux-research
+...
 description: 开展用户研究，挖掘用户需求与痛点，输出用户画像、调研结论，支撑UI/UX设计决策
+...
+load_strategy: manual
+...
+triggers: - 用户研究
+- 用户画像
+- 调研
 ---
+
 # 用户研究（UX Research）
 ## 适用场景
 产品前期需求挖掘、功能迭代优化、用户痛点定位、设计方案验证、竞品用户体验分析，适用于全流程UI/UX设计前期调研环节。

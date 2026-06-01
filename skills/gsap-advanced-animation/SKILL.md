@@ -1,7 +1,16 @@
 ---
 name: gsap-advanced-animation
+...
 description: 全球顶级GSAP动效还原，Awwwards级别卷轴动效、时间轴动画、滚动触发动效，适用于微交互和组件动效设计转代码
+...
+load_strategy: manual
+...
+triggers: - GSAP
+- 高级动画
+- 滚动动画
+- 时间轴动画
 ---
+
 
 # GSAP 高级动效 设计转代码
 

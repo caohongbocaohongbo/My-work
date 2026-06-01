@@ -1,7 +1,12 @@
 ---
-name: "find-skills"
-description: "帮助查找和发现适合特定需求的skill。当用户询问如何做某事或需要什么skill时，使用此技能来搜索和推荐相关skill。"
+name: find-skills
+...
+description: 帮助查找和发现适合特定需求的skill。当用户询问如何做某事或需要什么skill时，使用此技能来搜索和推荐相关skill。
+...
+load_strategy: always
+...
 ---
+
 
 # Find Skills
 

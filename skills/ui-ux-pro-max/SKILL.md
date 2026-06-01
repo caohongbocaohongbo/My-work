@@ -1,10 +1,16 @@
 ---
 name: ui-ux-pro-max
-description: "UI/UX 设计智能辅助（按需条件加载）。当用户指令中未明确引用 DESIGN.md / Figma链接 / 风格URL / copyStyle 时自动启用，提供 50+ 风格、161 套色板、57 组字体配对、99 条 UX 准则。触发词：'设计一个页面'、'做一个 Dashboard'、'UI 风格'、'配色方案'、'交互优化'——仅在缺少明确设计参考时生效。加载规则见 config/skill-triggers.md。"
+...
+description: UI/UX 设计智能辅助（按需条件加载）。当用户指令中未明确引用 DESIGN.md / Figma链接 / 风格URL / copyStyle 时自动启用，提供 50+ 风格、161 套色板、57 组字体配对、99 条 UX 准则。触发词：'设计一个页面'、'做一个 Dashboard'、'UI 风格'、'配色方案'、'交互优化'——仅在缺少明确设计参考时生效。加载规则见 config/skill-triggers.md。
+...
 version: 2.0.0
+...
 load_strategy: conditional-auto
-condition: "用户指令中缺少 DESIGN.md / Figma链接 / 品牌风格名 / 风格参考URL / copyStyle"
+...
+condition: prompt 中无 DESIGN.md / Figma 链接 / 品牌风格名 / 风格参考URL / copyStyle
+...
 ---
+
 
 # UI/UX Pro Max - Design Intelligence
 

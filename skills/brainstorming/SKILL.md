@@ -1,7 +1,15 @@
 ---
 name: brainstorming
-description: "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation."
+...
+description: You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation.
+...
+load_strategy: manual
+...
+triggers: - 头脑风暴
+- 创意讨论
+- 方案发散
 ---
+
 
 # Brainstorming Ideas Into Designs
 

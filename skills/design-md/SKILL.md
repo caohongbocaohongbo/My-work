@@ -1,12 +1,18 @@
 ---
 name: design-md
+...
 description: Analyze Stitch projects and synthesize a semantic design system into DESIGN.md files
-allowed-tools:
-  - "stitch*:*"
-  - "Read"
-  - "Write"
-  - "web_fetch"
+...
+allowed-tools: - stitch*:*
+- Read
+- Write
+- web_fetch
+load_strategy: manual
+...
+triggers: - 生成 DESIGN.md
+- Stitch 项目
 ---
+
 
 # Stitch DESIGN.md Skill
 

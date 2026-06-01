@@ -1,19 +1,24 @@
 ---
 name: hotel-admin-blue
+...
 description: 基于当前酒店 SaaS 后台蓝色主题风格，为新页面生成一致的视觉规范、组件样式和 HTML/原型结构。适用于集团签约、订单、发票、履约、库存等后台页面。
-allowed-tools:
-  - Read
-  - Edit
-  - Write
-  - Bash
-  - mcp__pencil__batch_design
-  - mcp__pencil__get_screenshot
-when_to_use: 当你要为酒店/商旅/集团签约类 SaaS 后台新增页面、重设计现有页面、输出 HTML 原型，且希望页面延续当前项目的蓝色企业级视觉体系时使用。典型场景包括“新增订单页”“重做签约总览”“补一个库存分析页”“把旧 Axure 页面改成统一风格 HTML”。
-argument-hint: "<页面名称> [业务模块]"
-arguments:
-  - 页面名称
-  - 业务模块
+...
+allowed-tools: - Read
+- Edit
+- Write
+- Bash
+- mcp__pencil__batch_design
+- mcp__pencil__get_screenshot
+argument-hint: <页面名称> [业务模块]
+...
+arguments: - 页面名称
+- 业务模块
+load_strategy: manual
+...
+triggers: - 酒店后台
+- SaaS 后台风格
 ---
+
 
 # Hotel Admin Blue
 
