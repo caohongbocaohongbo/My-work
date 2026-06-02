@@ -1,12 +1,7 @@
 ---
 name: subagent-driven-development
-...
 description: Use when executing implementation plans with independent tasks in the current session
-...
-load_strategy: always
-...
 ---
-
 
 # Subagent-Driven Development
 

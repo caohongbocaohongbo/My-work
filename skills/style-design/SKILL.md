@@ -1,20 +1,15 @@
 ---
 name: style-design
-...
 description: 分析截图或网页链接中的 UI 风格，提炼可复用的视觉与组件规范，用于新项目设计参考
-...
-allowed-tools: - Read
-- WebFetch
-- AskUserQuestion
-argument-hint: <image-path-or-url> [more-inputs...]
-...
-arguments: - input
-load_strategy: conditional-auto
-...
-condition: 用户提供截图/网页URL 要求分析 UI 风格或提炼设计规范
-...
+allowed-tools:
+  - Read
+  - WebFetch
+  - AskUserQuestion
+when_to_use: 当用户希望你分析截图、网页链接或现有页面设计风格，并整理成可复用的 UI 设计规范时使用。适用于灵感收集、竞品拆解、设计系统提炼、复刻视觉风格前的分析。
+argument-hint: "<image-path-or-url> [more-inputs...]"
+arguments:
+  - input
 ---
-
 
 # Style Design
 

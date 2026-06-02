@@ -8,14 +8,6 @@
 
 遵循 `~/.claude/CLAUDE.md` 中的按需加载策略。禁止预加载或打包加载。
 
-**加载策略：** 每个 Skill 的 `SKILL.md` frontmatter 中自声明 `load_strategy` 和 `condition`/`triggers` 字段，所有智能体（Claude Code / Codex / Trae / Comate）读取后自行判断。
-
-| 策略 | 数量 | 行为 |
-|------|------|------|
-| `always` | 10 | 核心工作流 skill，按任务上下文自动可用 |
-| `conditional-auto` | 4 | 满足 condition 时自动加载，否则 skip |
-| `manual` | 18 | 仅用户 `/name` 或触发词匹配时加载 |
-
 ### 2. Skills 可由 Agent 自由组合
 
 Agent 执行任务时自行组合所需 Skills。典型组合：
@@ -25,7 +17,7 @@ Agent 执行任务时自行组合所需 Skills。典型组合：
 
 ### 3. Skill 缺失时的处理流程
 
-当执行工作流需要某个领域能力，但本地 `/Users/fangcang/.claude/skills/` 下**没有对应 Skill** 时：
+当执行工作流需要某个领域能力，但本地 `${CLAUDE_HOME}/.claude/skills/` 下**没有对应 Skill** 时：
 
 ```
 需要 Skill?
@@ -113,3 +105,18 @@ skills/<skill-name>/
 | ux-research | 用户研究项目专用 |
 | web-design-guidelines | 无障碍审查专用 |
 | self-improving-agent | 自动化运行，但描述仍占 token |
+
+### 9. Skill 多级查找规则
+
+部分 Skill（`frontend-design`、`interaction-design`、`ui-ux-pro-max`）仅存放在 `agents/*/skills/` 子目录中，
+不在 `skills/` 下。当需要某个 Skill 时按以下层级查找：
+
+```
+需要 Skill: <name>
+├── 1. ${CLAUDE_HOME}/.claude/skills/<name>/          ← 先查 skills/
+├── 2. ${CLAUDE_HOME}/.claude/agents/*/skills/<name>   ← 再查 agent 内部
+├── 3. ${CLAUDE_HOME}/.claude/skills-archive/<name>/   ← 最后查归档
+└── 未找到 → 使用 find-skills 搜索或 skill-creator 创建
+```
+
+此规则确保去重后 Agent 仍能找到所有 Skill。
