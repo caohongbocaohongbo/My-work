@@ -125,6 +125,7 @@ rounded:
   sm: 6px
   md: 8px
   lg: 12px
+  full: 999px
 
 controlHeight:
   sm: 28px
@@ -401,6 +402,7 @@ easing:
 | `{rounded.sm}` | 6px | Chip / 小控件 / 标签 |
 | `{rounded.md}` | 8px | 按钮 / 输入框 / 卡片 |
 | `{rounded.lg}` | 12px | 容器卡 / 大面板 |
+| `{rounded.full}` | 999px | 开关轨道 / 圆钮 / pill 胶囊标签 |
 
 ### 阴影
 系统采用极克制阴影策略，仅 3 级：
@@ -806,6 +808,113 @@ easing:
 | 边框归属 | 仅输入区域有独立边框 (`#d5dde7 1px rounded 6`) | 边框在外层容器上 (`#e1eef5 0.6px rounded 8`)，输入区域无独立边框 |
 | Label 颜色 | `{colors.ink-500}` (#617285) | `{colors.table-header-text}` (#97A6B8) |
 | 输入区域圆角 | 6px | 6px（在外层 8px 圆角内） |
+
+### 开关 (Switch)
+
+基于 Figma 组件库 `订单通组件 / SWITCH ITEM` (file=0MXuYqIfMLENxlqG7XdSck, node-id=11:2) 精确还原。Switch 是布尔状态切换控件，含 **On（开）** 和 **Off（关）** 两个状态变体，用于设置项的即时启用/停用。
+
+**轨道 (track)**：
+- 尺寸：宽 `44px` × 高 `24px`（固定）
+- 圆角：`{rounded.full}` 999px（pill 全圆角）
+- `overflow: hidden`，`position: relative`
+- **On 态背景**：`{colors.brand-500}` (#2F87AC)
+- **Off 态背景**：`{colors.data-neutral}` (#cbd5e1)
+
+**圆钮 (thumb)**：
+- 尺寸：`18px × 18px`（固定正方形）
+- 颜色：`{colors.surface}` (#ffffff)
+- 圆角：`{rounded.full}` 999px（正圆）
+- 垂直定位：`top: 3px`（轨道高 24 - thumb 18 = 6，上下各 3px 居中）
+- **On 态水平定位**：`left: 23px`（贴右，右侧留 3px）
+- **Off 态水平定位**：`left: 3px`（贴左，左侧留 3px）
+- 切换位移：`20px`（23 − 3），开关动画沿水平方向滑动
+
+**状态速查**：
+
+| 状态 | 轨道背景 | 圆钮位置 | 语义 |
+|------|---------|---------|------|
+| **On（开）** | `{colors.brand-500}` (#2F87AC) | `left: 23px`（右） | 功能已启用 |
+| **Off（关）** | `{colors.data-neutral}` (#cbd5e1) | `left: 3px`（左） | 功能已停用 |
+
+**交互**：
+- 点击轨道任意位置切换 On/Off
+- 切换时圆钮水平滑动 + 轨道背景色过渡，过渡 `{easing.base}` (0.18s)
+- Disabled 态：整体 `opacity: 0.4`，`cursor: not-allowed`，无 hover/点击响应
+- Focus：可见聚焦环 `0 0 0 3px rgba(46,160,206,0.18)`
+
+```css
+.switch {
+  width: 44px; height: 24px;
+  border-radius: 999px;
+  position: relative;
+  transition: background 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.switch--on  { background: #2F87AC; }   /* brand-500 */
+.switch--off { background: #cbd5e1; }   /* data-neutral */
+.switch__thumb {
+  position: absolute;
+  width: 18px; height: 18px; top: 3px;
+  background: #ffffff;
+  border-radius: 999px;
+  transition: left 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.switch--on  .switch__thumb { left: 23px; }
+.switch--off .switch__thumb { left: 3px; }
+```
+
+### 设置项 (Switch Item / setting-item)
+
+基于 Figma 页面 `订单通知设置 / 消息接收配置` (file=DEyZ3lrUHsg1vsi60McIVj, node-id=21:537) 精确还原。Switch Item 是 Switch 开关在页面中的标准应用形态——**左侧文字说明 + 右侧开关**的设置行，用于「消息接收配置」「自动接单」等开关型设置区。
+
+**外层容器（设置卡）**：
+- 背景 `{colors.surface}` (#ffffff)
+- 边框 `1px solid {colors.line-soft}` (#eef3f7)
+- 圆角 `{rounded.lg}` (12px)
+- 承载一组设置行，行间以分隔线划分
+
+**设置行 (setting-item)**：
+- 高度 `64px`（固定），宽度撑满容器
+- 左右两端对齐布局：左侧文字块，右侧 Switch
+- Switch 距容器右边缘 `13px`，垂直居中（`top: 20px`，(64−24)/2 = 20）
+
+**标题 (setting-title)**：
+- 字体 Inter SemiBold，字号 `13px`，行高 `19px`
+- 文字色 `{colors.ink-900}` (#1f2d3d)
+- 左内边距 `18px`，距行顶 `13px`
+
+**描述 (setting-desc)**：
+- 字体 Inter Regular，字号 `12px`，行高 `17px`
+- 文字色 `{colors.table-header-text}` (#97A6B8)
+- 左内边距 `18px`，距行顶 `35px`（位于标题下方）
+
+**分隔线 (item-line)**：
+- 高度 `1px`，颜色 `{colors.line-soft}` (#eef3f7)
+- 位于相邻两行之间，最后一行下方无分隔线
+
+**结构速查**：
+
+| 元素 | 字号/尺寸 | 字重 | 颜色 | 定位 |
+|------|----------|------|------|------|
+| 容器 | 边框 1px / 圆角 12px | — | 背景 #fff，边框 #eef3f7 | — |
+| setting-item 行 | 高 64px | — | — | 全宽 |
+| setting-title | 13px / 行高 19px | SemiBold | `{colors.ink-900}` #1f2d3d | left 18px, top 13px |
+| setting-desc | 12px / 行高 17px | Regular | `{colors.table-header-text}` #97A6B8 | left 18px, top 35px |
+| switch | 44×24 | — | 见「开关 (Switch)」 | 距右 13px, top 20px |
+| item-line | 高 1px | — | `{colors.line-soft}` #eef3f7 | 行底 |
+
+```
+<div class="setting-card">            <!-- 白底 / 1px #eef3f7 / 圆角 12px -->
+  <div class="setting-item">          <!-- 高 64px -->
+    <div class="setting-text">
+      <p class="setting-title">浏览器弹窗提醒</p>
+      <p class="setting-desc">新订单或订单状态变化时，在浏览器右上角弹窗提醒。</p>
+    </div>
+    <div class="switch switch--on"><div class="switch__thumb"></div></div>
+  </div>
+  <div class="item-line"></div>       <!-- 1px #eef3f7 分隔线 -->
+  <div class="setting-item">…</div>
+</div>
+```
 
 ### 图表面板 (chart-board)
 - 固定高度 252px 的图表容器

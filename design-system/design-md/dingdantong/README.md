@@ -33,6 +33,9 @@
 | 边框 | hairline | #F0F4F7 | 表格行分隔、Tab 底线 |
 | 边框 | hairline-strong | #E1EEF5 | Input 默认边框、面包圈边框 |
 | 边框 | border-input | #DEE0E5 | Select 边框、表格外容器 |
+| 控件 | switch-on | #2F87AC | Switch 开启态轨道（同 primary） |
+| 控件 | switch-off | #CBD5E1 | Switch 关闭态轨道（neutral） |
+| 控件 | switch-thumb | #FFFFFF | Switch 圆钮（18×18） |
 
 ## 关键组件规范索引
 
@@ -45,6 +48,8 @@ DESIGN.md 中已定义的组件（按文档顺序）:
 - **Form Input** — 40px 高，标签内嵌左侧，4 态 (default/focus/error/disabled)
 - **Form Select** — 40px 高，260px 宽，下拉面板带选项
 - **Pagination** — 独立边框按钮，激活态 primary-pale 背景
+- **Switch** — 44×24 开关轨道（pill），On=primary #2F87AC / Off=neutral #cbd5e1，18px 白色圆钮
+- **Switch Item** — 设置项行（64px），左侧标题(13px)+描述(12px) / 右侧开关，行间 1px 分隔线
 - **Status Tags** — 3 种语义变体 (paid/pending/cancelled)
 - **Action Links** — Poppins Bold 14px，4 种变体 (primary/danger/muted/disabled)
 - **Button (outline-primary)** — 32px 高，primary 文字 + hairline-strong 边框
