@@ -99,7 +99,8 @@
   "disabledMcpjsonServers": [
     "pencil",
     "open-design",
-    "stitch"
+    "stitch",
+    "cinema4d"
   ],
   "statusLine": {
     "type": "command",
