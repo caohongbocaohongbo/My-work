@@ -77,12 +77,9 @@
       "Bash(tesseract /tmp/figma_design.jpg /tmp/figma_ocr_output -l chi_sim+eng --psm 6)",
       "Bash(tesseract figma_design.png figma_ocr_output -l chi_sim+eng --psm 6)",
       "Bash(tesseract figma_design.png figma_ocr_output2 -l chi_sim+eng --psm 3)",
-
       "Read(*)",
-
       "WebFetch(*)",
       "WebSearch",
-
       "Skill(skill-creator)",
       "Skill(style-design)",
       "Skill(design-system)",
@@ -92,7 +89,6 @@
       "Skill(ux-research)",
       "Skill(hotel-admin-blue)",
       "Skill(update-config)",
-
       "mcp__figma-desktop__get_design_context",
       "mcp__figma-desktop__get_screenshot",
       "mcp__figma-desktop__get_metadata",
@@ -100,7 +96,11 @@
     ],
     "defaultMode": "bypassPermissions"
   },
-  "disabledMcpjsonServers": ["pencil", "open-design", "stitch"],
+  "disabledMcpjsonServers": [
+    "pencil",
+    "open-design",
+    "stitch"
+  ],
   "statusLine": {
     "type": "command",
     "command": "npx -y ccstatusline@latest",
@@ -127,7 +127,16 @@
     "update-config": "name-only",
     "using-git-worktrees": "name-only",
     "ux-research": "name-only",
-    "web-design-guidelines": "name-only"
+    "web-design-guidelines": "name-only",
+    "dispatching-parallel-agents": "name-only",
+    "executing-plans": "name-only",
+    "subagent-driven-development": "name-only",
+    "systematic-debugging": "name-only",
+    "verification-before-completion": "name-only",
+    "writing-plans": "name-only",
+    "style-design": "name-only",
+    "frontend-design": "name-only",
+    "hue": "user-invocable-only"
   },
   "skipDangerousModePermissionPrompt": true,
   "hooks": {
