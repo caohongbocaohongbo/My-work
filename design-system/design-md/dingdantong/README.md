@@ -21,7 +21,7 @@
 | 类别 | 令牌 | 色值 | 用途 |
 |------|------|------|------|
 | 主色 | primary | #2F87AC | 主按钮、Tab 激活、操作链接 |
-| 侧栏 | sidebar | #293A4E | 左侧导航背景 (120px 宽) |
+| 侧栏 | sidebar | #293A4E | 左侧导航背景 (240px 宽) |
 | 表面 | surface-soft | #F5F7FB | 内容区域底色 |
 | 表面 | canvas | #FFFFFF | 卡片、表格行、Header |
 | 表面 | surface-table-header | #FBFCFE | 表头、分页栏、面包屑 |
@@ -41,7 +41,7 @@
 
 DESIGN.md 中已定义的组件（按文档顺序）:
 
-- **Sidebar** — 120px 深蓝侧栏，5px 蓝色激活指示条
+- **Sidebar** — 240px 深蓝侧栏，5px 蓝色激活指示条
 - **Header** — 64px 白色顶栏，含面包屑 pill + 升级 pill
 - **Tab Bar** — 54px，30px 间距，激活态 2px 蓝色底线
 - **Table** — 48px 表头，min 75px 数据行，24px 圆角容器

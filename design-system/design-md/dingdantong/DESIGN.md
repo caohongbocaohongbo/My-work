@@ -182,16 +182,16 @@ easing:
 ### 整体网格结构
 
 ```
-<div class="layout" style="display: grid; grid-template-columns: 188px 1fr; min-height: 100vh;">
-  <aside class="sidebar"><!-- 188px 固定侧边导航 --></aside>
-  <main class="content"><!-- 剩余宽度，1920px 下为 1732px --></main>
+<div class="layout" style="display: grid; grid-template-columns: 240px 1fr; min-height: 100vh;">
+  <aside class="sidebar"><!-- 240px 固定侧边导航 --></aside>
+  <main class="content"><!-- 剩余宽度，1920px 下为 1680px --></main>
 </div>
 ```
 
 | 区域 | 宽度 | 背景色 |
 |------|------|--------|
-| `aside` 侧边栏 | **188px**（固定） | `#14263b` |
-| `main` 内容区 | **1fr**（1920px 下为 1732px） | `{colors.page}` #f4f7fb |
+| `aside` 侧边栏 | **240px**（固定） | `#14263b` |
+| `main` 内容区 | **1fr**（1920px 下为 1680px） | `{colors.page}` #f4f7fb |
 
 ### 内容区内边距
 
@@ -214,11 +214,11 @@ easing:
 
 | 属性 | 值 |
 |------|----|
-| 宽度 | **188px** |
+| 宽度 | **240px** |
 | 高度 | 100vh（粘性满屏） |
 | 背景色 | `#14263b` |
 | 品牌名 | 22px / Inter Semi Bold / #ffffff，x:16 y:22 |
-| 菜单项尺寸 | 168×34px，x:10，间距起始 y:72，行间距 40px |
+| 菜单项尺寸 | 220×34px，x:10，间距起始 y:72，行间距 40px |
 | 菜单项圆角 | 8px |
 | 菜单项文字 | 13px / Inter Regular / rgba(255,255,255,0.8) |
 | **激活项背景** | `rgba(46,160,206,0.18)`（brand-active 18% 透明度） |
