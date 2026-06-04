@@ -46,8 +46,33 @@ log "Syncing scripts..."
 rsync -av --delete "$HOME/.claude/scripts/" "$REPO_DIR/scripts/" "${COMMON_EXCLUDES[@]}" 2>&1 | tail -1
 
 # ── 预设 ────────────────────────────────────────────
-log "Syncing MCP presets..."
+log "Syncing MCP presets (sanitized)..."
 rsync -av --delete "$HOME/.claude/mcp-presets/" "$REPO_DIR/presets/mcp/" "${COMMON_EXCLUDES[@]}" 2>&1 | tail -1
+python3 - <<'PY'
+import json, os, glob, re
+pdir = os.path.expanduser("~/Documents/My-work-repo/presets/mcp")
+SECRET_KEY_RE = re.compile(r"(KEY|TOKEN|SECRET|PASSWORD|AUTHORIZATION|API[-_]?KEY)", re.I)
+for path in glob.glob(f"{pdir}/*.json"):
+    with open(path) as f:
+        try:
+            d = json.load(f)
+        except Exception:
+            continue
+    def scrub(node):
+        if isinstance(node, dict):
+            for k, v in list(node.items()):
+                if isinstance(v, str) and SECRET_KEY_RE.search(k):
+                    node[k] = "<FILL_ME_IN>"
+                else:
+                    scrub(v)
+        elif isinstance(node, list):
+            for item in node:
+                scrub(item)
+    scrub(d)
+    d["_note"] = "脱敏模板。本地启用前自行填入真实凭据。"
+    with open(path, "w") as f:
+        json.dump(d, f, indent=2, ensure_ascii=False)
+PY
 
 log "Syncing Agent presets..."
 rsync -av --delete "$HOME/.claude/agent-presets/" "$REPO_DIR/presets/agents/" "${COMMON_EXCLUDES[@]}" 2>&1 | tail -1
