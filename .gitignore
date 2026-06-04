@@ -1,1 +1,9 @@
 .DS_Store
+*.bak
+*.bak.*
+*.bak-*
+*.orig
+*.tmp
+*_副本*
+config/settings.json
+sync-github.log

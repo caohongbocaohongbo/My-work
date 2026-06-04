@@ -1,88 +1,66 @@
-# My Work — Agent + Skills 工作流仓库
+# My Work — Agent + Skills 工作流仓库（Claude Code 使用说明）
 
-本仓库是个人 AI 辅助设计/开发工作流的完整配置，包含 Agents、Skills 和 DESIGN.md 设计系统集合。
+本仓库是个人 AI 辅助设计/开发工作流的**完整可移植配置**。当本机 `~/.claude/` 与本仓库同步且 Claude Code 读取到这份 `CLAUDE.md` 时，必须遵守下面的协作规则。
 
-在线访问地址：https://caohongbocaohongbo.github.io/My-work/
+公开文档与 GitHub Pages：https://caohongbocaohongbo.github.io/My-work/
 
 ## 仓库结构
 
 ```
-My-work/
-├── CLAUDE.md              # 本文件 — Claude Code 使用说明
-├── README.md              # 公开文档
-├── agents/                # Agent 定义（含 KPI 考核规则）
-│   ├── CLAUDE.md          # Agent 编排规则
-│   ├── project-conductor/ # 主控编排 Agent
-│   ├── req-agent/         # 需求分析 Agent
-│   ├── ux-agent/          # UX 设计 Agent (Figma/Pencil)
-│   ├── front-agent/       # 前端开发 Agent
-│   ├── back-agent/        # 后端设计 Agent
-│   ├── test-agent/        # 联调测试 Agent
-│   ├── github-agent/      # 部署发布 Agent
-│   └── workflows/         # 标准工作流定义
-├── skills/                # 可复用 Skills（Agent 可自由调用）
-│   ├── CLAUDE.md          # Skills 使用与管理规则
-│   ├── figma-*/           # Figma 相关 Skills
-│   ├── design-*/          # 设计系统相关 Skills
-│   ├── frontend-*/        # 前端相关 Skills
-│   ├── ux-*/              # UX 相关 Skills
-│   └── ...                # 更多 Skills
-├── design-system/         # DESIGN.md 设计系统集合（71 个品牌）
-│   ├── README.md          # 使用说明
-│   └── design-md/         # 各品牌 DESIGN.md 文件
-├── CONTRIBUTING.md        # 贡献指南
-├── LICENSE                # MIT 许可证
-└── .github/               # GitHub 配置
+My-work-repo/
+├── bootstrap.sh                # 新机器一键接管脚本
+├── README.md                   # 公开文档
+├── CLAUDE.md                   # 本文件
+├── config/
+│   ├── global-CLAUDE.md        # 全局规则（→ ~/.claude/CLAUDE.md）
+│   ├── strategies/             # 按需启用三策略
+│   ├── mcp.json                # MCP 入口
+│   ├── settings.local.json     # 权限/hook/状态栏（运行态）
+│   └── settings.reference.json # env 脱敏模板
+├── scripts/                    # 按需启用与同步脚本
+├── agents/                     # 5 个常驻 Agent
+├── skills/                     # Skills 工具箱
+├── presets/                    # 按需启用预设
+│   ├── mcp/
+│   └── agents/
+└── design-system/              # 71 个品牌设计系统
 ```
 
-## 使用方式
+## 核心协作约束（强制）
 
-### 1. 标准工作流
+### 1. 按需启用
+- 不预加载任何 MCP / Skill / 非常驻 Agent
+- 触发关键字命中后通过 `scripts/context-on-demand.sh` 启用
+- 任务结束主动询问用户是否回收
+- 详见 `config/strategies/{mcp,skill,agent}-strategy.md`
 
-当用户提出需求时，project-conductor 自动编排 Agent 链路：
+### 2. 子代理摘要回传
+- 子代理完成必须返回 ≤200 字摘要：**产出 / 未决 / 下一步**
+- SubagentStop hook 已注入提示，所有子代理共享
 
-```
-用户需求 → req-agent → ux-agent → front-agent → back-agent → test-agent → github-agent
-              ↓ KPI       ↓ KPI       ↓ KPI         ↓ KPI        ↓ KPI         ↓ KPI
-```
+### 3. 备份统一规则
+- 唯一位置：`~/.claude/backups/`
+- 命名：`{智能体名}_{备份概要}_{YYYYMMDD}_v{版本号}.{扩展名}`
+- 严禁在原文件旁生成 `.bak` / `.orig` / `_副本`
+- 同对象保留最近 3 个版本
 
-每个 Agent 完成后需通过 KPI 考核才进入下一阶段。
+### 4. 输出与设计约束
+- 所有回复中文输出，所有 `.md` 文档中文输出
+- 禁止 emoji，使用 SVG
+- UI 设计在 Figma 或 Pencil 中操作
 
-### 2. Agent + Skills 自由搭配
+### 5. 跨智能体协作机制
+- 全部主对话和子代理共享 `~/.claude/CLAUDE.md` + 三策略文档 + 同一备份位置 + 同一 hook 链
+- Agent ≠ Skill：Agent 是执行体（`agents/`），Skill 是工具箱（`skills/`）
 
-执行任务时，Agent 可根据实际需要自由组合 Skills。典型组合：
+## 自动同步与移植
 
-| 任务类型 | Agent | 搭配 Skills |
-|----------|-------|-------------|
-| Figma 设计任务 | ux-agent | figma-use + figma-generate-design + design-md |
-| 前端动效开发 | front-agent | gsap-advanced-animation + make-interfaces-feel-better + emil-design-eng |
-| UI 审查 | front-agent | web-design-guidelines + ui-ux-pro-max + interaction-design |
-| 设计系统搭建 | ux-agent | design-system + figma-generate-library + design-md |
-| 新品牌 DESIGN.md | any | design-md + agent-reach + style-design |
-| 后端 API 设计 | back-agent | api-design + database-schema |
+- Stop hook → `~/.claude/sync-to-github.sh`：每次会话结束自动 push
+- 推送前 `settings.json` 中的 API token 自动脱敏为 `<FILL_ME_IN>`
+- 新机器 `bash bootstrap.sh` 即可完整接管
 
-### 3. DESIGN.md 使用
+## 不同步的内容（保持本地）
 
-当需要特定品牌风格的 UI 时：
-
-1. 从 `design-system/design-md/<品牌名>/DESIGN.md` 选择目标品牌
-2. 将 DESIGN.md 复制到工作目录
-3. 告诉 Agent："按照 DESIGN.md 的设计规范构建页面"
-
-### 4. Skill 缺失处理
-
-当需要的能力在 skills/ 下不存在时：
-- `find-skills` → 搜索互联网现有 Skill
-- `skill-creator` → 创建新 Skill 并注册到系统
-
-## 本地同步更新
-
-本地对应目录与 GitHub 仓库自动同步：
-
-| 本地路径 | 仓库路径 |
-|----------|----------|
-| `~/.claude/agents/` | `agents/` |
-| `~/.claude/skills/` | `skills/` |
-| `~/Documents/My-design-systen/` | `design-system/` |
-
-当本地文件有更新时，自动推送至 GitHub 仓库。
+- `~/.claude/backups/` — 本地备份产物
+- `~/.claude/sessions/` `~/.claude/history.jsonl` `~/.claude/projects/` — 会话级运行态
+- 任何 `.bak*` / `.tmp` / `.orig` 文件

@@ -1,0 +1,11 @@
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://llmapi.xykjy.com",
+    "ANTHROPIC_AUTH_TOKEN": "<FILL_ME_IN>",
+    "CLAUDE_CODE_DISABLE_NONSTREAMING_FALLBACK": "1",
+    "CLAUDE_CODE_ATTRIBUTION_HEADER": "0",
+    "DISABLE_AUTOUPDATER": "1"
+  },
+  "effortLevel": "medium",
+  "_note": "脱敏模板。新机器复制为 ~/.claude/settings.json 后填入真实凭据。"
+}

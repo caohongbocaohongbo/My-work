@@ -1,0 +1,11 @@
+{
+  "name": "figma-hosted",
+  "config": {
+    "type": "http",
+    "url": "https://mcp.figma.com/mcp",
+    "headers": {
+      "Authorization": "<FILL_ME_IN>"
+    }
+  },
+  "_note": "脱敏模板。本地启用前自行填入真实凭据。"
+}

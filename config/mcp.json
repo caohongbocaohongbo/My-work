@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "url": "http://localhost:3100/sse"
+    },
+    "sqlite": {
+      "url": "http://localhost:3102/sse"
+    }
+  }
+}
