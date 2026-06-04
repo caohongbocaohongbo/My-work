@@ -23,8 +23,9 @@ python3 -c "import json; d=json.load(open('$HOME/.claude/settings.local.json'))[
 
 ## 已归档 Skill
 - 物理位置：`~/.claude/skills-archive/`（不进入 Skill 列表，不消耗 token）
-- 恢复：手工 `mv ~/.claude/skills-archive/<name> ~/.claude/skills/`
-- 当前 `skill-presets/` 为空，`context-on-demand.sh enable skill` 暂不可用
+- 启用：`~/.claude/scripts/context-on-demand.sh enable skill <名称>`
+- 归档：`~/.claude/scripts/context-on-demand.sh disable skill <名称>`
+- 查询：`~/.claude/scripts/context-on-demand.sh list`
 
 ## 新增 Skill 时
 1. 默认设 `name-only`，避免污染 token 基线

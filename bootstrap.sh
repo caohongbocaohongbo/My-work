@@ -6,7 +6,7 @@
 #   git clone https://github.com/caohongbocaohongbo/My-work.git ~/Documents/My-work-repo
 #   bash ~/Documents/My-work-repo/bootstrap.sh
 #
-# 重复执行安全: 已存在文件会被先备份到 ~/.claude/backups/ 再覆盖
+# 重复执行安全: 已存在文件会被先备份到 ~/Documents/My-work-repo/智能体共用/ 再覆盖
 
 set -e
 
@@ -18,17 +18,18 @@ info()  { echo "[OK]  $*"; }
 warn()  { echo "[!!]  $*"; }
 error() { echo "[ERR] $*" >&2; exit 1; }
 
-mkdir -p "$CLAUDE_HOME/backups"
+mkdir -p "$REPO_DIR/智能体共用"
+BACKUP_DIR="$REPO_DIR/智能体共用"
 
 backup_if_exists() {
     local target="$1"
     local label="$2"
     if [[ -e "$target" ]]; then
-        local bk="$CLAUDE_HOME/backups/bootstrap_${label}-pre-install_$(date +%Y%m%d)_v1"
+        local bk="$BACKUP_DIR/bootstrap_${label}-pre-install_$(date +%Y%m%d)_v1"
         local i=1
         while [[ -e "${bk}$( [[ -d $target ]] && echo '' || echo .bak)" ]]; do
             i=$((i+1))
-            bk="$CLAUDE_HOME/backups/bootstrap_${label}-pre-install_$(date +%Y%m%d)_v${i}"
+            bk="$BACKUP_DIR/bootstrap_${label}-pre-install_$(date +%Y%m%d)_v${i}"
         done
         if [[ -d "$target" ]]; then
             cp -R "$target" "$bk"
@@ -79,7 +80,7 @@ cp "$REPO_DIR/scripts/sync-to-github.sh" "$CLAUDE_HOME/sync-to-github.sh" 2>/dev
 # 6. 预设
 backup_if_exists "$CLAUDE_HOME/mcp-presets" "mcp-presets"
 backup_if_exists "$CLAUDE_HOME/agent-presets" "agent-presets"
-mkdir -p "$CLAUDE_HOME/mcp-presets" "$CLAUDE_HOME/agent-presets" "$CLAUDE_HOME/skill-presets"
+mkdir -p "$CLAUDE_HOME/mcp-presets" "$CLAUDE_HOME/agent-presets"
 cp -R "$REPO_DIR/presets/mcp/"* "$CLAUDE_HOME/mcp-presets/" 2>/dev/null || true
 cp -R "$REPO_DIR/presets/agents/"* "$CLAUDE_HOME/agent-presets/" 2>/dev/null || true
 info "已安装 presets (mcp + agents)"

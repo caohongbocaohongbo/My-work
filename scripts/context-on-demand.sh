@@ -7,7 +7,7 @@ set -euo pipefail
 
 CLAUDE_HOME="${HOME}/.claude"
 MCP_PRESETS="${CLAUDE_HOME}/mcp-presets"
-SKILL_PRESETS="${CLAUDE_HOME}/skill-presets"
+SKILL_PRESETS="${CLAUDE_HOME}/skills-archive"
 AGENT_PRESETS="${CLAUDE_HOME}/agent-presets"
 SKILLS_DIR="${CLAUDE_HOME}/skills"
 AGENTS_DIR="${CLAUDE_HOME}/agents"
