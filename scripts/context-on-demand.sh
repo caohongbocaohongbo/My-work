@@ -29,6 +29,28 @@ clear_mark() {
     rm -f "${TOUCH_DIR}/${type}_${name}"
 }
 
+# remove_from_disabled <name>  把 MCP 从 settings.local.json 的 disabledMcpjsonServers 数组移除
+# 避免 enable 写了 mcpServers 但仍被 disabled 列表拦截
+remove_from_disabled() {
+    local name="$1"
+    local settings="${CLAUDE_HOME}/settings.local.json"
+    [[ -f "$settings" ]] || return 0
+    python3 - "$settings" "$name" <<'PY' || true
+import json, sys, pathlib
+p = pathlib.Path(sys.argv[1]); name = sys.argv[2]
+try:
+    d = json.loads(p.read_text())
+except Exception:
+    sys.exit(0)
+arr = d.get('disabledMcpjsonServers', [])
+if name in arr:
+    arr.remove(name)
+    d['disabledMcpjsonServers'] = arr
+    p.write_text(json.dumps(d, indent=2, ensure_ascii=False))
+    print(f"  [sync] settings.local.json → disabledMcpjsonServers 已剔除 [{name}]")
+PY
+}
+
 # ─── 颜色 ───────────────────────────────────────────────
 GREEN='\033[0;32m'; YELLOW='\033[1;33m'; RED='\033[0;31m'; NC='\033[0m'
 info()  { echo -e "${GREEN}[OK]${NC}  $*"; }
@@ -61,7 +83,12 @@ print(json.dumps(d['config']))
         info "[dry-run] 将执行: claude mcp add-json --scope user '${name}' '<config>'"
         return
     fi
-    claude mcp add-json --scope user "${name}" "${config}"
+    claude mcp add-json --scope user "${name}" "${config}" 2>&1 | tee /tmp/.codm_add.$$ | grep -v -i "bearer\|authorization" || true
+    if grep -qi "already exists" /tmp/.codm_add.$$; then
+        info "MCP [${name}] 已在用户配置中，跳过重复添加"
+    fi
+    rm -f /tmp/.codm_add.$$
+    remove_from_disabled "${name}"
     touch_mark mcp "${name}"
     info "MCP [${name}] 已启用（用户级），已记录使用时间戳"
     info "空闲 ${IDLE_MINUTES} 分钟后将由 watchdog 自动 disable（重置：再次执行 enable 或显式 touch）"

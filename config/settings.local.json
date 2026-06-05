@@ -97,8 +97,6 @@
     "defaultMode": "bypassPermissions"
   },
   "disabledMcpjsonServers": [
-    "pencil",
-    "open-design",
     "stitch",
     "cinema4d"
   ],
