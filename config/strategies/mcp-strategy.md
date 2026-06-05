@@ -25,8 +25,22 @@
 ## 回收规则
 - `playwright` / `sqlite` 仅在本地服务在线时连接，无需回收
 - 按需 MCP 任务结束时**主动询问用户**是否 disable（用 `context-on-demand.sh disable mcp <名称>`）
-- 30 分钟未使用的按需 MCP，主 Agent 须提示用户回收
+- **空闲自动回收**：launchd `com.fangcang.claude.ondemand` 每 5 分钟跑 `on-demand-watchdog.sh`，扫描 `~/.claude/cache/on-demand-touch/`，超过 `ON_DEMAND_IDLE_MINUTES`（默认 20 分钟）未刷新的标记自动 disable。日志：`~/.claude/logs/on-demand-watchdog.log`
+- 关键字命中但 MCP 已自动回收时：再次执行 `enable mcp <名称>`（脚本会重置时间戳）
 - 变更后需重启 Claude Code，`/context` 才能反映 token 变化
+
+## 时间戳刷新
+- `enable mcp <名称>` 自动写 `~/.claude/cache/on-demand-touch/mcp_<名称>`
+- 触发关键字命中但已启用时，用 `context-on-demand.sh touch mcp <名称>` 仅刷新时间戳（不重启）
+- `disable` 会同时清掉对应标记
+
+## 关于 figma MCP「当前会话可用」的硬限制
+- Claude Code MCP 在进程启动时连接，**当前会话无法热加载**（CLI 架构限制，无法绕过）
+- 当前会话内若 `use_figma`/`get_screenshot` 报 `No such tool available`：
+  1. 运行 `context-on-demand.sh enable mcp figma-hosted`（时间戳已写入）
+  2. **新开一个 Claude Code 窗口/会话**，新会话即可调用 figma 工具
+  3. 当前会话继续做不依赖 figma 的工作；或退出当前会话重新进入
+- watchdog 仅在「连续 20 分钟未再次 enable / touch」时回收，频繁使用不会被误杀
 
 ## 禁止
 - 预先启用按需 MCP

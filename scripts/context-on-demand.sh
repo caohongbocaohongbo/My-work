@@ -11,6 +11,23 @@ SKILL_PRESETS="${CLAUDE_HOME}/skills-archive"
 AGENT_PRESETS="${CLAUDE_HOME}/agent-presets"
 SKILLS_DIR="${CLAUDE_HOME}/skills"
 AGENTS_DIR="${CLAUDE_HOME}/agents"
+TOUCH_DIR="${CLAUDE_HOME}/cache/on-demand-touch"
+# 默认空闲阈值（分钟），可通过环境变量 ON_DEMAND_IDLE_MINUTES 覆盖
+IDLE_MINUTES="${ON_DEMAND_IDLE_MINUTES:-20}"
+
+mkdir -p "${TOUCH_DIR}"
+
+# touch_mark <type> <name>  写入"最近使用"标记
+touch_mark() {
+    local type="$1" name="$2"
+    : > "${TOUCH_DIR}/${type}_${name}"
+}
+
+# clear_mark <type> <name>
+clear_mark() {
+    local type="$1" name="$2"
+    rm -f "${TOUCH_DIR}/${type}_${name}"
+}
 
 # ─── 颜色 ───────────────────────────────────────────────
 GREEN='\033[0;32m'; YELLOW='\033[1;33m'; RED='\033[0;31m'; NC='\033[0m'
@@ -45,8 +62,17 @@ print(json.dumps(d['config']))
         return
     fi
     claude mcp add-json --scope user "${name}" "${config}"
-    info "MCP [${name}] 已启用（用户级）"
+    touch_mark mcp "${name}"
+    info "MCP [${name}] 已启用（用户级），已记录使用时间戳"
+    info "空闲 ${IDLE_MINUTES} 分钟后将由 watchdog 自动 disable（重置：再次执行 enable 或显式 touch）"
     restart_notice
+}
+
+# 仅刷新时间戳，不重新注册（供 SessionStart hook / 关键词命中时调用）
+mcp_touch() {
+    local name="$1"
+    touch_mark mcp "${name}"
+    info "MCP [${name}] 时间戳已刷新"
 }
 
 mcp_disable() {
@@ -58,6 +84,7 @@ mcp_disable() {
     claude mcp remove --scope user "${name}" 2>/dev/null && \
         info "MCP [${name}] 已从用户级移除" || \
         warn "MCP [${name}] 在用户级未找到，尝试无 scope 移除"
+    clear_mark mcp "${name}"
     restart_notice
 }
 
@@ -72,7 +99,8 @@ skill_enable() {
         return
     fi
     mv "${preset_src}" "${dest}"
-    info "Skill [${name}] 已从预设恢复到 ${dest}"
+    touch_mark skill "${name}"
+    info "Skill [${name}] 已从预设恢复到 ${dest}，已记录使用时间戳"
     warn "重启会话后 /context 可见变化"
 }
 
@@ -87,6 +115,7 @@ skill_disable() {
         return
     fi
     mv "${src}" "${dest_dir}/${name}"
+    clear_mark skill "${name}"
     info "Skill [${name}] 已归档到 ${dest_dir}/${name}"
     warn "重启会话后 /context 可见变化"
 }
@@ -102,7 +131,8 @@ agent_enable() {
         return
     fi
     mv "${preset_src}" "${dest}"
-    info "Agent [${name}] 已从预设恢复到 ${dest}"
+    touch_mark agent "${name}"
+    info "Agent [${name}] 已从预设恢复到 ${dest}，已记录使用时间戳"
     warn "重启会话后 /context 可见变化"
 }
 
@@ -117,6 +147,7 @@ agent_disable() {
         return
     fi
     mv "${src}" "${dest_dir}/${name}"
+    clear_mark agent "${name}"
     info "Agent [${name}] 已归档到 ${dest_dir}/${name}"
     warn "重启会话后 /context 可见变化"
 }
@@ -163,7 +194,39 @@ cmd_list() {
     done
 }
 
-# ─── cleanup（询问后批量回收）────────────────────────────
+# ─── cleanup-stale（watchdog 调用，按空闲时长自动 disable）────
+cmd_cleanup_stale() {
+    local threshold_min="${1:-${IDLE_MINUTES}}"
+    local now=$(date +%s)
+    local threshold_sec=$(( threshold_min * 60 ))
+    local removed=0
+
+    [[ -d "$TOUCH_DIR" ]] || { info "无 touch 记录，跳过"; return; }
+
+    for mark in "${TOUCH_DIR}"/*; do
+        [[ -f "$mark" ]] || continue
+        local base=$(basename "$mark")
+        local mtime=$(stat -f %m "$mark" 2>/dev/null || stat -c %Y "$mark" 2>/dev/null || echo 0)
+        local idle=$(( now - mtime ))
+        if (( idle >= threshold_sec )); then
+            # 解析 type_name（type 仅 mcp/skill/agent，无下划线）
+            local type="${base%%_*}"
+            local name="${base#*_}"
+            case "$type" in
+                mcp)   mcp_disable   "$name" >/dev/null 2>&1 || true ;;
+                skill) skill_disable "$name" >/dev/null 2>&1 || true ;;
+                agent) agent_disable "$name" >/dev/null 2>&1 || true ;;
+                *) warn "未知类型标记: $base"; continue ;;
+            esac
+            rm -f "$mark"
+            info "已自动回收 ${type} [${name}]（空闲 $(( idle / 60 )) 分钟 ≥ ${threshold_min} 分钟）"
+            removed=$(( removed + 1 ))
+        fi
+    done
+    info "cleanup-stale 完成，共回收 ${removed} 项；阈值 ${threshold_min} 分钟"
+}
+
+# ─── cleanup（询面后批量回收）────────────────────────────
 cmd_cleanup() {
     warn "cleanup 将归档所有低频 MCP / skill / agent（仅限预定义归档列表）"
     echo "（如需自定义，直接调用 disable 子命令）"
@@ -181,6 +244,17 @@ case "$CMD" in
     status)  cmd_status ;;
     list)    cmd_list ;;
     cleanup) cmd_cleanup ;;
+    cleanup-stale) cmd_cleanup_stale "${1:-}" ;;
+    touch)
+        TYPE="${1:-}"; NAME="${2:-}"
+        [[ -z "$TYPE" || -z "$NAME" ]] && error "用法: touch <mcp|skill|agent> <名称>"
+        case "$TYPE" in
+            mcp)   mcp_touch "$NAME" ;;
+            skill) touch_mark skill "$NAME"; info "Skill [${NAME}] 时间戳已刷新" ;;
+            agent) touch_mark agent "$NAME"; info "Agent [${NAME}] 时间戳已刷新" ;;
+            *) error "未知类型: $TYPE" ;;
+        esac
+        ;;
     enable)
         TYPE="${1:-}"; NAME="${2:-}"
         [[ -z "$TYPE" || -z "$NAME" ]] && error "用法: enable <mcp|skill|agent> <名称>"
@@ -214,6 +288,8 @@ case "$CMD" in
         echo "  enable  agent <名称>      — 从预设恢复 Agent"
         echo "  disable agent <名称>      — 归档 Agent 到预设"
         echo "  cleanup                   — 交互式批量回收"
+        echo "  cleanup-stale [分钟]      — 按空闲时长自动 disable（默认 ${IDLE_MINUTES} 分钟，watchdog 调用）"
+        echo "  touch   <类型> <名称>     — 仅刷新最近使用时间戳，不重新注册"
         echo "  dry-run enable mcp ...    — 预览操作，不实际执行"
         echo ""
         warn "注意：MCP 变更需重启 Claude Code 或新开会话后才能在 /context 中体现"
