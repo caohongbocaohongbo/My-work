@@ -225,6 +225,50 @@ easing:
 | **激活指示线** | 左侧 2×22px 竖线，颜色 `#2ea0ce`，圆角 1px，y:6 |
 | **激活项文字** | rgba(255,255,255,1.0)（完全不透明） |
 
+### 容器背景归属规则（强制）
+
+> 适用于 Figma 设计稿组织与代码 DOM 双向约束，用于确保后续修改背景/主题时只需改 2 个节点，不必逐层下钻。
+
+#### 三层结构
+
+页面右侧内容区由**两个、且仅两个**带表面色的 layout 容器承担背景：
+
+```
+aside.sidebar                              ── 深色 #14263b（独立体系，不在本规则约束内）
+main.content
+├─ section.topbar       ◉ 白色 surface ── 顶部标签 / 状态 / 工具栏 layout
+└─ section.main-body    ◉ 白色 surface ── 主体内容区 layout
+    └─ 所有内部 Frame   ◯ 透明无填充   ── 仅参与布局，不承担背景
+```
+
+#### 背景归属表
+
+| 层级 | 节点示例 | 背景策略 | Figma `fills` |
+|------|----------|----------|---------------|
+| **L1 容器** | `topbar`、`main-body`、独立浮层卡片（modal/toast/popover） | 白色 surface (`{colors.surface}` #ffffff) | `[{type:'SOLID', color:#ffffff}]` |
+| **L2 子区** | 大段功能分区（如「商户信息分组」「订单列表区」） | 透明（继承父容器底色） | `[]`（空数组）|
+| **L3 元素** | `section-head`、`page-head`、`title-row`、标题/小标题/正文 Frame、KV 行、check-grid 行、form-grid 列 | 透明 | `[]` |
+| **L4 强语义浮层** | pill 胶囊、notice 提示框、segmented 选中态、step-nav 激活态、按钮 | 按各组件规范的语义底色（brand-50 / success-50 / warning-50 …） | 按组件规范 |
+
+#### 禁止与例外
+
+- **禁止**给标题（h1/h2/h3）、小标题（label/sub-title）、正文（body/help/hint）、纯布局分组 Frame 添加白色或灰色 `surface` 填充
+- **禁止**在 L2/L3 层重复白色背景套娃（白卡套白卡），任何嵌套若不改变视觉深浅都属浪费
+- **唯一例外 1 · sub-card**（`{colors.surface-2}` #f8fafc 浅灰底）：用于在 L1 白色容器内部需要二次分组的场景（如「商户信息」「证照信息」），允许带浅灰底 + `{colors.line}` 边框；但其内部仍遵循 L3 透明规则
+- **唯一例外 2 · 数据/状态卡片**（如 timeline-box、check-card、upload-card）：因需独立边框与轻阴影传达"对象感"，可带白色底 + 边框；但卡片内部的标题/正文 Frame 依然透明
+- **唯一例外 3 · 表格表头**（`{colors.table-header-bg}` #FBFCFE）：表头行允许独立底色
+
+#### 一句话判断标准
+
+> **加背景之前先问自己：去掉这层背景，视觉层级会不会丢？**
+> 会丢 → 保留（说明它承担了 L1/L4 角色）；不会丢 → 设为透明（它是 L2/L3）。
+
+#### Figma 实操约定
+
+- 新建 Frame 默认填充设为空 `[]`，仅在确认归属 L1/L4 时再回填 surface 色
+- 大批量纠错时，可对整个 `main-body` 子树执行：`找出所有 fills 为白色 + 不属于 L4 组件库的 Frame → 改为透明`
+- 修改主题/暗黑模式时，只动 L1 两个容器 + L4 组件规范，L2/L3 自动跟随
+
 ## 画布与视口
 
 ### 设计基准宽度
