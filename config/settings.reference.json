@@ -1,11 +1,24 @@
 {
+  "autoUpdatesChannel": "stable",
   "effortLevel": "medium",
   "env": {
-    "ANTHROPIC_AUTH_TOKEN": "<FILL_ME_IN>",
-    "ANTHROPIC_BASE_URL": "https://llmapi.xykjy.com",
-    "CLAUDE_CODE_ATTRIBUTION_HEADER": "0",
+    "ANTHROPIC_API_KEY": "<FILL_ME_IN>",
+    "ANTHROPIC_BASE_URL": "https://api.deepseek.com/anthropic",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-v4-flash",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "deepseek-v4-pro",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "deepseek-v4-pro",
+    "ANTHROPIC_MODEL": "deepseek-v4-pro[1m]",
+    "ANTHROPIC_REASONING_MODEL": "deepseek-v4-pro",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
     "CLAUDE_CODE_DISABLE_NONSTREAMING_FALLBACK": "1",
-    "DISABLE_AUTOUPDATER": "1"
+    "CLAUDE_CODE_EFFORT_LEVEL": "max",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-v4-pro",
+    "CLAUDE_ODE_ATTRIBUTION_HEADER": "0"
+  },
+  "permissions": {
+    "allow": [
+      "mcp__pencil"
+    ]
   },
   "_note": "脱敏模板。新机器复制为 ~/.claude/settings.json 后填入真实凭据。"
 }
