@@ -1,7 +1,7 @@
 {
   "enabledPlugins": {
     "superpowers@superpowers-marketplace": false,
-    "claude-code-setup@claude-plugins-official": true
+    "claude-code-setup@claude-plugins-official": false
   },
   "extraKnownMarketplaces": {
     "superpowers-marketplace": {
