@@ -320,7 +320,7 @@ main.content
 - **Brand 50** (`{colors.brand-50}` — #eef8fc): 品牌色最浅底
 - **Brand 100** (`{colors.brand-100}` — #d9eef7): 品牌浅底，hover 态
 - **Brand 300** (`{colors.brand-300}` — #86c8df): 品牌中浅
-- **Brand 500** (`{colors.brand-500}` — #2F87AC): **主品牌色**，按钮、激活态、图表主色
+- **Brand 500** (`{colors.brand-500}` — #eef8fc): **主品牌色**，按钮、激活态、图表主色
 - **Brand 600** (`{colors.brand-600}` — #2587b1): hover 加深
 - **Brand 700** (`{colors.brand-700}` — #1f6f92): 最深品牌色
 
@@ -443,8 +443,8 @@ main.content
 ### 圆角
 | Token | 值 | 用途 |
 |--------|-----|------|
-| `{rounded.sm}` | 6px | Chip / 小控件 / 标签 |
-| `{rounded.md}` | 8px | 按钮 / 输入框 / 卡片 |
+| `{rounded.sm}` | 4px | Chip / 小控件 / 标签 |
+| `{rounded.md}` | 4px | 按钮 / 输入框 / 卡片 |
 | `{rounded.lg}` | 12px | 容器卡 / 大面板 |
 | `{rounded.full}` | 999px | 开关轨道 / 圆钮 / pill 胶囊标签 |
 
@@ -460,9 +460,9 @@ main.content
 ### 控件高度
 | Token | 值 | 用途 |
 |--------|-----|------|
-| `{controlHeight.sm}` | 28px | 小按钮 / 紧凑控件 |
-| `{controlHeight.md}` | 32px | 标准按钮 / 输入框 |
-| `{controlHeight.lg}` | 36px | 大按钮 / 搜索框 |
+| `{controlHeight.sm}` | 30px | 小按钮 / 紧凑控件 |
+| `{controlHeight.md}` | 38px | 标准按钮 / 输入框 |
+| `{controlHeight.lg}` | 38px | 大按钮 / 搜索框 |
 
 ## 信息层级
 
@@ -543,7 +543,7 @@ main.content
 
 - **常规任务默认使用 `button-outline-primary` 或 `button-secondary`**
 - **`button-primary-filled` 禁止默认使用**，仅当用户**明确指定**需要实心高强调 CTA 按钮时才参与设计
-- 按钮圆角统一 `{rounded.md}` (8px)
+- 按钮圆角统一 `{rounded.md}` (4px)
 - 文字统一：Inter SemiBold 13px，行高 18px
 - 内边距统一：`{spacing.3}` (14px) 左右，`{spacing.2}` (8px) 上下
 - Transition：`{easing.fast}` (0.12s)
@@ -563,7 +563,7 @@ main.content
 
 | 状态 | 背景 | 边框 | 文字色 |
 |------|------|------|--------|
-| **Default** | `{colors.table-header-bg}` (#FBFCFE) | `0.6px solid #e1eef5` | `{colors.brand-500}` (#2F87AC) |
+| **Default** | `{colors.table-header-bg}` (#EEF8FC) | `0.6px solid #e1eef5` | `{colors.brand-500}` (#2F87AC) |
 | **Hover** | `#f4fbfe` | `0.6px solid #d9edf6` | `{colors.brand-500}` (#2F87AC) |
 | **Active** | `#f4fbfe` | `0.6px solid #d9edf6` | `#1f6d8a`（加深） |
 | **Disabled** | `{colors.table-header-bg}` (#FBFCFE) | `0.6px solid #f0f4f7` | `{colors.table-header-text}` (#97A6B8) |
@@ -589,8 +589,8 @@ main.content
 
 | 状态 | 背景 | 文字色 |
 |------|------|--------|
-| **Default** | `{colors.brand-500}` (#2F87AC) | `{colors.surface}` (#ffffff) |
-| **Hover** | `#2ea0ce` | `{colors.surface}` (#ffffff) |
+| **Default** | `{colors.brand-500}` (#EEF8FC) | `{colors.surface}` (#2F87AC) |
+| **Hover** | `#F4FBFE` | `{colors.surface}` (#1F6D8A) |
 | **Active** | `#1f6d8a` | `{colors.surface}` (#ffffff) |
 | **Disabled** | `#b8d8e7` | `{colors.surface}` (#ffffff) |
 
@@ -615,9 +615,9 @@ main.content
 
 | 变体 | 默认背景 | 默认边框 | 默认文字 | 默认使用 |
 |------|---------|---------|---------|---------|
-| `outline-primary` | `#FBFCFE` | `0.6px #e1eef5` | `#2F87AC` | **是** |
-| `secondary` | `#ffffff` | `1px #d5dde7` | `#4d6278` | **是** |
-| `primary-filled` | `#2F87AC` | 无 | `#ffffff` | **否**，需显式指定 |
+| `outline-primary` | `#FBFCFE` | `0.6px #D9EEF7` | `#2F87AC` | **是** |
+| `secondary` | `#ffffff` | `1px #d5dde7` | `#313333` | **是** |
+| `primary-filled` | `#EEF8FC` | 无 | `#2F87AC` | **否**，需显式指定 |
 
 ### 分段控制器 / 时间粒度筛选 (Seg / Time Grain)
 
@@ -689,7 +689,7 @@ main.content
 
 **Accent 变体 (.accent)**：
 - 左侧 3px 品牌色竖线 (`::before` 伪元素)
-- 颜色 `{colors.brand-500}` (#2F87AC)
+- 颜色 `{colors.brand-500}` (#EEF8FC)
 - 位置：`top: 16px; bottom: 16px; left: 0`
 - 圆角右侧 2px
 
@@ -877,7 +877,7 @@ main.content
 
 | 状态 | 轨道背景 | 圆钮位置 | 语义 |
 |------|---------|---------|------|
-| **On（开）** | `{colors.brand-500}` (#2F87AC) | `left: 23px`（右） | 功能已启用 |
+| **On（开）** | `{colors.brand-500}` (#EEF8FC) | `left: 23px`（右） | 功能已启用 |
 | **Off（关）** | `{colors.data-neutral}` (#cbd5e1) | `left: 3px`（左） | 功能已停用 |
 
 **交互**：
@@ -1111,7 +1111,7 @@ main.content
 
 ### 按钮交互
 
-- **默认**: 品牌色底 (`{colors.brand-500}`) + 白色文字
+- **默认**: 品牌色底 (`{colors.brand-500}`) + 品牌主色文字(‘#2F87AC’ ｜ ‘bold’)
 - **Hover**: 品牌色加深 (`{colors.brand-600}`)，过渡 `{easing.fast}` (0.12s)
 - **Active**: 最深品牌色 (`{colors.brand-700}`) + `transform: scale(0.98)`
 - **Loading**: 按钮文字替换为 spinner 图标，按钮保持禁用，防止重复提交
