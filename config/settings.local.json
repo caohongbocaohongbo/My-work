@@ -96,10 +96,6 @@
     ],
     "defaultMode": "bypassPermissions"
   },
-  "disabledMcpjsonServers": [
-    "stitch",
-    "cinema4d"
-  ],
   "statusLine": {
     "type": "command",
     "command": "npx -y ccstatusline@latest",
