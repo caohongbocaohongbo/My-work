@@ -1,102 +1,87 @@
-# MCP 加载策略 v3
+# MCP 加载策略 v4
 
-> v2 缺陷：5 处错诊把 open-design/pencil/stitch 标成"通道 3 插件 MCP"，并误以为 user-scope 配置在 `~/.claude/mcp.json`。本版基于 2026-06-17 重新实证。
-> v1 缺陷：把 `mcp.json` 当唯一权威源，忽略多通道。
+> v4 变更（2026-06-29）：放弃 v3 的「`claude mcp add` 写 user-scope + launchd 回收狗」按需方案，改为 **方案C 会话级注入**（`--mcp-config` + `--strict-mcp-config`）。原因：v3 回收狗实测长期「回收 0 项」——被直接写进常驻的 MCP 没有 touch 标记，逃逸出 cleanup-stale 管辖；且 add 后仍需重启会话，笨重。方案C 把回收粒度从「按时间」改成「按进程生命周期」，进程退出即净，无需 launchd/watchdog/touch。
+> v3 仍有效的部分：下方「5 通道权威源」与「诊断教训」表保留，定位 MCP 来源时照用。
 
-## 真权威源（按优先级）
+## 一、当前生效方案：方案C 会话级注入
 
-Claude Code 实际加载的 MCP 来自 **5 条独立通道**，必须分别管控：
+**核心**：默认 `claude` 走空 user-scope（零 MCP、零 token）；用时按场景启动器注入，退出即回收。
+
+- user-scope `~/.claude.json` 的 `mcpServers` 永久保持 `{}`（2026-06-29 已清空，原配置备份于 `~/Documents/My-work-repo/智能体共用/main_claude-json-before-mcp-c-plan_20260629_v1.json`）
+- preset 目录 `~/.claude/mcp-presets/`，每个文件是 `--mcp-config` 可直接加载的格式：`{"mcpServers": {"<name>": {...}}}`（注意：**不是** v3 旧的 `{"name","config"}` 格式）
+- 现有 6 个 preset：`figma-hosted` `figma-desktop` `figma` `open-design` `pencil` `stitch`
+- 启动器 alias 在 `~/.zshrc`（cdesign/cfigma/cfigd/cpen/cod/cstitch），见该文件「按需 MCP 场景启动器」段
+
+### 启动器与组合规则
+
+```
+cdesign  → figma-hosted + pencil + open-design + stitch（设计全家桶）
+cfigma   → figma-hosted        cfigd → figma-desktop（需 Figma 桌面运行）
+cpen     → pencil              cod   → open-design       cstitch → stitch
+```
+
+任意组合：
+```
+command claude --tools "$_CTOOLS" --mcp-config "$P/<a>.json" "$P/<b>.json" --strict-mcp-config
+```
+
+⚠ **参数顺序铁律**：`--mcp-config` 是可变参数（variadic），会一直吞后面的位置参数当 config 路径。**必须让 `--strict-mcp-config` 殿后当终止哨兵**，否则后续追加的 prompt/子命令会被误吞成 config 文件路径（实测 `--mcp-config X mcp list` 会把 `mcp` `list` 当成两个不存在的 config 文件报错）。
+
+## 二、回收：进程级，无基础设施
+
+- 回收 = 关闭该会话进程，自动且彻底，无逃逸可能
+- launchd `com.fangcang.claude.ondemand` 已退役（2026-06-29 `launchctl bootout` + plist 改名 `~/Library/LaunchAgents/com.fangcang.claude.ondemand.plist.disabled`，保留可回滚）
+- watchdog / touch 标记目录 / 20 分钟阈值 全部弃用，不再维护
+
+## 三、验证手段（实测要点）
+
+- ❌ `claude --mcp-config X --strict-mcp-config mcp list`：`mcp list` 子命令**只读持久配置，不反映 `--mcp-config` 临时注入**，验证不了，别用
+- ✅ 会话级验证：`claude --mcp-config X --strict-mcp-config -p "Do you have a tool whose name starts with mcp__<ns>? yes/no"`，模型答 Yes 即注入成功（2026-06-29 figma-hosted 实测通过）
+- ⚠ macOS 无 GNU `timeout`，脚本里别用（用 `gtimeout` 需先装 coreutils）
+
+## 四、5 通道权威源（v3 保留，定位来源时照用）
 
 | # | 通道 | 实测命令 | 真实存储 | 用户可控手段 |
 |---|------|---------|---------|------------|
-| 1 | 用户级 (`claude mcp add -s user`) | `claude mcp list`、`claude mcp get <name>` 显示 `Scope: User config` | **`~/.claude.json` 的 `mcpServers` 字段（不是 `~/.claude/mcp.json`！）** | `claude mcp remove <name> -s user` |
-| 2 | 项目级 (`.mcp.json` 仓库内) | `find . -name '.mcp.json'` | 项目根的 `.mcp.json` | 仓库 commit / 删 .mcp.json |
-| 3 | 插件自带 MCP | `claude plugin list` | 插件包内置 | `settings.local.json` → `enabledPlugins.*` 改 false |
-| 4 | 桌面应用 IPC 注入 | `pgrep -x Figma` | 桌面 app 内嵌 | 退出对应桌面应用 |
-| 5 | 全局/系统配置 | 暂未遇到 | — | — |
+| 1 | 用户级 | `claude mcp get <name>` 显示 `Scope: User config` | **`~/.claude.json` 的 `mcpServers`（不是 `~/.claude/mcp.json`！）** | `claude mcp remove <name> -s user` |
+| 2 | 项目级 `.mcp.json` | `find . -name '.mcp.json'` | 项目根 `.mcp.json` | 删文件 / `disabledMcpjsonServers` |
+| 3 | 插件自带 | `claude plugin list` | 插件包内置 | `enabledPlugins.*` 改 false |
+| 4 | 桌面 IPC 注入 | `pgrep -x Figma` | 桌面 app 内嵌 | 退出桌面应用 |
+| 5 | `--mcp-config`（方案C） | 启动参数 | preset 文件，仅本进程 | 关闭进程 |
 
-⚠ **`disabledMcpjsonServers` 仅对通道 2（项目级 `.mcp.json`）有效**，对通道 1（user-scope `~/.claude.json`）和 3-5 全部无效。**实测**：2026-06-17 把 `stitch` 写进 `disabledMcpjsonServers`，stitch 仍 Connected。
+⚠ `disabledMcpjsonServers` **仅对通道 2 有效**，对 user-scope/插件/桌面/`--mcp-config` 全部无效。
+⚠ `~/.claude/mcp.json`（目录下那个）**不被 CLI 读取**，仅历史备忘。
 
-⚠ **`~/.claude/mcp.json`（目录下的）实测不被 Claude CLI 读取**，仅作历史/备忘用。要看 user-scope MCP 必须看 **`~/.claude.json`（家目录单文件）的 `mcpServers` 字段**。
+## 五、Agent 行为约束（强制）
 
-## 本机当前真实加载（2026-06-17 重新诊断）
+- 当前会话无法热加载 MCP（CLI 启动时才连接）。要在当前会话用某 MCP，必须**新开会话并用对应启动器**，不能在本会话临时挂载
+- 执行配置变更后禁止用「已启用/已配置可用」等暧昧表述；要明确告知「需用 `<启动器>` 新开会话才生效」
+- 用户坚持当前会话推进时，切换为「产出不依赖该 MCP 的文档/蓝图」并显式说明
 
-| 工具命名空间 | 来源通道 | 真实存储位置 | 是否常驻 |
-|------------|---------|------------|---------|
-| `figma-hosted` | 通道 1（user-scope） | `~/.claude.json` mcpServers | 是 |
-| `figma-desktop` | 通道 1（user-scope，HTTP URL 指向 Figma 桌面本地端口 3845） | `~/.claude.json` mcpServers | 是（即使 Figma 未启动也注册，连接才失败） |
-| `figma` | 通道 1（user-scope，npx 启动 figma-developer-mcp） | `~/.claude.json` mcpServers | 是 |
-| `open-design` | 通道 1（user-scope，执行 `~/.claude/scripts/open-design-mcp.sh`） | `~/.claude.json` mcpServers | 是 |
-| `pencil` | 通道 1（user-scope，执行 `Pencil.app` 内置 binary） | `~/.claude.json` mcpServers | 是 |
-| `stitch` | 通道 1（user-scope，HTTPS） | `~/.claude.json` mcpServers | 是（`disabledMcpjsonServers` 对其无效） |
+## 六、诊断 checklist（出现「不该有的 MCP 挂了」时）
 
-**结论**：v2 文档把 open-design/pencil/stitch 标成"通道 3 插件" **完全错诊**。`enabledPlugins` 已 false 但它们仍 Connected，原因不是插件 disable 失效，而是它们**根本不是插件 MCP**，全是 user-scope 注册。
+1. `claude mcp get <name>` → 看 `Scope:` 判通道
+2. 通道 1：去 `~/.claude.json` 的 `mcpServers` 看（方案C 下这里应为空 `{}`）
+3. 通道 2：`find <project> -name '.mcp.json'`
+4. 通道 4：`pgrep -x Figma`
+5. 若是 `--mcp-config` 注入（通道 5），关进程即消
 
-## 按需启用流程（修订版）
+## 七、禁止
 
-| 名称 | 触发关键字 | 启用方式 | 停用方式 |
-|------|-----------|---------|---------|
-| figma-hosted | figma.com URL、`use_figma`、`get_design_context` | `claude mcp add -s user figma-hosted https://mcp.figma.com/mcp -t http` | `claude mcp remove figma-hosted -s user` |
-| figma-desktop | 用户启动 Figma 桌面 | `claude mcp add -s user figma-desktop http://127.0.0.1:3845/mcp -t http` | `claude mcp remove figma-desktop -s user` |
-| figma | figma-developer-mcp API key 场景 | `claude mcp add -s user figma -- npx -y figma-developer-mcp --stdio` | `claude mcp remove figma -s user` |
-| pencil | pencil、.pen、batch_design | `claude mcp add -s user pencil -- /Applications/Pencil.app/.../mcp-server-darwin-arm64 --app desktop` | `claude mcp remove pencil -s user` |
-| open-design | open design、artifact | `claude mcp add -s user open-design -- ~/.claude/scripts/open-design-mcp.sh` | `claude mcp remove open-design -s user` |
-| stitch | stitch、apply_design_system | `claude mcp add -s user stitch https://stitch.googleapis.com/mcp -t http` | `claude mcp remove stitch -s user` |
-| cinema4d | Cinema 4D、C4D | `~/.claude/scripts/cinema4d-mcp-enable.sh` | `~/.claude/scripts/cinema4d-mcp-disable.sh` |
+- 往 user-scope `~/.claude.json` 写常驻 MCP（破坏方案C 的「默认纯净」前提）
+- 用 `disabledMcpjsonServers` 关 user-scope 或 `--mcp-config` 注入——无效
+- 把 `--mcp-config` 放在 prompt/子命令前而不带 `--strict-mcp-config` 哨兵殿后——会吞参数
+- 复活 launchd 回收狗（已被进程级回收取代）
 
-预设配置见 `~/.claude/mcp-presets/`。脚本路径：`~/.claude/scripts/`。
-
-## 回收规则（修订）
-
-- **通道 1 标记式回收**：`enable mcp <名称>` 写 `~/.claude/cache/on-demand-touch/mcp_<名称>`，launchd `com.fangcang.claude.ondemand` 每 5 分钟跑 `on-demand-watchdog.sh`，超过 `ON_DEMAND_IDLE_MINUTES`（默认 20 分钟）未刷新自动 `claude mcp remove`
-- **通道 2 项目式回收**：删项目根 `.mcp.json` 即可
-- **通道 3 插件式回收**：手工修改 `enabledPlugins` 为 false，重启 Claude Code
-- **通道 4 桌面式回收**：退出对应桌面应用即可
-- watchdog 应扫描 `claude mcp list` 与 `~/.claude/cache/on-demand-touch/` 的差集，把"已挂载但未经 enable 流程"的 MCP 写入告警日志 `~/.claude/logs/on-demand-untracked.log`（目前 watchdog 脚本只跑 cleanup-stale，未跑 untracked scan，待修）
-
-## 关于「当前会话可用」的硬限制
-
-- Claude Code MCP 在进程启动时连接，**当前会话无法热加载**（CLI 架构限制）
-- 若 `use_figma`/`get_screenshot` 报 `No such tool available`：
-  1. 运行对应 `claude mcp add -s user ...` 命令
-  2. **新开 Claude Code 窗口/会话**，新会话即可调用
-  3. 当前会话继续做不依赖该 MCP 的工作；或退出当前会话重新进入
-
-## Agent 行为约束（强制）
-
-- 执行 enable 后**禁止**使用「已启用」「已配置可用」等暧昧表述
-- 必须明确告知：`配置已写入 ~/.claude.json，当前会话不可用，需重启 Claude Code 或新开会话`
-- 重启前不得尝试调用对应 MCP 工具，也不得规划依赖该 MCP 的下一步动作
-- 若用户坚持当前会话推进，立刻切换为「产出文档/蓝图等不依赖 MCP 的兜底交付」并显式说明
-
-## 诊断 checklist（出现"不该有的 MCP 挂载了"时）
-
-1. `claude mcp list` → 看是否在跑
-2. `claude mcp get <name>` → 看 `Scope:` 字段判断通道（`User config` = 通道 1）
-3. `python3 -c "import json; print(list(json.load(open('~/.claude.json'.replace('~',__import__('os').path.expanduser('~')))).get('mcpServers',{}).keys()))"` → 看通道 1 真实清单
-4. `find <project> -name '.mcp.json'` → 看通道 2
-5. `cat ~/.claude/settings.local.json | grep enabledPlugins -A 5` → 看通道 3
-6. `pgrep -x Figma` → 看通道 4
-7. 比对工具命名空间，定位通道
-8. 按通道选择停用手段：通道 1 用 `claude mcp remove -s user`，**不要给 `disabledMcpjsonServers` 加项目**
-
-## 禁止
-
-- 预先启用按需 MCP
-- 在非触发关键字命中时长期挂起按需 MCP
-- 把所有 MCP 的"按需"幻想寄托在 `~/.claude/mcp.json` 配置上——它根本不是 Claude CLI 读的真实路径
-- 用 `disabledMcpjsonServers` 试图关 user-scope MCP——无效
-
-## 诊断教训（2026-06-17）
+## 八、诊断教训表（2026-06-17 ~ 2026-06-29）
 
 | 错诊 | 真相 | 排查手段 |
 |------|------|---------|
-| open-design/pencil/stitch 来自通道 3 插件 | 全是通道 1 user-scope | `claude mcp get <name>` 看 `Scope:` |
-| user-scope 配置在 `~/.claude/mcp.json` | 真在 `~/.claude.json`（家目录单文件） | grep 工具命名空间在哪个文件 |
-| `disabledMcpjsonServers` 能关 user-scope | 只对项目级 `.mcp.json` 有效 | 把名字写进去再 `claude mcp list` 验证 |
-| `mcp-archive.json` 已归档 = 真清空 | 归档动作未真正清空 `~/.claude.json` 的 `mcpServers` | 归档后立刻 `claude mcp list` 验证 |
+| 回收狗在跑就等于按需生效 | 它只回收「有 touch 标记」的，常驻直配项无标记→恒回收 0 | 看 `on-demand-watchdog.log` 是否长期「回收 0 项」 |
+| 旧 preset `{"name","config"}` 能喂 `--mcp-config` | 不能，需 `{"mcpServers":{...}}` 格式 | 用 `-p` 会话验证 yes/no |
+| `mcp list` 能验证 `--mcp-config` | 不能，它只读持久配置 | 改用会话级 `-p` 验证 |
+| open-design/pencil/stitch 是插件 MCP | 全是 user-scope（通道 1） | `claude mcp get <name>` 看 Scope |
 
-## cinema4d 附加说明
+## cinema4d 附加
 
-- 虚拟环境：`~/.claude/mcp-venvs/cinema4d/`
-- 插件已保留，更新频道 `stable`
+- 虚拟环境 `~/.claude/mcp-venvs/cinema4d/`；如需纳入方案C，按相同格式建 `~/.claude/mcp-presets/cinema4d.json` 再加启动器
