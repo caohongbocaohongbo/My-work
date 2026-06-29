@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "figma-desktop": {
+      "type": "http",
+      "url": "http://127.0.0.1:3845/mcp"
+    }
+  },
+  "_note": "脱敏模板。本地启用前自行填入真实凭据。"
+}

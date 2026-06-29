@@ -1,13 +1,14 @@
 {
-  "name": "pencil",
-  "config": {
-    "command": "/Applications/Pencil.app/Contents/Resources/app.asar.unpacked/out/mcp-server-darwin-arm64",
-    "args": [
-      "--app",
-      "desktop"
-    ],
-    "env": {},
-    "type": "stdio"
+  "mcpServers": {
+    "pencil": {
+      "command": "/Applications/Pencil.app/Contents/Resources/app.asar.unpacked/out/mcp-server-darwin-arm64",
+      "args": [
+        "--app",
+        "desktop"
+      ],
+      "env": {},
+      "type": "stdio"
+    }
   },
   "_note": "脱敏模板。本地启用前自行填入真实凭据。"
 }

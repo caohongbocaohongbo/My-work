@@ -1,9 +1,10 @@
 {
-  "name": "open-design",
-  "config": {
-    "command": "/Users/fangcang/.claude/scripts/open-design-mcp.sh",
-    "args": [],
-    "env": {}
+  "mcpServers": {
+    "open-design": {
+      "command": "/Users/fangcang/.claude/scripts/open-design-mcp.sh",
+      "args": [],
+      "env": {}
+    }
   },
   "_note": "脱敏模板。本地启用前自行填入真实凭据。"
 }
