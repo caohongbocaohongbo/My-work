@@ -82,6 +82,23 @@ command claude --tools "$_CTOOLS" --mcp-config "$P/<a>.json" "$P/<b>.json" --str
 | `mcp list` 能验证 `--mcp-config` | 不能，它只读持久配置 | 改用会话级 `-p` 验证 |
 | open-design/pencil/stitch 是插件 MCP | 全是 user-scope（通道 1） | `claude mcp get <name>` 看 Scope |
 
+## 九、skills/agents 会话级软链（v4 扩展，2026-07-01）
+
+把「关终端即净」从 MCP 扩展到 skills/agents，同一心智：
+- **正本**：skills → `~/.claude/skills-archive/`；agents → `~/.claude/agent-presets/`
+- **视图**（Claude Code 实际扫描处）：`~/.claude/skills/` 默认只常驻 `find-skills`；`agents/` 保留现有目录
+- **机制**：`scripts/session-context.sh`（`start`/`end`/`reap`/`link`/`unlink`/`status`）
+  - `SessionStart` hook → `start`：按 `$CLAUDE_SCENE` 从正本 `ln -s` 进视图目录，写 manifest `cache/session-scene/<sid>`
+  - `SessionEnd` hook → `end`：**引用计数**撤链，仅当无其他活跃会话引用才删软链
+  - `reap`：孤儿兜底，manifest 超 12h（关窗未触发 SessionEnd）在下次 SessionStart 清理
+- **场景映射**：`config/scene-context.map`（`<scene>|<skills|agents>|<空格分隔名称>`）
+- **启动器**：`cdesign` 内置 `CLAUDE_SCENE=design`；新增 `cdev`（dev 场景，无 MCP）；可叠加 `CLAUDE_SCENE=design cfigma`
+- **兼容**：macOS bash 3.2 无关联数组，脚本用函数替代；`sync-to-github.sh` 用 `--no-links` 防临时软链入库，`skills-archive` 已纳入同步与 bootstrap 恢复
+- **局限**：只在开会话那刻生效（Claude 启动时扫描目录），非会话中途热增减
+- **agents 现状**：`agents/` 下为非标准目录（非 `agents/*.md`），当前不被当 subagent 加载、不占上下文，故映射 agents 字段留空，待标准化后填入
+
+**废止并入 v4**：`context-on-demand.sh` 的 `mcp enable/disable` 写 user-scope（已改为只提示启动器）、skill/agent 的 mv enable/disable、20 分钟 `watchdog cleanup-stale` —— 全部由方案C + 会话级软链取代。
+
 ## cinema4d 附加
 
 - 虚拟环境 `~/.claude/mcp-venvs/cinema4d/`；如需纳入方案C，按相同格式建 `~/.claude/mcp-presets/cinema4d.json` 再加启动器

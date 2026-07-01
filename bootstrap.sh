@@ -85,15 +85,20 @@ cp -R "$REPO_DIR/presets/mcp/"* "$CLAUDE_HOME/mcp-presets/" 2>/dev/null || true
 cp -R "$REPO_DIR/presets/agents/"* "$CLAUDE_HOME/agent-presets/" 2>/dev/null || true
 info "已安装 presets (mcp + agents)"
 
-# 7. agents 软链
+# 7. agents（实体复制，供会话级软链增删；不再整目录软链）
 backup_if_exists "$CLAUDE_HOME/agents" "agents-dir"
-ln -snf "$REPO_DIR/agents" "$CLAUDE_HOME/agents"
-info "已链接 agents → 仓库"
+rm -rf "$CLAUDE_HOME/agents"; mkdir -p "$CLAUDE_HOME/agents"
+cp -R "$REPO_DIR/agents/"* "$CLAUDE_HOME/agents/" 2>/dev/null || true
+info "已复制 agents → 本地"
 
-# 8. skills 软链
+# 8. skills + skills-archive（实体复制；skills-archive 为会话级软链正本）
 backup_if_exists "$CLAUDE_HOME/skills" "skills-dir"
-ln -snf "$REPO_DIR/skills" "$CLAUDE_HOME/skills"
-info "已链接 skills → 仓库"
+rm -rf "$CLAUDE_HOME/skills"; mkdir -p "$CLAUDE_HOME/skills"
+cp -R "$REPO_DIR/skills/"* "$CLAUDE_HOME/skills/" 2>/dev/null || true
+backup_if_exists "$CLAUDE_HOME/skills-archive" "skills-archive-dir"
+mkdir -p "$CLAUDE_HOME/skills-archive"
+cp -R "$REPO_DIR/skills-archive/"* "$CLAUDE_HOME/skills-archive/" 2>/dev/null || true
+info "已复制 skills + skills-archive 正本 → 本地（会话级软链就绪）"
 
 # 9. settings.json 模板
 if [[ -f "$CLAUDE_HOME/settings.json" ]]; then

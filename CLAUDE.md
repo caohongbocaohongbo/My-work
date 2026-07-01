@@ -28,10 +28,11 @@ My-work-repo/
 
 ## 核心协作约束（强制）
 
-### 1. 按需启用
-- 不预加载任何 MCP / Skill / 非常驻 Agent
-- 触发关键字命中后通过 `scripts/context-on-demand.sh` 启用
-- 任务结束主动询问用户是否回收
+### 1. 按需启用（v4：关终端即净）
+- 不预加载任何 MCP / Skill / 非常驻 Agent；user-scope `~/.claude.json` 的 `mcpServers` 恒为 `{}`
+- **MCP**：用启动器 alias（`cdesign`/`cfigma`/`cdev`…）经 `--mcp-config` 会话级注入，退出进程即回收
+- **Skills/Agents**：会话级软链，`SessionStart` 按 `$CLAUDE_SCENE` 从 `skills-archive` 软链进 `skills/`，`SessionEnd` 关终端自动清除（`scripts/session-context.sh` + `config/scene-context.map`）
+- 已废止：`scripts/context-on-demand.sh` 的 enable/disable/watchdog（写 user-scope、mv、20 分钟回收）
 - 详见 `config/strategies/{mcp,skill,agent}-strategy.md`
 
 ### 2. 子代理摘要回传

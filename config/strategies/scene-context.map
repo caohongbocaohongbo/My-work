@@ -1,0 +1,13 @@
+# 会话级 skills/agents 场景映射
+# 格式: <scene>|<skills|agents>|<空格分隔名称>
+# skills 正本在 ~/.claude/skills-archive/，agents 正本在 ~/.claude/agent-presets/
+# 由 ~/.claude/scripts/session-context.sh 在 SessionStart 读取并软链。
+# 无 CLAUDE_SCENE 时默认纯净（仅常驻 find-skills）。
+# 名称可按习惯增减；agents 目前为非标准目录格式（未被 Claude Code 当 subagent 加载），故留空，
+# 待标准化为 agents/*.md 后填入即可自动纳入。
+
+design|skills|figma-create-new-file design-md ui-ux-pro-max web-design-guidelines information-architecture emil-design-eng emblem-market-research
+design|agents|
+
+dev|skills|writing-plans executing-plans subagent-driven-development using-git-worktrees verification-before-completion dispatching-parallel-agents
+dev|agents|

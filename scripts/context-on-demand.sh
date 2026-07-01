@@ -66,33 +66,29 @@ restart_notice() {
 }
 
 # ─── MCP 操作 ────────────────────────────────────────────
+# [v4 已废止] 不再向 user-scope 写常驻 MCP（那是 v3 污染根源）。
+# 方案C：MCP 通过启动器 alias 的 --mcp-config 会话级注入，关进程即回收。
 mcp_enable() {
     local name="$1"
     local preset="${MCP_PRESETS}/${name}.json"
     [[ -f "$preset" ]] || error "预设不存在: ${preset}"
-
-    local config
-    config=$(python3 -c "
-import json, sys
-with open('${preset}') as f:
-    d = json.load(f)
-# 只输出 config 部分，不打印敏感值
-print(json.dumps(d['config']))
-")
-    if [[ "$DRY_RUN" == "1" ]]; then
-        info "[dry-run] 将执行: claude mcp add-json --scope user '${name}' '<config>'"
-        return
+    # 名称 → 启动器 alias 映射
+    local launcher
+    case "$name" in
+        figma-hosted) launcher="cfigma" ;;
+        figma-desktop) launcher="cfigd" ;;
+        pencil)       launcher="cpen" ;;
+        open-design)  launcher="cod" ;;
+        stitch)       launcher="cstitch" ;;
+        *)            launcher="" ;;
+    esac
+    warn "v4 方案C：不再把 MCP 写入 user-scope（会常驻、占 token、关终端不消）。"
+    if [[ -n "$launcher" ]]; then
+        info "请【新开会话】用启动器注入：${launcher}"
+    else
+        info "请【新开会话】用：command claude --tools \"\$_CTOOLS\" --mcp-config \"\$CLAUDE_MCP_PRESETS/${name}.json\" --strict-mcp-config"
     fi
-    claude mcp add-json --scope user "${name}" "${config}" 2>&1 | tee /tmp/.codm_add.$$ | grep -v -i "bearer\|authorization" || true
-    if grep -qi "already exists" /tmp/.codm_add.$$; then
-        info "MCP [${name}] 已在用户配置中，跳过重复添加"
-    fi
-    rm -f /tmp/.codm_add.$$
-    remove_from_disabled "${name}"
-    touch_mark mcp "${name}"
-    info "MCP [${name}] 已启用（用户级），已记录使用时间戳"
-    info "空闲 ${IDLE_MINUTES} 分钟后将由 watchdog 自动 disable（重置：再次执行 enable 或显式 touch）"
-    restart_notice
+    info "设计全家桶：cdesign（figma-hosted+pencil+open-design+stitch）。关终端即自动回收。"
 }
 
 # 仅刷新时间戳，不重新注册（供 SessionStart hook / 关键词命中时调用）
@@ -104,15 +100,16 @@ mcp_touch() {
 
 mcp_disable() {
     local name="$1"
-    if [[ "$DRY_RUN" == "1" ]]; then
-        info "[dry-run] 将执行: claude mcp remove --scope user '${name}'"
-        return
+    # [v4] user-scope 已恒空，无常驻 MCP 可移除；方案C 靠关进程回收。
+    # 兼容历史误写：若 user-scope 仍残留同名项，则清掉（一次性纠偏）。
+    if claude mcp get "$name" 2>/dev/null | grep -qi "Scope:.*User"; then
+        [[ "$DRY_RUN" == "1" ]] && { info "[dry-run] 清理残留 user-scope MCP '${name}'"; return; }
+        claude mcp remove --scope user "$name" 2>/dev/null && \
+            info "已清理残留 user-scope MCP [${name}]（纠偏，非常态）"
+    else
+        info "MCP [${name}]：user-scope 无常驻项。方案C 下关终端/退出即自动回收，无需 disable。"
     fi
-    claude mcp remove --scope user "${name}" 2>/dev/null && \
-        info "MCP [${name}] 已从用户级移除" || \
-        warn "MCP [${name}] 在用户级未找到，尝试无 scope 移除"
-    clear_mark mcp "${name}"
-    restart_notice
+    clear_mark mcp "${name}" 2>/dev/null || true
 }
 
 # ─── Skill 操作 ──────────────────────────────────────────
