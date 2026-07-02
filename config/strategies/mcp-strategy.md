@@ -61,7 +61,7 @@ command claude --tools "$_CTOOLS" --mcp-config "$P/<a>.json" "$P/<b>.json" --str
 ## 六、诊断 checklist（出现「不该有的 MCP 挂了」时）
 
 1. `claude mcp get <name>` → 看 `Scope:` 判通道
-2. 通道 1：去 `~/.claude.json` 的 `mcpServers` 看（方案C 下这里应为空 `{}`）
+2. 通道 1：去 `~/.claude.json` 的 `mcpServers` 看（方案C 下这里应为空 `{}`）。**若非空即复发**——`stat -f "%Sm" ~/.claude.json` 看改写时间锁定何时被写回，备份该片段后 `python3` 置回 `{}`（勿手改整个大文件），再新开会话生效
 3. 通道 2：`find <project> -name '.mcp.json'`
 4. 通道 4：`pgrep -x Figma`
 5. 若是 `--mcp-config` 注入（通道 5），关进程即消
@@ -73,7 +73,7 @@ command claude --tools "$_CTOOLS" --mcp-config "$P/<a>.json" "$P/<b>.json" --str
 - 把 `--mcp-config` 放在 prompt/子命令前而不带 `--strict-mcp-config` 哨兵殿后——会吞参数
 - 复活 launchd 回收狗（已被进程级回收取代）
 
-## 八、诊断教训表（2026-06-17 ~ 2026-06-29）
+## 八、诊断教训表（2026-06-17 ~ 2026-07-02）
 
 | 错诊 | 真相 | 排查手段 |
 |------|------|---------|
@@ -81,6 +81,8 @@ command claude --tools "$_CTOOLS" --mcp-config "$P/<a>.json" "$P/<b>.json" --str
 | 旧 preset `{"name","config"}` 能喂 `--mcp-config` | 不能，需 `{"mcpServers":{...}}` 格式 | 用 `-p` 会话验证 yes/no |
 | `mcp list` 能验证 `--mcp-config` | 不能，它只读持久配置 | 改用会话级 `-p` 验证 |
 | open-design/pencil/stitch 是插件 MCP | 全是 user-scope（通道 1） | `claude mcp get <name>` 看 Scope |
+| 「昨天清空了怎么又全量挂了」＝脚本自动回灌 | 不是脚本——`context-on-demand.sh` 只有 remove、hooks 为空。是 user-scope `mcpServers` 被写回了完整 6 项（原封不动），大概率手动 `claude mcp add` 或用旧配置开会话所致 | `stat -f "%Sm" ~/.claude.json` 看改写时间；确认非空→备份片段→置 `{}`。堵源头：改用启动器按需注入，勿再 `mcp add`（2026-07-02） |
+
 
 ## 九、skills/agents 会话级软链（v4 扩展，2026-07-01）
 
