@@ -89,7 +89,7 @@ command claude --tools "$_CTOOLS" --mcp-config "$P/<a>.json" "$P/<b>.json" --str
 
 把「关终端即净」从 MCP 扩展到 skills/agents，同一心智：
 - **正本**：skills → `~/.claude/skills-archive/`；agents → `~/.claude/agent-presets/`
-- **视图**（Claude Code 实际扫描处）：`~/.claude/skills/` 默认只常驻 `find-skills`；`agents/` 保留现有目录
+- **视图**（Claude Code 实际扫描处）：`~/.claude/skills/` 默认纯净（零 skill，`find-skills` 也已按需，2026-07-06 移入正本随场景软链）；`agents/` 保留现有目录
 - **机制**：`scripts/session-context.sh`（`start`/`end`/`reap`/`link`/`unlink`/`status`）
   - `SessionStart` hook → `start`：按 `$CLAUDE_SCENE` 从正本 `ln -s` 进视图目录，写 manifest `cache/session-scene/<sid>`
   - `SessionEnd` hook → `end`：**引用计数**撤链，仅当无其他活跃会话引用才删软链
