@@ -82,6 +82,7 @@ command claude --tools "$_CTOOLS" --mcp-config "$P/<a>.json" "$P/<b>.json" --str
 | `mcp list` 能验证 `--mcp-config` | 不能，它只读持久配置 | 改用会话级 `-p` 验证 |
 | open-design/pencil/stitch 是插件 MCP | 全是 user-scope（通道 1） | `claude mcp get <name>` 看 Scope |
 | 「昨天清空了怎么又全量挂了」＝脚本自动回灌 | 不是脚本——`context-on-demand.sh` 只有 remove、hooks 为空。是 user-scope `mcpServers` 被写回了完整 6 项（原封不动），大概率手动 `claude mcp add` 或用旧配置开会话所致 | `stat -f "%Sm" ~/.claude.json` 看改写时间；确认非空→备份片段→置 `{}`。堵源头：改用启动器按需注入，勿再 `mcp add`（2026-07-02） |
+| 「策略升 v4 了默认会话怎么还全量挂 MCP」＝方案C 没生效 | **文档升级 ≠ 执行**。方案C 只更新了 `mcp-strategy.md`，但真正决定加载的 `~/.claude.json` 的 `mcpServers` 从 07-02 复发后一直残留 6 项没被真正清空。加载源永远是 claude.json 字段，不是文档 | 别信文档，直接 `python3` 读 `~/.claude.json` 的 `mcpServers` keys。非空即失效。无 cron/scheduled/launchd 回灌者时就是纯残留，置 `{}` 即可，新开会话生效（2026-07-06 已清） |
 
 
 ## 九、skills/agents 会话级软链（v4 扩展，2026-07-01）
