@@ -6,7 +6,7 @@
     "CLAUDE_CODE_DISABLE_NONSTREAMING_FALLBACK": "1",
     "DISABLE_AUTOUPDATER": "1"
   },
-  "model": "opus[1m]",
+  "model": "haiku",
   "effortLevel": "medium",
   "_note": "脱敏模板。新机器复制为 ~/.claude/settings.json 后填入真实凭据。"
 }
