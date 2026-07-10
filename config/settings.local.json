@@ -23,9 +23,6 @@
       "Bash(node *)",
       "Bash(pnpm *)",
       "Bash(npx *)",
-      "Bash(npx playwright *)",
-      "Bash(NPM_CONFIG_REGISTRY=https://registry.npmjs.org npx playwright *)",
-      "Bash(NPM_CONFIG_REGISTRY=https://registry.npmjs.org playwright install chromium)",
       "Bash(playwright --version)",
       "Bash(python3:*)",
       "Bash(pip3 --version)",
@@ -89,9 +86,7 @@
       "Skill(ux-research)",
       "Skill(hotel-admin-blue)",
       "Skill(update-config)",
-      "mcp__figma-desktop__get_design_context",
-      "mcp__figma-desktop__get_screenshot",
-      "mcp__figma-desktop__get_metadata",
+      "mcp__figma-desktop__*",
       "mcp__figma-hosted__*"
     ],
     "defaultMode": "bypassPermissions"
