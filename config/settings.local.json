@@ -128,7 +128,16 @@
     "style-design": "name-only",
     "frontend-design": "name-only",
     "hue": "user-invocable-only",
-    "figma-generate-design": "name-only"
+    "figma-generate-design": "name-only",
+    "figma-code-connect": "name-only",
+    "figma-create-design-system-rules": "user-invocable-only",
+    "figma-generate-diagram": "name-only",
+    "figma-generate-library": "name-only",
+    "figma-implement-design": "name-only",
+    "figma-use": "name-only",
+    "figma-use-figjam": "user-invocable-only",
+    "make-interfaces-feel-better": "name-only",
+    "canvas-design": "user-invocable-only"
   },
   "skipDangerousModePermissionPrompt": true,
   "hooks": {
