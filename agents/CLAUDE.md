@@ -50,7 +50,7 @@
 
 - 默认零加载，Agent 显式声明所需 skill 后才加载
 - ux-agent 常用：figma-use、figma-generate-design
-- design-director 常用：figma-use、style-design
+- design-director 常用：figma-use、style-design、bencium-controlled-ux-designer
 - front-agent 常用：frontend-design、ui-ux-pro-max
 - 禁止打包加载、禁止 skill 链式预加载
 

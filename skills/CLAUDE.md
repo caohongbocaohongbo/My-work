@@ -69,6 +69,7 @@ skills/<skill-name>/
 | 前端 | ui-ux-pro-max | UI/UX 设计智能辅助 |
 | 前端 | make-interfaces-feel-better | 界面精致化优化 |
 | UX | interaction-design | 交互逻辑与微交互设计 |
+| UX | bencium-controlled-ux-designer | 交互心理学驱动的 UX 设计：用户行为/交互反馈/动效节奏/响应策略（协作式，先询问后落地）|
 | UX | copyStyle | 从截图/URL/品牌快速提取设计语言生成 design.md |
 | 工具 | agent-browser | 浏览器自动化 |
 | 工具 | find-skills | 搜索可用 Skills |

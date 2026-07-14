@@ -48,6 +48,11 @@ ux-agent 产出物满足其 KPI 后，由 project-conductor 触发介入。若 D
 | `design-spec-compliance.md` | 解析 DESIGN.md，逐项对比 Figma 设计的颜色/字体/间距/圆角/阴影/边框及交互状态 |
 | `component-consistency-check.md` | 检查是否使用了设计系统组件，检测自定义替代，计算组件使用率 |
 | `design-review-report.md` | 编排上述两者，计算综合合规度，生成审查报告，判定 PASS/FAIL |
+| `bencium-controlled-ux-designer`（全局 Skill，`/skill` 调用） | 交互心理学视角补充审查：分析用户行为、交互反馈、动效节奏与响应策略，推动设计从「好看」走向「好用、好理解、有反馈」 |
+
+
+
+> `bencium-controlled-ux-designer` 为全局 Skill，遵循与其它 Skill 一致的按需加载/移除策略（`skillOverrides: name-only`，需 `/skill` 显式调用），非本 Agent 私有文件。
 
 ## 审查三维度
 

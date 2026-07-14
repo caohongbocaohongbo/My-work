@@ -7,7 +7,7 @@
 # 名称可按习惯增减；agents 目前为非标准目录格式（未被 Claude Code 当 subagent 加载），故留空，
 # 待标准化为 agents/*.md 后填入即可自动纳入。
 
-design|skills|find-skills figma-create-new-file design-md ui-ux-pro-max web-design-guidelines information-architecture emil-design-eng emblem-market-research
+design|skills|find-skills figma-create-new-file design-md ui-ux-pro-max web-design-guidelines information-architecture emil-design-eng emblem-market-research bencium-controlled-ux-designer
 design|agents|
 
 dev|skills|find-skills writing-plans executing-plans subagent-driven-development using-git-worktrees verification-before-completion dispatching-parallel-agents
