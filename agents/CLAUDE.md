@@ -51,8 +51,20 @@
 - 默认零加载，Agent 显式声明所需 skill 后才加载
 - ux-agent 常用：figma-use、figma-generate-design
 - design-director 常用：figma-use、style-design、bencium-controlled-ux-designer
-- front-agent 常用：frontend-design、ui-ux-pro-max
+- front-agent 常用：frontend-design、ui-ux-pro-max、gsap-advanced-animation
 - 禁止打包加载、禁止 skill 链式预加载
+
+#### front-agent 高级 Skill 关键字触发表
+
+以下 Skill 已激活为 `name-only`（`~/.claude/skills/`），命中关键字由 front-agent 显式 `/skill` 加载，用完不常驻：
+
+| Skill | 触发关键字 | 互斥/条件 |
+|-------|-----------|-----------|
+| frontend-design | 前端、界面、页面实现、组件 | — |
+| ui-ux-pro-max | UI 风格、配色、字体配对、交互优化、做一个页面/Dashboard | prompt 已含 DESIGN.md / Figma 链接 / 品牌风格名 / copyStyle 时**不加载** |
+| gsap-advanced-animation | GSAP、高级动画、滚动动画、时间轴动画、卷轴动效 | 仅需卷轴/滚动动效时叠加 |
+
+明细见 `agents/front-agent/README.md`。
 
 ### 5. 已归档 Agent 恢复
 
