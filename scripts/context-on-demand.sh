@@ -113,18 +113,44 @@ mcp_disable() {
 }
 
 # ─── Skill 操作 ──────────────────────────────────────────
+# set_override <name> <level|__delete__>  同步 settings.local.json 的 skillOverrides
+#   level = name-only | user-invocable-only；__delete__ 表示删除该键（默认 ON）
+set_override() {
+    local name="$1" level="$2"
+    local settings="${CLAUDE_HOME}/settings.local.json"
+    [[ -f "$settings" ]] || { warn "settings.local.json 不存在，跳过 override 同步"; return 0; }
+    [[ "$DRY_RUN" == "1" ]] && { info "[dry-run] skillOverrides[${name}] → ${level}"; return 0; }
+    python3 - "$settings" "$name" "$level" <<'PY' || true
+import json, sys, pathlib
+p=pathlib.Path(sys.argv[1]); name=sys.argv[2]; level=sys.argv[3]
+try: d=json.loads(p.read_text())
+except Exception: sys.exit(0)
+so=d.setdefault("skillOverrides",{})
+old=so.get(name,"(未列出)")
+if level=="__delete__": so.pop(name,None); new="(删除→默认ON)"
+else: so[name]=level; new=level
+p.write_text(json.dumps(d,indent=2,ensure_ascii=False))
+print(f"  [sync] skillOverrides[{name}]: {old} → {new}")
+PY
+}
+
 skill_enable() {
     local name="$1"
+    # 可选第二参数：启用后的 override 级别，默认 name-only（关键字触发、不污染 token 基线）
+    local level="${2:-name-only}"
     local preset_src="${SKILL_PRESETS}/${name}"
     local dest="${SKILLS_DIR}/${name}"
     [[ -d "$preset_src" ]] || error "Skill 预设不存在: ${preset_src}"
     if [[ "$DRY_RUN" == "1" ]]; then
         info "[dry-run] 将移动: ${preset_src} → ${dest}"
+        set_override "${name}" "${level}"
         return
     fi
     mv "${preset_src}" "${dest}"
     touch_mark skill "${name}"
-    info "Skill [${name}] 已从预设恢复到 ${dest}，已记录使用时间戳"
+    set_override "${name}" "${level}"    # ② 联动 override 级别
+    info "Skill [${name}] 已从预设恢复到 ${dest}（override=${level}），已记录使用时间戳"
+    warn "③ 别忘了在对应 agent README + config/skill-strategy.md 登记触发关键字"
     warn "重启会话后 /context 可见变化"
 }
 
@@ -136,11 +162,14 @@ skill_disable() {
     [[ -d "$src" ]] || error "Skill 目录不存在: ${src}"
     if [[ "$DRY_RUN" == "1" ]]; then
         info "[dry-run] 将归档: ${src} → ${dest_dir}/${name}"
+        set_override "${name}" "user-invocable-only"
         return
     fi
     mv "${src}" "${dest_dir}/${name}"
     clear_mark skill "${name}"
-    info "Skill [${name}] 已归档到 ${dest_dir}/${name}"
+    set_override "${name}" "user-invocable-only"   # ② 归档→隐藏，反向联动
+    info "Skill [${name}] 已归档到 ${dest_dir}/${name}（override=user-invocable-only）"
+    warn "③ 记得从 agent README + skill-strategy.md 关键字表移除该 skill"
     warn "重启会话后 /context 可见变化"
 }
 

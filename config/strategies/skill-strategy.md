@@ -27,6 +27,26 @@ python3 -c "import json; d=json.load(open('$HOME/.claude/settings.local.json'))[
 - 归档：`~/.claude/scripts/context-on-demand.sh disable skill <名称>`
 - 查询：`~/.claude/scripts/context-on-demand.sh list`
 
+## 启用/归档三件套联动（重要 · 避免"归档态无法启用"）
+
+`Unknown skill` 的根因：物理目录、`skillOverrides` 级别、策略文档三者脱节。任一层不同步都会导致 skill 找不到或不触发。启用一个 skill 必须**三层同步**：
+
+| 层 | 动作 | 校验 |
+|----|------|------|
+| ① 物理目录 | `enable skill <名>`（archive → `~/.claude/skills/`，含 data/scripts 全目录） | `ls ~/.claude/skills/<名>` 有实体 |
+| ② override 级别 | `settings.local.json` 改为 `name-only`（关键字触发）或删除该键（默认 ON） | 查询脚本可见目标级别 |
+| ③ 策略/README 文档 | 在对应 agent README + 本文件登记触发关键字 | 关键字表含该 skill |
+
+> `context-on-demand.sh enable skill` **只做 ①**，不改 ②③——这正是历史上 `ui-ux-pro-max` / `gsap-advanced-animation` 搬到激活目录却仍 `user-invocable-only`、且 SKILL.md 声明 `conditional-auto` 与 override 打架的原因。启用后务必手动补 ②③。
+
+**归档时反向三层**：`disable skill` 搬回 archive → override 恢复 `user-invocable-only` → 文档关键字表移除。
+
+## 前端 Skill 归属（front-agent）
+- `frontend-design`（name-only）：前端/界面/组件实现
+- `ui-ux-pro-max`（name-only）：UI 风格/配色/字体/交互；prompt 有 DESIGN.md / Figma 链接 / copyStyle 时**不加载**
+- `gsap-advanced-animation`（name-only）：GSAP/滚动/时间轴/卷轴动效
+- 关键字明细见 `agents/front-agent/README.md` 与 `agents/CLAUDE.md` 第 4 条
+
 ## 新增 Skill 时
 1. 默认设 `name-only`，避免污染 token 基线
 2. 仅当 description 是命中必需时才默认 ON
