@@ -107,6 +107,7 @@ skills/<skill-name>/
 | ux-research | 用户研究项目专用 |
 | web-design-guidelines | 无障碍审查专用 |
 | self-improving-agent | 自动化运行，但描述仍占 token |
+| grill-me | 需求拷问，按需触发，不用即消 |
 
 ### 9. Skill 多级查找规则
 

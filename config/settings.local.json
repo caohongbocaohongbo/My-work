@@ -138,7 +138,8 @@
     "figma-use-figjam": "user-invocable-only",
     "make-interfaces-feel-better": "name-only",
     "canvas-design": "user-invocable-only",
-    "bencium-controlled-ux-designer": "name-only"
+    "bencium-controlled-ux-designer": "name-only",
+    "grill-me": "user-invocable-only"
   },
   "skipDangerousModePermissionPrompt": true,
   "hooks": {
