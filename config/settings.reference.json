@@ -8,5 +8,6 @@
   },
   "effortLevel": "medium",
   "autoUpdatesChannel": "latest",
+  "model": "sonnet[1m]",
   "_note": "脱敏模板。新机器复制为 ~/.claude/settings.json 后填入真实凭据。"
 }
