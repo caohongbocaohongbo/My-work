@@ -1,0 +1,59 @@
+{
+  "archive_root": "/Users/fangcang/Documents/My-work-repo/skills-archive/video-skills",
+  "layers": {
+    "director": {
+      "visual-director": "visual-skills/video",
+      "cinema-director": "generative-media-skills/library/motion/cinema-director"
+    },
+    "storyboard": {
+      "visual-director": "visual-skills/video",
+      "storyboard": "generative-media-skills/library/visual/storyboard"
+    },
+    "cinematography": {
+      "visual-director": "visual-skills/video",
+      "cinema-director": "generative-media-skills/library/motion/cinema-director"
+    },
+    "ai-generation": {
+      "seedance": "seedance2-skill/zh",
+      "generative-media": "generative-media-skills/core/media"
+    },
+    "character-development": {
+      "cinematic-character-pipeline": "cinematic-video-skills/skills/cinematic-character-pipeline",
+      "character-bible-continuity": "cinematic-video-skills/skills/character-bible-continuity"
+    },
+    "video-orchestration": {
+      "cinematic-character-pipeline": "cinematic-video-skills/skills/cinematic-character-pipeline",
+      "comfyui-video-orchestrator": "cinematic-video-skills/skills/comfyui-video-orchestrator"
+    },
+    "performance-motion": {
+      "cinematic-character-pipeline": "cinematic-video-skills/skills/cinematic-character-pipeline",
+      "motion-reference-prep": "cinematic-video-skills/skills/motion-reference-prep"
+    },
+    "character-animation": {
+      "cinematic-character-pipeline": "cinematic-video-skills/skills/cinematic-character-pipeline",
+      "comfyui-video-orchestrator": "cinematic-video-skills/skills/comfyui-video-orchestrator",
+      "wan22-character-animation": "cinematic-video-skills/skills/wan22-character-animation"
+    },
+    "dialogue-performance": {
+      "cinematic-character-pipeline": "cinematic-video-skills/skills/cinematic-character-pipeline",
+      "dialogue-performance-router": "cinematic-video-skills/skills/dialogue-performance-router"
+    },
+    "temporal-qc": {
+      "cinematic-character-pipeline": "cinematic-video-skills/skills/cinematic-character-pipeline",
+      "temporal-qc-repair": "cinematic-video-skills/skills/temporal-qc-repair"
+    },
+    "voice-sound": {
+      "media-use": "hyperframes/skills/media-use",
+      "hyperframes-audio": "hyperframes/skills/hyperframes-audio"
+    },
+    "edit-color": {
+      "video-use": "video-use",
+      "videocut-cut": "videocut-skills/plugins/chengfeng-videocut/skills/chengfeng-cut",
+      "videocut-visual": "videocut-skills/plugins/chengfeng-videocut/skills/chengfeng-visual",
+      "videocut-subtitle": "videocut-skills/plugins/chengfeng-videocut/skills/chengfeng-subtitle",
+      "videocut-export": "videocut-skills/plugins/chengfeng-videocut/skills/chengfeng-export",
+      "remotion": "remotion-skills/skills/remotion-best-practices",
+      "remotion-render": "remotion-skills/skills/remotion-render"
+    }
+  }
+}

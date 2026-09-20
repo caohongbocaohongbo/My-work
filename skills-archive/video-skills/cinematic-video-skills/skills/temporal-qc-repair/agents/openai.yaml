@@ -1,0 +1,6 @@
+interface:
+  display_name: "时序质检与修复"
+  short_description: "检测人物漂移、动作断裂、闪烁和坏帧并执行最小修复"
+  default_prompt: "使用 $temporal-qc-repair 对生成的人物镜头做逐帧质检并制定修复方案。"
+policy:
+  allow_implicit_invocation: true

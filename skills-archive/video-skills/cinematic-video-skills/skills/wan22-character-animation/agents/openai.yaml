@@ -1,0 +1,6 @@
+interface:
+  display_name: "Wan2.2 人物动画"
+  short_description: "用动作参考驱动固定角色，或在已有镜头中替换人物"
+  default_prompt: "使用 $wan22-character-animation 为角色镜头规划可复现的 Wan2.2 Animate 执行方案。"
+policy:
+  allow_implicit_invocation: true

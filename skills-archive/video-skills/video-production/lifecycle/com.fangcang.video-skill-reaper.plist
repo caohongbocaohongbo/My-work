@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.fangcang.video-skill-reaper</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>-c</string>
+    <string>lease_root=/tmp/video-production-mounts-501; [[ -d "$lease_root" ]] || exit 0; /usr/bin/find "$lease_root" -type f -name lease.json -mmin +20 -print | while IFS= read -r lease; do session=${lease%/lease.json}; case "$session" in "$lease_root"/*/*) /bin/rm -rf -- "$session";; esac; done</string>
+  </array>
+  <key>StartInterval</key>
+  <integer>300</integer>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/tmp/video-production-skill-reaper.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/video-production-skill-reaper.err.log</string>
+</dict>
+</plist>

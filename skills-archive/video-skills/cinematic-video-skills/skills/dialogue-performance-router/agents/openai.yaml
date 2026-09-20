@@ -1,0 +1,6 @@
+interface:
+  display_name: "对白表演路由"
+  short_description: "按镜头需求路由口型、表情、身体动作和多人对白模型"
+  default_prompt: "使用 $dialogue-performance-router 为对白镜头选择合规且匹配表演范围的模型。"
+policy:
+  allow_implicit_invocation: true

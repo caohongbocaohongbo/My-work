@@ -1,0 +1,6 @@
+interface:
+  display_name: "ComfyUI 视频编排"
+  short_description: "构建可复现、可追踪且隔离运行的 ComfyUI 视频工作流"
+  default_prompt: "使用 $comfyui-video-orchestrator 为人物镜头建立可复现的 ComfyUI 工作流。"
+policy:
+  allow_implicit_invocation: true

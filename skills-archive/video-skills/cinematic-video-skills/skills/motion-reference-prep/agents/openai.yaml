@@ -1,0 +1,6 @@
+interface:
+  display_name: "动作参考准备"
+  short_description: "把人物表演拆成可拍摄、可驱动、可跨镜衔接的动作参考"
+  default_prompt: "使用 $motion-reference-prep 为人物镜头设计并检查动作驱动参考。"
+policy:
+  allow_implicit_invocation: true

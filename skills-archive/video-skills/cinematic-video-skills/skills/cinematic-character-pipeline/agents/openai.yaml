@@ -1,0 +1,6 @@
+interface:
+  display_name: "电影级人物视频总流程"
+  short_description: "规划有角色表演、动作连续性和镜头衔接的电影化视频"
+  default_prompt: "使用 $cinematic-character-pipeline 将人物短片拆成可生成、可衔接、可验收的镜头。"
+policy:
+  allow_implicit_invocation: true

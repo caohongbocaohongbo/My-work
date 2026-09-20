@@ -1,0 +1,6 @@
+interface:
+  display_name: "角色圣经与连续性"
+  short_description: "锁定人物身份、服装、道具及跨镜头开始结束状态"
+  default_prompt: "使用 $character-bible-continuity 为多镜头人物建立角色圣经和连续性约束。"
+policy:
+  allow_implicit_invocation: true

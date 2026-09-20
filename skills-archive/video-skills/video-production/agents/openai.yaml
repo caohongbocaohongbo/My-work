@@ -1,0 +1,6 @@
+interface:
+  display_name: "视频制作"
+  short_description: "按需路由共享视频技能，覆盖人物连续表演、生成、声音与后期"
+  default_prompt: "使用 $video-production 根据交付目标路由人物连续表演或普通视频制作流程。"
+policy:
+  allow_implicit_invocation: true
