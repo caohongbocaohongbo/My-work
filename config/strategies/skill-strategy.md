@@ -47,6 +47,12 @@ python3 -c "import json; d=json.load(open('$HOME/.claude/settings.local.json'))[
 - `gsap-advanced-animation`（name-only）：GSAP/滚动/时间轴/卷轴动效
 - 关键字明细见 `agents/front-agent/README.md` 与 `agents/CLAUDE.md` 第 4 条
 
+## AI 视觉生成 Skill 归档
+- 共享位置：`skills-archive/ai-visual-skills/`
+- 策略文件：`config/strategies/ai-visual-skills.md`
+- 默认不挂载；仅当用户点名或命中出图提示词、交互动画、Three.js 图形、图生 3D、极简海报、文章配图等关键词时按需启用
+- 20 分钟不用即消；Claude Code 可通过 `scripts/skill-hotload.sh sweep` 回收过期挂载
+
 ## 新增 Skill 时
 1. 默认设 `name-only`，避免污染 token 基线
 2. 仅当 description 是命中必需时才默认 ON

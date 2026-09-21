@@ -8,8 +8,12 @@ set -euo pipefail
 CLAUDE_HOME="${HOME}/.claude"
 SKILLS_DIR="${CLAUDE_HOME}/skills"
 AGENTS_SKILLS_DIR="${HOME}/.agents/skills"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+SHARED_SKILLS_ARCHIVE="${REPO_ROOT}/skills-archive"
 SETTINGS="${CLAUDE_HOME}/settings.local.json"
 TOUCH_DIR="${CLAUDE_HOME}/cache/skill-hotload-touch"
+IDLE_MINUTES="${SKILL_HOTLOAD_IDLE_MINUTES:-20}"
 
 mkdir -p "${TOUCH_DIR}"
 
@@ -18,6 +22,33 @@ GREEN='\033[0;32m'; YELLOW='\033[1;33m'; RED='\033[0;31m'; NC='\033[0m'
 info()  { echo -e "${GREEN}[✓]${NC}  $*"; }
 warn()  { echo -e "${YELLOW}[!]${NC}  $*"; }
 error() { echo -e "${RED}[✗]${NC} $*" >&2; exit 1; }
+
+resolve_skill_source() {
+    local skill_name="$1"
+    local target_path="${AGENTS_SKILLS_DIR}/${skill_name}"
+
+    if [[ -d "$target_path" ]]; then
+        echo "$target_path"
+        return 0
+    fi
+
+    target_path="${SHARED_SKILLS_ARCHIVE}/${skill_name}"
+    if [[ -d "$target_path" && -f "${target_path}/SKILL.md" ]]; then
+        echo "$target_path"
+        return 0
+    fi
+
+    if [[ -d "$SHARED_SKILLS_ARCHIVE" ]]; then
+        local found
+        found="$(find "$SHARED_SKILLS_ARCHIVE" -type f -path "*/${skill_name}/SKILL.md" -print -quit 2>/dev/null || true)"
+        if [[ -n "$found" ]]; then
+            dirname "$found"
+            return 0
+        fi
+    fi
+
+    return 1
+}
 
 # ─── 辅助函数：更新 skillOverrides ───────────────────────────
 # 将 skill 从 skillOverrides 中设置为指定值（"name-only"/"user-invocable-only"/删除）
@@ -57,12 +88,14 @@ PY
 # ─── Skill 热加载命令 ───────────────────────────────────────
 skill_enable() {
     local skill_name="$1"
-    local target_path="${AGENTS_SKILLS_DIR}/${skill_name}"
+    local target_path
     local link_path="${SKILLS_DIR}/${skill_name}"
 
+    skill_sweep >/dev/null || true
+
     # 检查源是否存在
-    if [[ ! -d "$target_path" ]]; then
-        error "Skill 源不存在: ${target_path}"
+    if ! target_path="$(resolve_skill_source "$skill_name")"; then
+        error "Skill 源不存在: ${AGENTS_SKILLS_DIR}/${skill_name} 或 ${SHARED_SKILLS_ARCHIVE}/**/${skill_name}/SKILL.md"
     fi
 
     # 检查是否已存在
@@ -116,6 +149,17 @@ skill_list() {
     else
         echo "  （目录不存在）"
     fi
+    echo ""
+    echo "=== 共享归档 Skill（来自 My-work-repo/skills-archive/）==="
+    if [[ -d "$SHARED_SKILLS_ARCHIVE" ]]; then
+        find "$SHARED_SKILLS_ARCHIVE" -type f -name SKILL.md -maxdepth 5 2>/dev/null \
+            | xargs -I{} dirname {} \
+            | xargs -I{} basename {} \
+            | sort -u \
+            | sed 's/^/  📦 /'
+    else
+        echo "  （目录不存在）"
+    fi
 }
 
 skill_status() {
@@ -142,6 +186,36 @@ PY
     fi
 }
 
+skill_sweep() {
+    local found=0
+    if [[ ! -d "$TOUCH_DIR" ]]; then
+        return 0
+    fi
+
+    while IFS= read -r touch_file; do
+        [[ -z "$touch_file" ]] && continue
+        found=1
+        local skill_name
+        skill_name="$(basename "$touch_file")"
+        warn "Skill [${skill_name}] 超过 ${IDLE_MINUTES} 分钟未触碰，自动回收"
+        skill_disable "$skill_name"
+    done < <(find "$TOUCH_DIR" -type f -mmin +"${IDLE_MINUTES}" -print 2>/dev/null)
+
+    if [[ "$found" -eq 0 ]]; then
+        info "没有需要自动回收的 Skill"
+    fi
+}
+
+skill_touch() {
+    local skill_name="$1"
+    local link_path="${SKILLS_DIR}/${skill_name}"
+    if [[ ! -e "$link_path" ]]; then
+        error "Skill [${skill_name}] 当前未启用，无法触碰续期"
+    fi
+    : > "${TOUCH_DIR}/${skill_name}"
+    info "Skill [${skill_name}] 已续期 ${IDLE_MINUTES} 分钟"
+}
+
 # ─── 主命令分发 ───────────────────────────────────────────────
 cmd="${1:-help}"
 shift || true
@@ -161,6 +235,13 @@ case "$cmd" in
     status)
         skill_status
         ;;
+    sweep)
+        skill_sweep
+        ;;
+    touch)
+        [[ $# -eq 0 ]] && error "用法: skill-hotload.sh touch <skill-name>"
+        skill_touch "$1"
+        ;;
     *)
         cat <<'HELP'
 skill-hotload.sh — Skills 热加载管理
@@ -170,13 +251,17 @@ skill-hotload.sh — Skills 热加载管理
   skill-hotload.sh disable <skill-name>     禁用 Skill（删除软链接，标记为 user-invocable-only）
   skill-hotload.sh list                     列出所有可用 Skill
   skill-hotload.sh status                   显示当前活跃 Skill + skillOverrides 配置
+  skill-hotload.sh touch <skill-name>       当前还在使用，续期 20 分钟
+  skill-hotload.sh sweep                    回收超过 20 分钟未触碰的 Skill
 
 原理：
   • Skill 源存放：~/.agents/skills/（来自 agy cli）
+  • 共享归档：My-work-repo/skills-archive/（跨智能体共用）
   • Skill 链接：~/.claude/skills/（软链接，热加载）
   • 默认隐藏：skillOverrides 中标记为 user-invocable-only（防止污染 token）
   • 按需启用：enable 创建链接，delete 移除 skillOverrides 条目
   • 按需禁用：disable 删除链接，标记为 user-invocable-only
+  • 不用即消：sweep 自动回收超过 20 分钟未触碰的链接
 
 示例：
   skill-hotload.sh enable svg-drawing       # 启用 svg-drawing
