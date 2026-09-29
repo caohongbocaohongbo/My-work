@@ -1,11 +1,32 @@
 ---
-version: v3
+version: v4
 name: 订单通 · FCG Design System UI Kit (Fangcang UI)
-description: "订单通（DingdanTong）B2B SaaS 平台的统一设计系统与组件规范，对齐 Figma「FCG Design System - UI Kit - 订单通 v1」。本文档是页面设计前必须读取的唯一事实来源，覆盖 Foundations 设计令牌（颜色 / 字体 / 圆角 / 阴影 / 尺寸）与全部 UI Kit 组件（按钮、按钮组、链接、复选框、单选框、开关、输入框、数字输入框、选择器、日期时间选择器、表单、表格、标签、统计数值、标签页、对话框、文字提示）。品牌色为 #2f87ac 冷蓝，语义色采用成功/警告/错误/信息四色体系，字体 Inter + PingFang SC。文档同时保留订单通平台级业务组件（侧边栏、顶栏、翻页器、KPI 指标卡、图表等）作为平台扩展。"
+description: "订单通（DingdanTong）B2B SaaS 平台的统一设计系统与组件规范，对齐 Figma「FCG Design System - UI Kit (订单通)- v1」。Figma 是组件、变量、状态与尺寸的唯一权威来源；本文档用于同步记录 Figma 并指导页面/原型生成。生成页面默认以 1920px 宽度为设计基准，使用 Auto Layout 与响应式约束。布局 Frame、section、group 默认透明，禁止自动生成白色背景块；只有 Figma 组件本身或明确的 L1 容器/浮层可使用背景。"
 
 # ============ 设计源 ============
 figmaFile: https://www.figma.com/design/EvOEzvO2sCtM8JavVCJSZP/FCG-Design-System---UI-Kit--%E8%AE%A2%E5%8D%95%E9%80%9A---v1
 figmaFoundationsNode: 0:3
+
+# ============ 基准与冲突处理 ============
+sourceOfTruth:
+  priority: "Figma UI Kit"
+  rule: "当本文档、README.md、旧页面或生成器默认样式与 Figma 定义冲突时，一律以 Figma 为准；先修正文档，再生成设计/原型。"
+  verifiedFileName: "FCG Design System - UI Kit (订单通)- v1"
+
+# ============ 页面 / 原型生成基准 ============
+generation:
+  defaultCanvasWidth: 1920px
+  minDesktopContentWidth: 1024px
+  layout: "Auto Layout first; fixed coordinates only for intentional decorative or chart internals"
+  responsive: "Desktop 1920 baseline; 1024-1439 shrink; 768-1023 reduce columns; <768 single column"
+  backgroundRule: "layout frames, sections, groups, and ordinary content containers default to transparent fills; do not keep Figma's default white fill unless this file explicitly says the object owns a background."
+
+# ============ 主要按钮默认组件实例 ============
+primaryButton:
+  default: "style=basic, round=off, size=default, icon=none, type=primary, plain=off, background=on, state=default, disabled=off, loading=off"
+  hover: "style=basic, round=off, size=default, icon=none, type=primary, plain=off, background=on, state=hover, disabled=off, loading=off"
+  active: "style=basic, round=off, size=default, icon=none, type=primary, plain=off, background=on, state=active, disabled=off, loading=off"
+  disabled: "style=basic, round=off, size=default, icon=none, type=primary, plain=off, background=on, state=default, disabled=on, loading=off"
 
 # ============ 颜色（对齐 Figma ✦ Foundations / Variables） ============
 colors:
@@ -147,10 +168,17 @@ easing:
 
 # 订单通 · FCG Design System UI Kit
 
-> **唯一事实来源**：所有页面设计开始前，必须先完整读取本文件。README.md 仅作速查索引，不足以替代本文档。
+> **Figma 优先**：Figma 文件是组件、变量、状态与尺寸的唯一权威来源。所有页面/原型设计开始前，必须先完整读取本文件；README.md 仅作速查索引，不足以替代本文档。
 >
-> **设计源**：Figma 文件「FCG Design System - UI Kit - 订单通 v1」
+> **设计源**：Figma 文件「FCG Design System - UI Kit (订单通)- v1」
 > https://www.figma.com/design/EvOEzvO2sCtM8JavVCJSZP/FCG-Design-System---UI-Kit--%E8%AE%A2%E5%8D%95%E9%80%9A---v1?node-id=0-3
+
+## 基准铁律
+
+1. **以 Figma 为准**：本文档、README.md、旧页面截图或生成器默认样式与 Figma UI Kit 冲突时，一律以 Figma 中定义的组件属性、变量、状态和尺寸为准。
+2. **文档只同步 Figma**：不得为了迁就旧文档或生成器习惯而改写组件含义；发现冲突时，先把 DESIGN.md / README.md 更新到 Figma，再生成页面或原型。
+3. **生成结果双向一致**：无论从 Figma、DESIGN.md、README.md 还是代码原型出发，最终页面视觉必须落到同一套令牌、组件状态和响应式布局规则。
+4. **不要继承 Figma 默认白底**：新建 Frame、section、group 或布局容器时，默认使用透明 `fills: []`；只有明确拥有背景职责的组件、L1 容器、弹层、表格表头或真实业务卡片才允许设置背景。
 
 ## 概述
 
@@ -158,12 +186,15 @@ easing:
 
 **核心设计原则：**
 
-1. **单一主色** —— 主色（primary）#2f87ac 是唯一品牌蓝，用于主按钮、Tab 激活、操作链接、选中态。禁止另造蓝色。
-2. **语义四色** —— 成功 #6a9f62 / 警告 #be964b / 错误 #c66261 / 信息 #97a6b8，每色含 9 档明度梯度（base + dark-2 + light-3/5/7/8/9）。
-3. **8px 基础圆角** —— 组件基础圆角 8px，小控件 2px，胶囊 20px，圆形 999px。
-4. **三档组件尺寸** —— 通用控件高度 24px / 32px / 40px。
-5. **克制的阴影** —— 4 级阴影，仅在浮层/弹窗/下拉等需要抬升层级时使用，页面卡片默认扁平。
-6. **不得出现 emoji** —— 图标一律使用 SVG（见「图标 Icon」）。
+1. **Figma 单一基准** —— 组件属性、变体轴、状态、尺寸和颜色以 Figma UI Kit 为准；文档只负责同步和解释。
+2. **1920px 画布基准** —— 设计/原型默认画板宽度为 1920px，最小桌面内容宽度 1024px；主结构使用 Auto Layout 和响应式约束。
+3. **布局层默认透明** —— 页面 section、布局 Frame、group、普通内容容器默认不设置背景，禁止自动生成白色背景块。
+4. **单一主色** —— 主色（primary）#2f87ac 是唯一品牌蓝，用于主按钮、Tab 激活、操作链接、选中态。禁止另造蓝色。
+5. **语义四色** —— 成功 #6a9f62 / 警告 #be964b / 错误 #c66261 / 信息 #97a6b8，每色含 9 档明度梯度（base + dark-2 + light-3/5/7/8/9）。
+6. **8px 基础圆角** —— 组件基础圆角 8px，小控件 2px，胶囊 20px，圆形 999px。
+7. **三档组件尺寸** —— 通用控件高度 24px / 32px / 40px。
+8. **克制的阴影** —— 4 级阴影，仅在浮层/弹窗/下拉等需要抬升层级时使用，页面卡片默认扁平。
+9. **不得出现 emoji** —— 图标一律使用 SVG（见「图标 Icon」）。
 
 ### Figma 页面结构（左侧导航 → 中文对照）
 
@@ -345,6 +376,17 @@ Figma 页面：❖ Button（node-id=48:6417）。10 个变体轴，共 1000+ 变
 | loading | off / on | 加载中（spinner） |
 
 **尺寸**：高度 24px / 32px / 40px；左右内边距 12px；图标按钮为正方形（24/32/40）。
+
+**主要按钮基准实例（页面主操作必须使用）：**
+
+| 状态 | Figma 组件属性 |
+|------|----------------|
+| 正常 | `style=basic, round=off, size=default, icon=none, type=primary, plain=off, background=on, state=default, disabled=off, loading=off` |
+| Hover | `style=basic, round=off, size=default, icon=none, type=primary, plain=off, background=on, state=hover, disabled=off, loading=off` |
+| Active | `style=basic, round=off, size=default, icon=none, type=primary, plain=off, background=on, state=active, disabled=off, loading=off` |
+| 禁用 | `style=basic, round=off, size=default, icon=none, type=primary, plain=off, background=on, state=default, disabled=on, loading=off` |
+
+主按钮只通过以上属性切换状态；不得另造 hover/active/disabled 色值或手写近似按钮样式。
 
 **类型语义**：
 - primary：实心主按钮 —— 背景 #2f87ac，文字 #ffffff；hover #215e78。
@@ -701,13 +743,15 @@ Figma 页面：Icon (on-going)（node-id=7:137）。
 
 ### KPI 指标卡片（数据洞察模块）
 
-- 背景 #fbfcfe / 边框 #f0f4f7 / 圆角 8px / 内边距 16px
+- 仅当节点语义为真实指标卡组件时使用背景；外层 section、grid、group 默认透明
+- 真实指标卡：背景 #fbfcfe / 边框 #f0f4f7 / 圆角 8px / 内边距 16px
 - Label 12px #949999；Value 22px SemiBold #313333，等宽数字
 - 涨跌：Success #6a9f62 / Error #c66261
 
 ### Chart 图表面板
 
-- 固定高度 252px；白底 + 1px 边框
+- 图表容器固定高度 252px；只有图表面板自身可使用 #fbfcfe 背景 + 1px #f0f4f7 边框
+- 图表外层标题区、section、左右布局列默认透明，不自动套白底
 - 图表主色沿用品牌蓝 #2f87ac；对比色/折线色按语义色板选取
 
 ### Progress 进度条
@@ -719,17 +763,32 @@ Figma 页面：Icon (on-going)（node-id=7:137）。
 
 ### 页面尺寸与网格
 
-- 设计基准宽度 **1920px**；最小内容宽度 1024px
-- 网格结构：grid-template-columns: 240px 1fr（侧边栏 + 内容区）
-- 内容区内边距：上下 30px，左右 40px（响应式 clamp 至 24px）
+- 设计/原型默认画板宽度 **1920px**；首屏高度可按页面内容确定，桌面常用最小高度 1080px
+- 页面根 Frame 使用 Auto Layout；桌面主结构为 `grid-template-columns: 240px 1fr`（侧边栏 + 内容区）
+- 内容区宽度随画板 Fill；内容容器使用响应式约束，不把 1920px 内部元素写死为绝对坐标
+- 最小桌面内容宽度 1024px；低于 1024px 时按断点收缩、改列或堆叠
+- 内容区内边距：上下 30px，左右 `clamp(16px, 2.08vw, 40px)`
+- 所有 section、列表、表单、卡片网格优先使用 Auto Layout；仅图表内部、插画或特殊定位元素可使用固定坐标
 
-### 内容区背景归属（三层结构）
+### 内容区背景归属（禁止默认白底）
 
-- **L1 容器**（topbar、main-body、浮层卡片）：白底 #fbfcfe
-- **L2 子区 / L3 元素**（标题、正文、布局 Frame）：透明，不承担背景
-- **L4 强语义浮层**（pill、notice、segmented 选中态、按钮）：按各组件规范语义底色
+- **页面底色**：页面根背景使用 `bg-page #f7f8fa`
+- **L1 容器**：topbar、主内容壳层、弹窗、下拉、Popover 等确实需要承载层级的容器可使用 `bg #fbfcfe`
+- **L2 / L3 布局层**：section、标题区、正文区、左右列、grid、stack、group、仅用于对齐的 Frame 默认透明，设置 `fills: []`
+- **业务卡片**：只有 KPI、Statistic card、图表面板、信息面板等“真实卡片组件”才可使用背景；不要给卡片外层再套一层白底
+- **L4 强语义元素**：pill、notice、segmented 选中态、按钮、标签等按各自组件规范使用语义底色
 
-> 加背景前先自问：去掉这层背景，视觉层级会不会丢？会丢 → 保留；不会丢 → 透明。
+> 加背景前先自问：去掉这层背景，视觉层级会不会丢？会丢 → 保留；不会丢 → 透明。附图中那类无语义的白色矩形块属于错误生成结果，应删除背景或改为透明布局 Frame。
+
+| 对象类型 | 默认背景 | 说明 |
+|----------|----------|------|
+| Page / Root frame | #f7f8fa | 页面底色 |
+| Sidebar | #14263b | 平台扩展组件固定深蓝底 |
+| Header / Topbar | #fbfcfe | 一级承载容器 |
+| Section / layout Frame / group | transparent | 不承担背景，禁止默认白底 |
+| Figma UI Kit 组件实例 | 按组件属性 | 以 Figma 组件定义为准 |
+| Dialog / Tooltip / Select panel | #fbfcfe + shadow/border | 浮层需要承载背景 |
+| KPI / Statistic / Chart card | 按组件语义 | 只给卡片自身背景，不给外层 section 背景 |
 
 ## 交互状态
 

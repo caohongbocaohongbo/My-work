@@ -1,6 +1,8 @@
 # 订单通 (DingdanTong) Design System
 
-所有页面设计开始前，**必须先完整读取** `./dingdantong/DESIGN.md` 文件中的设计令牌和组件规范，再开始生成 Figma 设计。本 README 仅为速查索引。
+所有页面/原型设计开始前，**必须先完整读取** `./dingdantong/DESIGN.md` 文件中的设计令牌、组件规范与生成约束。本 README 仅为速查索引。
+
+> **基准铁律**：Figma 文件「FCG Design System - UI Kit (订单通)- v1」是组件与样式的唯一权威来源。README.md 与 DESIGN.md 若与 Figma 冲突，必须以 Figma 为准并同步修正文档，而不是反向改写组件规则。
 
 ## 设计文件
 
@@ -10,12 +12,15 @@
 
 ## 核心设计原则
 
-1. **单一主色** — `#2f87ac` 是唯一品牌蓝，用于主按钮、Tab 激活线、操作链接、选中态。不要使用其他蓝色定义。
-2. **语义四色** — 成功 `#6a9f62` / 警告 `#be964b` / 错误 `#c66261` / 信息 `#97a6b8`，每色含 9 档明度梯度。
-3. **8px 基础圆角** — 组件基础圆角 8px，小控件 2px，胶囊 20px，圆形 999px。
-4. **三档组件尺寸** — 通用控件高度 24px / 32px / 40px。
-5. **克制阴影** — 4 级阴影，仅浮层/弹窗/下拉使用，页面卡片默认扁平。
-6. **不得出现 emoji** — 图标全部使用 SVG 图形。
+1. **Figma 优先** — 组件属性、变体轴、状态、尺寸和颜色以 Figma UI Kit 为准；文档只记录和解释 Figma，不自创规则。
+2. **1920px 设计基准** — 生成页面/原型默认画板宽度为 1920px，内容使用 Auto Layout 和响应式约束，不能用固定坐标堆出不可伸缩页面。
+3. **布局层默认透明** — 页面 section、布局 Frame、分组 Frame、普通内容容器默认 `fills: []` / transparent；不得自动生成白色背景块。只有 Figma 组件本身或明确的 L1 容器/浮层需要背景。
+4. **单一主色** — `#2f87ac` 是唯一品牌蓝，用于主按钮、Tab 激活线、操作链接、选中态。不要使用其他蓝色定义。
+5. **语义四色** — 成功 `#6a9f62` / 警告 `#be964b` / 错误 `#c66261` / 信息 `#97a6b8`，每色含 9 档明度梯度。
+6. **8px 基础圆角** — 组件基础圆角 8px，小控件 2px，胶囊 20px，圆形 999px。
+7. **三档组件尺寸** — 通用控件高度 24px / 32px / 40px。
+8. **克制阴影** — 4 级阴影，仅浮层/弹窗/下拉使用，页面卡片默认扁平。
+9. **不得出现 emoji** — 图标全部使用 SVG 图形。
 
 ## 设计令牌速查
 
@@ -61,6 +66,14 @@
 - **阴影**: lighter / light / base / dark（见 DESIGN.md）
 - **通用尺寸**: sm 24px / base 32px / lg 40px
 
+## 页面/原型生成速查
+
+- **画板**：默认宽度 1920px；桌面内容按 1920px 基准设计，窄桌面、平板、移动端按 DESIGN.md 的响应式断点自动收缩/堆叠。
+- **布局**：所有一级页面结构、主内容、列表、表单、卡片网格优先使用 Auto Layout；文本和控件允许随内容 Hug，主要内容列允许 Fill。
+- **背景**：页面底色使用 `bg-page #f7f8fa`；布局 Frame / section / group 默认透明。不要因为创建 Frame 而保留 Figma 默认白色 fill。
+- **主按钮默认实例**：使用 Button 组件 `style=basic, round=off, size=default, icon=none, type=primary, plain=off, background=on, state=default, disabled=off, loading=off`。
+- **主按钮状态**：hover 只切换 `state=hover`；active 只切换 `state=active`；禁用只切换 `disabled=on` 且 `state=default`；其余属性保持不变。
+
 ## 关键组件规范索引
 
 DESIGN.md 中已定义的 Figma UI Kit 组件（按页面顺序）:
@@ -88,15 +101,16 @@ DESIGN.md 中已定义的 Figma UI Kit 组件（按页面顺序）:
 - **Sidebar 侧边栏** — 240px 深蓝底 #14263b，激活指示线 #2ea0ce
 - **Header 顶栏** — 64px 白色顶栏，含面包屑 + 升级 pill
 - **Pagination 翻页器** — 导航 42×30 / 数字 30×30，激活页主色文字
-- **KPI 指标卡片** — 数据洞察模块指标卡
-- **Chart 图表面板** — 252px 图表容器
+- **KPI 指标卡片** — 数据洞察模块指标卡；只有作为真实指标卡组件时使用背景，布局分组不得自动加白底
+- **Chart 图表面板** — 252px 图表容器；图表画布可有容器背景，外层 section 默认透明
 - **Progress 进度条** — 8px 高，999px 圆角
 
-## Claude Code Agent 使用提示
+## 设计/原型生成提示
 
 1. **必须完整读取 DESIGN.md** — 只读 README 速查表不足以获取完整规范
-2. **不要猜测色值** — 所有颜色来自 DESIGN.md tokens，不用近似色
-3. **遵循组件 spec** — 每个组件的变体轴、尺寸、状态以 DESIGN.md 为准
-4. **字体加载** — Inter + PingFang SC；数字默认等宽 tabular-nums
-5. **优先复用组件** — 按 Figma UI Kit 的 17 个组件页复用，不另造组件/样式
-6. **设计在 Figma 中进行** — 不得直接生成 HTML 原型
+2. **以 Figma 为准** — DESIGN.md 与 Figma 冲突时，先按 Figma 修正文档，再生成页面/原型
+3. **不要猜测色值** — 所有颜色来自 DESIGN.md tokens，不用近似色
+4. **遵循组件 spec** — 每个组件的变体轴、尺寸、状态以 Figma UI Kit 为准
+5. **字体加载** — Inter + PingFang SC；数字默认等宽 tabular-nums
+6. **优先复用组件** — 按 Figma UI Kit 的 17 个组件页复用，不另造组件/样式
+7. **保持双向一致** — 无论生成 Figma 设计、HTML 原型还是代码页面，都必须复用同一令牌、组件状态和响应式布局规则

@@ -9,5 +9,10 @@
   "model": "sonnet[1m]",
   "effortLevel": "medium",
   "autoUpdatesChannel": "latest",
+  "permissions": {
+    "allow": [
+      "mcp__pencil"
+    ]
+  },
   "_note": "脱敏模板。新机器复制为 ~/.claude/settings.json 后填入真实凭据。"
 }

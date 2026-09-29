@@ -40,18 +40,19 @@
       "url": "http://127.0.0.1:3845/mcp",
       "serverUrl": "http://127.0.0.1:3845/mcp"
     },
+    "open-design": {
+      "command": "/Users/fangcang/.claude/scripts/open-design-mcp.sh",
+      "args": [],
+      "env": {}
+    },
     "pencil": {
       "command": "/Applications/Pencil.app/Contents/Resources/app.asar.unpacked/out/mcp-server-darwin-arm64",
       "args": [
         "--app",
-        "desktop"
+        "desktop",
+        "--agent",
+        "antigravity"
       ],
-      "env": {},
-      "type": "stdio"
-    },
-    "open-design": {
-      "command": "/Users/fangcang/.claude/scripts/open-design-mcp.sh",
-      "args": [],
       "env": {}
     }
   }
