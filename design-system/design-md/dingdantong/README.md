@@ -6,9 +6,9 @@
 
 ## 设计文件
 
-- **Figma UI Kit（组件权威来源）**: https://www.figma.com/design/EvOEzvO2sCtM8JavVCJSZP/FCG-Design-System---UI-Kit--%E8%AE%A2%E5%8D%95%E9%80%9A---v1?node-id=0-3
+- **Figma UI Kit（组件权威来源）**: https://www.figma.com/design/EvOEzvO2sCtM8JavVCJSZP/FCG-Design-System---UI-Kit--%E8%AE%A2%E5%8D%95%E9%80%9A---v1?node-id=3045-18839&t=g00YP193ye1FYe3X-1
 - **Foundations（设计令牌）**: node-id=0-3
-- 组件页：❖ Button / ❖ Button Group / ❖ Link / ❖ Checkbox / ❖ Datetime Picker / ❖ Switch / ❖ Form / ❖ Input / ❖ Input Number / ❖ Radio / ❖ Select / ❖ Table / ❖ Tag / ❖ Statistic / ❖ Tabs / ❖ Dialog / ❖ Tooltip
+- 组件页：❖ Button / ❖ Button Group / ❖ Link / ❖ Checkbox / ❖ Datetime Picker / ❖ Switch / ❖ Form / ❖ Input / ❖ Input Number / ❖ Radio / ❖ Select / ❖ Table / ❖ Tag / ❖ Statistic / ❖ Tabs / ❖ Alert / ❖ Dialog / ❖ Tooltip
 
 ## 核心设计原则
 

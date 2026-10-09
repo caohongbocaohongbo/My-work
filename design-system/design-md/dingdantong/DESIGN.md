@@ -1,5 +1,5 @@
 ---
-version: v4
+version: v4.1
 name: 订单通 · FCG Design System UI Kit (Fangcang UI)
 description: "订单通（DingdanTong）B2B SaaS 平台的统一设计系统与组件规范，对齐 Figma「FCG Design System - UI Kit (订单通)- v1」。Figma 是组件、变量、状态与尺寸的唯一权威来源；本文档用于同步记录 Figma 并指导页面/原型生成。生成页面默认以 1920px 宽度为设计基准，使用 Auto Layout 与响应式约束。布局 Frame、section、group 默认透明，禁止自动生成白色背景块；只有 Figma 组件本身或明确的 L1 容器/浮层可使用背景。"
 
@@ -27,6 +27,50 @@ primaryButton:
   hover: "style=basic, round=off, size=default, icon=none, type=primary, plain=off, background=on, state=hover, disabled=off, loading=off"
   active: "style=basic, round=off, size=default, icon=none, type=primary, plain=off, background=on, state=active, disabled=off, loading=off"
   disabled: "style=basic, round=off, size=default, icon=none, type=primary, plain=off, background=on, state=default, disabled=on, loading=off"
+
+# ============ Table / Tag / Alert 默认生成策略（已核对 Figma 原始变体） ============
+# 下列为页面/原型生成时的组件实例选择规则，不会修改 Figma 母组件及其变体定义。
+# 明确指定的设计需求 > 以下生成默认值；未指定时必须按这里选型。
+componentDefaults:
+  table:
+    figmaPageNode: "75:1557"
+    header:
+      component: "Table Header"
+      preferredVariant: "size=default, type=text, align=left, background=on"
+      height: 58px
+      sizeHeights:
+        small: 32px
+        default: 58px
+        large: 48px
+      scope: "58px 只作用于 Table Header；不能用于 Table Cell-basic、Table Cell-tree 或整个数据行。"
+    body:
+      componentOptions: ["Table Cell-basic", "Table Cell-tree"]
+      preferredSize: "default"
+      defaultHeight: 40px
+      preserveIndependentSizing: true
+      note: "Body 仍按自身 Figma 变体和内容决定高度；不得把表头 58px 同步给数据行。"
+  tag:
+    figmaPageNode: "75:1558"
+    component: "Tag"
+    preferred: "size=default, effect=light"
+    preferredSize: "default"
+    preferredEffect: "light"
+    defaultHeight: 28px
+    sizeHeights:
+      small: 20px
+      default: 28px
+      large: 36px
+    unspecifiedProperties: "type 按业务语义选择（无明确语义时 info）；closable=off, round=off。"
+    overrideRule: "只有明确提出 size/effect，或有已核实的特定业务规范时才切换。"
+  alert:
+    figmaPageNode: "3045:18839"
+    component: "Alert"
+    preferredVariant: "type=info, close type=icon, align center=off, description=off, theme=light"
+    widthReference: 600px
+    heightWithoutDescription: 38px
+    heightWithDescription: 64px
+    typeRule: "根据业务语义选择 info / primary / success / warning / error，不自动以 Tag 组件替代 Alert。"
+    variantConstraint: "description=on 时使用 align center=off；只能选择 Figma 中已有的 60 个变体。"
 
 # ============ 颜色（对齐 Figma ✦ Foundations / Variables） ============
 colors:
@@ -222,7 +266,8 @@ easing:
 | ❖ Statistic | 统计数值 | 组件页 |
 | ╔ Navigation | 导航分类 | 分类页（Tabs） |
 | ❖ Tabs | 标签页 | 组件页 |
-| ╔ Feedback | 反馈分类 | 分类页（Dialog / Tooltip） |
+| ╔ Feedback | 反馈分类 | 分类页（Dialog / Tooltip / Alert） |
+| ❖ Alert | 警告提示 | 组件页（node-id=3045:18839） |
 | ❖ Dialog | 对话框 | 组件页 |
 | ❖ Tooltip | 文字提示 | 组件页 |
 | ✧ Internal Components | 内部组件 | 内部使用，不对外 |
@@ -594,10 +639,18 @@ Figma 页面：❖ Table（node-id=75:1557）。
 
 | 变体轴 | 取值 | 中文 |
 |--------|------|------|
-| size | small / default / large | 32 / 40 / 48px（行高） |
+| size | small / default / large | **32 / 58 / 48px**（表头真实高度；`default=58px` 已核实） |
 | type | blank / check / radio / text | 空 / 复选 / 单选 / 文本 |
 | align | left / center / right | 左 / 中 / 右 |
 | background | off / on | 表头底色 |
+
+**表头默认实例选择（生成铁律；仅作用于 Table Header）**：
+
+- **没有特别说明时，优先使用 Figma `Table Header` 的 `size=default` 变体，实际高度固定为 58px。** 推荐实例：`size=default, type=text, align=left, background=on`（Figma 变体 node-id=234:10968；不同类型、对齐方式按业务需要选同规格变体）。
+- Figma 已核验的尺寸映射为 `small=32px / default=58px / large=48px`；这里的 `default` 虽高于 `large`，仍以 Figma 的真实尺寸为准，**不得按常见 32/40/48 规格推断或重排**。
+- 当业务明确要求紧凑/其他表头尺寸时，按要求选择 `small` 或 `large` 的真实组件变体；不要为了变更行高直接拉伸、缩放母组件。
+- **作用域严格隔离**：58px 仅用于 Table Header，**不**适用于 Table Cell-basic、Table Cell-tree、Table Row 或 Table Body。不得因统一表格高度而批量修改数据行。
+- 一整行表头应由多个一致高度的 Header 实例组成，通过 Auto Layout 横向排列；按业务语义使用 `type=check/radio/blank/text`，按字段设置 `align`，不要用手绘矩形、普通 Text 代替真实组件。
 
 **表头精确样式（background=on）**：
 
@@ -611,7 +664,7 @@ Figma 页面：❖ Table（node-id=75:1557）。
 
 | 变体轴 | 取值 | 中文 |
 |--------|------|------|
-| size | small / default / large | 32 / 40 / 48px |
+| size | small / default / large | 32 / 40 / 48px（常规行高；部分带控件变体可由 Figma 定义为 52px） |
 | type | text / tag / button / action / check / radio / switch / select / input / date / time / icon-left / icon-right | 文本 / 标签 / 按钮 / 操作 / 复选 / 单选 / 开关 / 选择器 / 输入 / 日期 / 时间 / 左图标 / 右图标 |
 | state | default / hover | 默认 / 悬停 |
 | background | off / on | 行底色 |
@@ -628,8 +681,11 @@ Figma 页面：❖ Table（node-id=75:1557）。
 | children | off / on | 子节点 |
 | state | default / hover | 默认 / 悬停 |
 
-- 表头（background=on）：背景 #FBFCFE，边框 1px solid #F0F4F7，顶部圆角 12px 12px 0 0，文字 #949999
-- 数据行文字 #313333；行分隔线 #F0F4F7；hover 行底 #f4f9fb
+- 表头（background=on）：背景 #FBFCFE，边框 1px solid #F0F4F7，顶部圆角 12px 12px 0 0，文字 #949999。顶部圆角属于表格容器的外侧两角，内部 Header 单元格不逐个设置 12px 圆角。
+- **Table Body 维持独立尺寸**：`Table Cell-basic` 和 `Table Cell-tree` 默认使用 `size=default`，真实高度 **40px**；`small=32px`，`large` 通常为 48px。个别包含控件的变体可高至 52px，按实际 Figma 组件尺寸和内容处理，不能强行压成 40px。
+- 数据行文字 #313333；行分隔线 #F0F4F7；hover 行底 #f4f9fb。单元格宽度、换行及对齐遵循实际列内容与 Auto Layout，不以增加行高的方式补偿错误的列宽。
+- **嵌套 Tag**：当 `type=tag` 时，优先放置真正的 Tag 实例，默认 `size=default, effect=light`（28px 高），数据行仍按各自的 Cell 组件规格生成。
+- **生成验收**：没有额外需求时，表头各列高度均为 58px、数据行默认高度为 40px；更改 Header 尺寸不得改变 Body 的 size、height、hover 状态或选择控件。
 
 ### 12. Tag 标签
 
@@ -637,16 +693,27 @@ Figma 页面：❖ Tag（node-id=75:1558）。
 
 | 变体轴 | 取值 | 中文 |
 |--------|------|------|
-| size | small / default / large | 20 / 24 / 32px（高） |
+| size | small / default / large | **20 / 28 / 36px**（Figma 真实高度；`default=28px`） |
 | type | primary / success / warning / danger / info | 主要 / 成功 / 警告 / 危险 / 信息 |
 | effect | light / dark / plain | 浅色 / 深色 / 朴素 |
 | closable | off / on | 可关闭 |
 | round | off / on | 胶囊圆角 |
 
-- light：语义色 light-9 浅底 + base 文字
-- dark：语义色 base 实底 + 白文字
-- plain：白底 + base 文字 + 边框
-- round=on 使用 20px 胶囊
+**Tag 默认实例选择（生成铁律）**：
+
+- **生成 Tag 时默认优先设置 `size=default, effect=light`**；除非需求明确指定其他大小/效果，或现有 Figma 业务模式明确要求其他变体，不得自行切成 `small/large` 或 `dark/plain`。
+- Figma `Tag` 主组件的真实高度是 `small=20px / default=28px / large=36px`（例：`size=default, type=primary, effect=light, closable=off, round=off`，node-id=129:299）；不得沿用旧文档 `20/24/32px` 的错误映射。内部 `_tag_delete` 图标高度 10/12/14px 不等于 Tag 容器高度。
+- `type` 应根据文案语义选择：primary=品牌/重点，success=完成/成功，warning=提醒/待处理，danger=异常/失败，info=常规中性状态。无明确语义时优先 `info`，但 **type 不得覆盖 `size=default, effect=light` 的默认优先级**。
+- `closable=off, round=off` 为无特殊说明时的生成选择；只有业务需要删除交互时才开启 `closable`，只有明确要求胶囊样式时才开启 `round`。
+- 必须复用 Figma `Tag` 真实组件实例及其文字/颜色/圆角结构；禁止用彩色矩形加文字近似重绘，尤其不得按 Button 的 24/32/40px 高度套用到 Tag。
+
+**效果与样式**：
+
+- light：语义色 light-9 浅底 + base 文字（**默认**）。
+- dark：语义色 base 实底 + 白文字（明确要求时才用）。
+- plain：白底 + base 文字 + 边框（明确要求时才用）。
+- round=on 使用 20px 胶囊；圆角默认值跟随 Figma 当前 `round=off` 组件。
+- **生成验收**：普通业务状态 Tag 默认为 28px 高且 light 浅底；Table 单元格内、状态列、详情面板复用同一规则，不得出现同屏无理由混用 dark/plain 或其他 size。
 
 **Check Tag（可选标签）**：
 
@@ -709,7 +776,34 @@ Figma 页面：❖ Tooltip（node-id=75:1578）。
 - border：白底 + 边框
 - Popconfirm（气泡确认框）：用于操作二次确认，含确认/取消按钮
 
-### 17. Icon 图标
+### 17. Alert 警告提示
+
+Figma 页面：❖ Alert（node-id=3045:18839）。**已核对 Figma 原生 `Alert` 组件集**（node-id=3045:33786），现有 **60 个真实变体**；这是组件库现有组件的文档补全，不是新增一套自定义 Alert 视觉组件。
+
+| 变体轴 | 取值 | 中文 / 使用说明 |
+|--------|------|----------------|
+| type | info / primary / success / warning / error | 信息 / 品牌提示 / 成功 / 警告 / 错误 |
+| close type | icon / text | 图标关闭 / 文字关闭 |
+| align center | off / on | 内容左对齐 / 居中对齐 |
+| description | off / on | 无辅助描述 / 带辅助描述 |
+| theme | light / dark | 浅色 / 深色主题 |
+
+**默认实例（页面生成时优先）**：
+`type=info, close type=icon, align center=off, description=off, theme=light`（Figma 变体 node-id=3045:33787）。
+
+**尺寸与组合约束（以 Figma 真实组件为准）**：
+
+- Figma 原始参考宽度 **600px**。页面内可按布局容器响应式适配宽度，但不随意改变文字、图标、关闭区之间的相对布局。
+- `description=off` 对应高度 **38px**，`description=on` 对应高度 **64px**；根据文案长度和组件实际约束自适应，不将 38px/64px 强制用于无关业务容器。
+- 仅从现有 60 个变体中选实例：`description=on` 时使用 `align center=off`；`description=off` 时可使用 `align center=off/on`。不得拼出 Figma 中不存在的 `description=on, align center=on` 组合。
+- 语义选择：`info`=一般通知/说明，`primary`=品牌强调提示，`success`=操作成功，`warning`=风险/注意事项，`error`=失败/错误。使用 UI Kit 对应 `type + theme` 原始配色，不手写新色值。
+- `close type=icon` 为默认方式；明确要求文字关闭时选 `close type=text`。关闭动作与是否显示 Alert 是业务交互逻辑，不额外发明 `closable` 或 `state` 变体轴。
+- **背景归属**：Alert 本身可以按 Figma 实例保留语义色背景；放置 Alert 的 section/group/layout Frame 仍默认为透明，不再给外层重复套白色卡片。
+- **组件边界**：Alert 用于页面内可持续阅读的状态通知，不能误用 Tag、Tooltip、Dialog 或 toast 样式模拟。除非需求另有说明，不默认增加标题、多按钮、自动消失倒计时等 Figma 未定义结构。
+
+**生成验收**：所有 Alert 都来自真实组件集；type/theme/关闭形式与语义匹配；单行通知使用 38px 原始样式，带描述使用 64px 原始样式；布局、颜色及辅助图标不由生成器临时重绘。
+
+### 18. Icon 图标
 
 Figma 页面：Icon (on-going)（node-id=7:137）。
 
@@ -719,7 +813,7 @@ Figma 页面：Icon (on-going)（node-id=7:137）。
 
 ## 平台扩展组件（订单通业务组件）
 
-> 以下组件来自订单通平台页面，不在 Figma UI Kit 的 17 个组件页内，但与 UI Kit 无重复，保留作为平台级扩展。
+> 以下组件来自订单通平台页面，不在上文已收录的 Figma UI Kit 18 个组件页内，但与 UI Kit 无重复，保留作为平台级扩展。
 
 ### Sidebar 侧边栏
 
@@ -831,3 +925,11 @@ Figma 页面：Icon (on-going)（node-id=7:137）。
 - 暗色模式：仅提供 shadow dark 变量，组件暗色适配待补充
 - 移动端表格卡片化展示的具体实现待补充
 - 间距变量未在 Figma Variables 中定义（当前采用 4px 基准辅助刻度）
+
+## 本次组件规范校验（v4.1，2026-10-08）
+
+- **Table（优先级 1）**：检查表头 `size=default` 是否来自 Figma Table Header 原组件并为 **58px**；正文 Cell 默认 **40px**、保持独立。无任何明确需求时，禁止沿用旧的「表头 default=40px」规则。
+- **Tag（优先级 2）**：检查 Tag 是否优先 `size=default, effect=light`；Figma 默认高度 **28px**；按语义挑选 `type`，不要无理由调整 `effect` 或 `size`。
+- **Alert（优先级 3）**：复用 Figma 原有 `Alert` 组件集（60 个变体）；默认信息类浅色单行 **38px**，带描述 **64px**；不生成不存在的变体组合。
+- **变更范围**：本次只更新 `DESIGN.md` 的生成默认选型、已核实的 Figma 尺寸与 Alert 文档；不修改 Figma 文件、其他组件母版、平台全局 Size Tokens 或已有页面。
+- **回归要求**：创建含 Table、Tag、Alert 的页面时，分别检查组件 `mainComponent/variantProperties`、Header 与 Body 高度隔离、Tag 的 `effect/size`、Alert 的主题和描述状态。发现生成结果偏离时优先纠正组件实例选择，不用局部缩放/重绘掩盖。
