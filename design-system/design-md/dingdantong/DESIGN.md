@@ -1,5 +1,5 @@
 ---
-version: v4.1
+version: v4.2
 name: 订单通 · FCG Design System UI Kit (Fangcang UI)
 description: "订单通（DingdanTong）B2B SaaS 平台的统一设计系统与组件规范，对齐 Figma「FCG Design System - UI Kit (订单通)- v1」。Figma 是组件、变量、状态与尺寸的唯一权威来源；本文档用于同步记录 Figma 并指导页面/原型生成。生成页面默认以 1920px 宽度为设计基准，使用 Auto Layout 与响应式约束。布局 Frame、section、group 默认透明，禁止自动生成白色背景块；只有 Figma 组件本身或明确的 L1 容器/浮层可使用背景。"
 
@@ -24,9 +24,14 @@ generation:
 # ============ 主要按钮默认组件实例 ============
 primaryButton:
   default: "style=basic, round=off, size=default, icon=none, type=primary, plain=off, background=on, state=default, disabled=off, loading=off"
+  defaultNode: "86:8090"
+  defaultAppearance: "60×32px; radius 8px; padding 5px 16px; Inter Medium 14/22px; fill #f4f9fb; stroke #e5f0f5; text #2f87ac"
   hover: "style=basic, round=off, size=default, icon=none, type=primary, plain=off, background=on, state=hover, disabled=off, loading=off"
+  hoverAppearance: "fill #e1eef5; stroke #e5f0f5; text #2f87ac"
   active: "style=basic, round=off, size=default, icon=none, type=primary, plain=off, background=on, state=active, disabled=off, loading=off"
+  activeAppearance: "fill #215e78; no stroke; text #ffffff"
   disabled: "style=basic, round=off, size=default, icon=none, type=primary, plain=off, background=on, state=default, disabled=on, loading=off"
+  disabledAppearance: "fill #dfebf1; no stroke; text #ffffff"
 
 # ============ Table / Tag / Alert 默认生成策略（已核对 Figma 原始变体） ============
 # 下列为页面/原型生成时的组件实例选择规则，不会修改 Figma 母组件及其变体定义。
@@ -34,9 +39,19 @@ primaryButton:
 componentDefaults:
   table:
     figmaPageNode: "75:1557"
+    container:
+      referenceNode: "237:12256"
+      radius: 12px
+      corners: "12px 12px 12px 12px"
+      fill: transparent
+      border: "1px #f0f4f7"
+      clipsContent: true
     header:
       component: "Table Header"
       preferredVariant: "size=default, type=text, align=left, background=on"
+      fill: "#f0f4f7"
+      border: "仅底边 1px #f0f4f7；其余三边 0px"
+      radius: 0px
       height: 58px
       sizeHeights:
         small: 32px
@@ -74,6 +89,7 @@ componentDefaults:
 
 # ============ 颜色（对齐 Figma ✦ Foundations / Variables） ============
 colors:
+  # 以下别名是订单通_light 的速查值；完整 Figma 原名及三种模式值见 figmaVariables。
   # --- 品牌 Primary ---
   primary: "#2f87ac"
   primary-dark-2: "#215e78"
@@ -97,7 +113,7 @@ colors:
   warning-light-5: "#f2d09d"
   warning-light-7: "#f8e3c5"
   warning-light-8: "#faecd8"
-  warning-light-9: "#fcf6ec"
+  warning-light-9: "#fffdf5"
   # --- 错误 Error ---
   error: "#c66261"
   error-dark-2: "#a83a38"
@@ -128,11 +144,17 @@ colors:
   # --- 边框 Border ---
   border: "#f0f4f7"
   border-extra-light: "#f0f4f7"
+  border-dark: "#f0f4f7"
+  border-light: "#f0f4f7"
+  border-lighter: "#f0f4f7"
   border-darker: "#c5ceda"
   # --- 填充 Fill ---
   fill: "#e7f5fb"
   fill-dark: "#f4f9fb"
   fill-darker: "#e6e8eb"
+  fill-extra-light: "#f4f9fb"
+  fill-light: "#f4f9fb"
+  fill-lighter: "#f4f9fb"
   fill-blank: "#ffffff"
   # --- 遮罩 / 浮层 ---
   mask: "#ffffffe5"
@@ -147,7 +169,84 @@ colors:
   sidebar-bg: "#14263b"
   sidebar-active: "#2ea0ce"
 
-# ============ 字体（对齐 Figma Typography Variables） ============
+# ============ Figma Foundations 完整变量（按 UI Kit 原名；值依次对应三种模式） ============
+figmaVariables:
+  modes: ["订单通_light","订单通_Dark Alpha","订单通_Dark"]
+  values:
+    "color-black": ["#000000","#000000","#000000"]
+    "color-white": ["#ffffff","#ffffff","#ffffff"]
+    "Color/Background/bg-color": ["#fbfcfe","#141414","#141414"]
+    "Color/Background/bg-color-overlay": ["#fbfcfe","#1d1e1f","#1d1e1f"]
+    "Color/Background/bg-color-page": ["#f7f8fa","#0a0a0a","#0a0a0a"]
+    "Color/Background/bg-color-transparent": ["#fbfcfe00","#00000000","#00000000"]
+    "Color/Border/border-color": ["#f0f4f7","#f5f8ff40","#4c4d4f"]
+    "Color/Border/border-color-dark": ["#f0f4f7","#f5f8ff4d","#58585b"]
+    "Color/Border/border-color-darker": ["#c5ceda","#f5f8ff59","#636466"]
+    "Color/Border/border-color-extra-light": ["#f0f4f7","#f5f8ff1a","#2b2b2c"]
+    "Color/Border/border-color-light": ["#f0f4f7","#f5f8ff33","#414243"]
+    "Color/Border/border-color-lighter": ["#f0f4f7","#f5f8ff26","#363637"]
+    "Color/Error/color-error": ["#c66261","#c66261","#ff6b6b"]
+    "Color/Error/color-error-dark-2": ["#a83a38","#c66261","#ff8888"]
+    "Color/Error/color-error-light-3": ["#d98a86","#c66261b2","#d97070"]
+    "Color/Error/color-error-light-5": ["#e5afaa","#c6626180","#a35555"]
+    "Color/Error/color-error-light-7": ["#f0cdcb","#c662614d","#6b3838"]
+    "Color/Error/color-error-light-8": ["#f5dede","#c6626133","#531f1f"]
+    "Color/Error/color-error-light-9": ["#fae8e7","#c662611a","#3b1111"]
+    "Color/Fill/fill-color": ["#e7f5fb","#fafcff1f","#303030"]
+    "Color/Fill/fill-color-blank": ["#ffffff","#fafcff00","#00000000"]
+    "Color/Fill/fill-color-dark": ["#f4f9fb","#fafcff29","#39393a"]
+    "Color/Fill/fill-color-darker": ["#e6e8eb","#fafcff33","#424243"]
+    "Color/Fill/fill-color-extra-light": ["#f4f9fb","#fafcff0a","#191919"]
+    "Color/Fill/fill-color-light": ["#f4f9fb","#fafcff14","#262727"]
+    "Color/Fill/fill-color-lighter": ["#f4f9fb","#fafcff0a","#1d1d1d"]
+    "Color/Info/color-info": ["#97a6b8","#606266","#949999"]
+    "Color/Info/color-info-dark-2": ["#97a6b8","#808185","#c0cccc"]
+    "Color/Info/color-info-light-3": ["#b1b3b8","#606266b2","#626666"]
+    "Color/Info/color-info-light-5": ["#c7c9cc","#60626680","#626666"]
+    "Color/Info/color-info-light-7": ["#dedfe0","#6062664d","#313333"]
+    "Color/Info/color-info-light-8": ["#e9e9eb","#60626633","#313333"]
+    "Color/Info/color-info-light-9": ["#f4f4f5","#6062661a","#313333"]
+    "Color/Mask/mask-color": ["#ffffffe5","#000000cc","#000000cc"]
+    "Color/Mask/mask-color-extra-light": ["#ffffff4d","#0000004d","#0000004d"]
+    "Color/Overlay/overlay-color": ["#000000cc","#000000cc","#000000cc"]
+    "Color/Overlay/overlay-color-light": ["#000000b2","#000000b2","#000000b2"]
+    "Color/Overlay/overlay-color-lighter": ["#00000080","#00000080","#00000080"]
+    "Color/Primary/color-primary": ["#2f87ac","#2f87ac","#5fb1d3"]
+    "Color/Primary/color-primary-dark-2": ["#215e78","#2f87ac","#9bcee4"]
+    "Color/Primary/color-primary-light-3": ["#9ecfe4","#2f87acb2","#3597c0"]
+    "Color/Primary/color-primary-light-5": ["#dfebf1","#2f87ac80","#1b4f64"]
+    "Color/Primary/color-primary-light-7": ["#e5f0f5","#2f87ac4d","#0b1f28"]
+    "Color/Primary/color-primary-light-8": ["#e1eef5","#2f87ac33","#051014"]
+    "Color/Primary/color-primary-light-9": ["#f4f9fb","#2f87ac1a","#051014"]
+    "Color/Success/color-success": ["#6a9f62","#59b259","#67c23a"]
+    "Color/Success/color-success-dark-2": ["#60905a","#7ac17a","#85ce61"]
+    "Color/Success/color-success-light-3": ["#85c26b","#59b259b2","#4e8e2f"]
+    "Color/Success/color-success-light-5": ["#a4d092","#59b25980","#3e6b27"]
+    "Color/Success/color-success-light-7": ["#c4dfb9","#59b2594d","#2d481f"]
+    "Color/Success/color-success-light-8": ["#d5e6cd","#59b25933","#25371c"]
+    "Color/Success/color-success-light-9": ["#f4faf6","#59b2591a","#1c2518"]
+    "Color/Text/text-color-disabled": ["#c0cccc","#f0f5ff66","#626666"]
+    "Color/Text/text-color-placeholder": ["#a1aaaa","#f0f5ff8c","#949999"]
+    "Color/Text/text-color-primary": ["#313333","#f0f5fff2","#e5eeee"]
+    "Color/Text/text-color-regular": ["#313333","#f0f5ffd9","#c0cccc"]
+    "Color/Text/text-color-secondary": ["#949999","#f0f5ffa6","#a1aaaa"]
+    "Color/Warning/color-warning": ["#be964b","#d6a356","#e6a23c"]
+    "Color/Warning/color-warning-dark-2": ["#b88230","#deb578","#ebb563"]
+    "Color/Warning/color-warning-light-3": ["#eebe77","#d6a356b2","#a77730"]
+    "Color/Warning/color-warning-light-5": ["#f2d09d","#d6a35680","#7d5b28"]
+    "Color/Warning/color-warning-light-7": ["#f8e3c5","#d6a3564d","#533f20"]
+    "Color/Warning/color-warning-light-8": ["#faecd8","#d6a35633","#3e301c"]
+    "Color/Warning/color-warning-light-9": ["#fffdf5","#d6a3561a","#292218"]
+    "Size/common-component-size-default": [32,32,32]
+    "Size/common-component-size-small": [24,24,24]
+    "Size/common-component-size-large": [40,40,40]
+    "Radius/border-radius-base": [8,8,8]
+    "Radius/border-radius-small": [4,4,4]
+    "Radius/border-radius-round": [20,20,20]
+    "Radius/border-radius-circle": [999,999,999]
+    "Radius/border-radius-none": [0,0,0]
+
+# ============ 字体（对齐 Figma Text Styles） ============
 typography:
   font-family: "'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif"
   xs:
@@ -175,7 +274,7 @@ typography:
 # ============ 圆角（对齐 Figma Radius Variables） ============
 radius:
   none: 0px
-  sm: 2px
+  sm: 4px
   base: 8px
   round: 20px
   circle: 999px
@@ -186,12 +285,16 @@ size:
   base: 32px
   lg: 40px
 
-# ============ 阴影（对齐 Figma Shadow Variables） ============
+# ============ 阴影（对齐 Figma Effect Styles） ============
 shadows:
   lighter: "0 0 6px rgba(0, 0, 0, 0.12)"
   light: "0 0 12px rgba(0, 0, 0, 0.12)"
   base: "0 8px 20px rgba(0, 0, 0, 0.08), 0 12px 32px 4px rgba(0, 0, 0, 0.04)"
   dark: "0 8px 16px -8px rgba(0, 0, 0, 0.16), 0 12px 32px rgba(0, 0, 0, 0.12), 0 16px 48px 16px rgba(0, 0, 0, 0.08)"
+  dark-mode-lighter: "0 0 6px rgba(0, 0, 0, 0.36)"
+  dark-mode-light: "0 0 12px rgba(0, 0, 0, 0.36)"
+  dark-mode-base: "0 8px 20px rgba(0, 0, 0, 0.24), 0 12px 32px 4px rgba(0, 0, 0, 0.12)"
+  dark-mode-dark: "0 8px 16px -8px rgba(0, 0, 0, 0.48), 0 12px 32px rgba(0, 0, 0, 0.36), 0 16px 48px 16px rgba(0, 0, 0, 0.24)"
 
 # ============ 间距（4px 基准，平台级辅助刻度） ============
 spacing:
@@ -234,8 +337,8 @@ easing:
 2. **1920px 画布基准** —— 设计/原型默认画板宽度为 1920px，最小桌面内容宽度 1024px；主结构使用 Auto Layout 和响应式约束。
 3. **布局层默认透明** —— 页面 section、布局 Frame、group、普通内容容器默认不设置背景，禁止自动生成白色背景块。
 4. **单一主色** —— 主色（primary）#2f87ac 是唯一品牌蓝，用于主按钮、Tab 激活、操作链接、选中态。禁止另造蓝色。
-5. **语义四色** —— 成功 #6a9f62 / 警告 #be964b / 错误 #c66261 / 信息 #97a6b8，每色含 9 档明度梯度（base + dark-2 + light-3/5/7/8/9）。
-6. **8px 基础圆角** —— 组件基础圆角 8px，小控件 2px，胶囊 20px，圆形 999px。
+5. **语义四色** —— 成功 #6a9f62 / 警告 #be964b / 错误 #c66261 / 信息 #97a6b8，每色含 7 个命名变量（base + dark-2 + light-3/5/7/8/9）。
+6. **8px 基础圆角** —— 组件基础圆角 8px，小圆角变量 4px，胶囊 20px，圆形 999px。
 7. **三档组件尺寸** —— 通用控件高度 24px / 32px / 40px。
 8. **克制的阴影** —— 4 级阴影，仅在浮层/弹窗/下拉等需要抬升层级时使用，页面卡片默认扁平。
 9. **不得出现 emoji** —— 图标一律使用 SVG（见「图标 Icon」）。
@@ -275,7 +378,7 @@ easing:
 
 ## Foundations 设计令牌
 
-以下令牌严格对齐 Figma「✦ Foundations」（node-id=0:3）页面与 Variables 变量库。
+以下令牌对齐 Figma「✦ Foundations」（node-id=0:3）页面与 `Foundations` 变量集合。前置配置中的 `colors` 是 `订单通_light` 速查别名；`figmaVariables.values` 完整列出 **72 个 Figma 原名变量**，每行的三个值依次对应 `订单通_light`、`订单通_Dark Alpha`、`订单通_Dark`。生成暗色界面时按对应模式读取，不得把浅色别名沿用到暗色组件。Figma 另有 18 个 Inter 文字样式、浅色与深色各 4 个阴影样式、黑白两种填充样式；本节字号和阴影速查仅描述浅色模式。
 
 ### 颜色 Color
 
@@ -283,26 +386,26 @@ easing:
 
 | 令牌 | 色值 | 用途 |
 |------|------|------|
-| primary | #2f87ac | 主色：主按钮、激活态、链接、选中态 |
-| primary-dark-2 | #215e78 | 主色 hover / 按下加深 |
+| primary | #2f87ac | 品牌文字、图标、链接及选中态；具体组件颜色以变体为准 |
+| primary-dark-2 | #215e78 | 主色深阶；Button 主按钮 active 底色 |
 | primary-light-3 | #9ecfe4 | 主色浅色（图标辅助） |
 | primary-light-5 | #dfebf1 | 主色浅底 |
 | primary-light-7 | #e5f0f5 | 主色更浅底 |
-| primary-light-8 | #e1eef5 | 主色描边 / 浅底（输入框默认边框） |
-| primary-light-9 | #f4f9fb | 主色最浅底（激活浅底） |
+| primary-light-8 | #e1eef5 | 主色浅底及部分品牌组件描边；输入框默认边框以 Input 组件为准 |
+| primary-light-9 | #f4f9fb | 主色最浅底；主按钮默认态底色 |
 
 #### 语义色 Semantic
 
 | 语义 | base | dark-2 | light-3 | light-5 | light-7 | light-8 | light-9 |
 |------|------|--------|---------|---------|---------|---------|---------|
 | Success 成功 | #6a9f62 | #60905a | #85c26b | #a4d092 | #c4dfb9 | #d5e6cd | #f4faf6 |
-| Warning 警告 | #be964b | #b88230 | #eebe77 | #f2d09d | #f8e3c5 | #faecd8 | #fcf6ec |
+| Warning 警告 | #be964b | #b88230 | #eebe77 | #f2d09d | #f8e3c5 | #faecd8 | #fffdf5 |
 | Error 错误 | #c66261 | #a83a38 | #d98a86 | #e5afaa | #f0cdcb | #f5dede | #fae8e7 |
 | Info 信息 | #97a6b8 | #97a6b8 | #b1b3b8 | #c7c9cc | #dedfe0 | #e9e9eb | #f4f4f5 |
 
 语义色使用规则：
 - **base**：语义组件主色（文字 / 图标 / 实心按钮 / 标签实底）
-- **dark-2**：hover / 按下加深
+- **dark-2**：语义色深阶；交互状态仍须读取对应组件变体，不能统一套用
 - **light-9**：语义浅底（标签浅底、提示条背景）
 - **light-8**：语义浅底描边
 
@@ -325,10 +428,12 @@ easing:
 | bg-overlay | #fbfcfe | 浮层背景 |
 | border | #f0f4f7 | 默认边框、行分隔线 |
 | border-extra-light | #f0f4f7 | 极浅边框 |
-| border-darker | #c5ceda | 强调边框（输入框 hover/焦点前） |
+| border-dark / border-light / border-lighter | #f0f4f7 | 浅色模式下与 border 同值；深色模式值见完整变量表 |
+| border-darker | #c5ceda | 深一级边框变量；具体组件状态描边以实例为准 |
 | fill | #e7f5fb | 填充（选中浅底） |
 | fill-dark | #f4f9fb | 填充（浅底） |
 | fill-darker | #e6e8eb | 填充（深灰） |
+| fill-extra-light / fill-light / fill-lighter | #f4f9fb | 浅色模式填充；深色模式值见完整变量表 |
 | fill-blank | #ffffff | 空白填充（白） |
 
 #### 遮罩 / 浮层
@@ -343,7 +448,7 @@ easing:
 
 ### 字体 Typography
 
-**字体栈**：Inter, PingFang SC, Microsoft YaHei, sans-serif（Inter 承载拉丁字符、数字、标点；PingFang SC 承载中文字符；Figma 中不可用时以 Inter 替代）
+**字体栈**：Figma 的 18 个原生文字样式均使用 Inter（Regular / Medium / Bold × 12 / 13 / 14 / 16 / 18 / 20px）。实现中文页面时可补充 PingFang SC、Microsoft YaHei 作为系统字体回退，但不能把回退字体说成 Figma 原生样式。
 - 数字默认等宽（font-variant-numeric: tabular-nums）
 
 | 字号 Token | 字号 | 行高 | 可用字重 | 用途 |
@@ -362,9 +467,9 @@ easing:
 | 令牌 | 值 | 用途 |
 |------|-----|------|
 | none | 0px | 无圆角 |
-| sm | 2px | 极小圆角（辅助元素） |
-| base | 8px | 基础圆角（按钮、输入框、卡片） |
-| round | 20px | 胶囊圆角（圆角按钮、标签） |
+| sm | 4px | 小圆角（Figma `Radius/border-radius-small`） |
+| base | 8px | 基础圆角；具体组件可选用其他变量，例如 Input / Select 为 4px |
+| round | 20px | 通用胶囊圆角变量；Tag 组件当前根节点独立使用 999px |
 | circle | 999px | 圆形（圆形按钮、开关圆钮） |
 
 ### 阴影 Shadow
@@ -375,6 +480,8 @@ easing:
 | light | 0 0 12px rgba(0,0,0,0.12) | 浅阴影 |
 | base | 0 8px 20px rgba(0,0,0,0.08), 0 12px 32px 4px rgba(0,0,0,0.04) | 标准阴影（下拉、浮层） |
 | dark | 0 8px 16px -8px rgba(0,0,0,0.16), 0 12px 32px rgba(0,0,0,0.12), 0 16px 48px 16px rgba(0,0,0,0.08) | 深阴影（弹窗） |
+
+以上四项对应 Figma `light/box-shadow-*`。暗色样式 `dark/box-shadow-*` 的四级值已在前置配置 `shadows.dark-mode-*` 中逐一列出；暗色界面须使用相同模式的效果样式。
 
 ### 通用组件尺寸 Size
 
@@ -403,6 +510,33 @@ easing:
 
 > 以下组件严格对齐 Figma UI Kit 各「❖」页面。组件命名沿用 Figma 页面英文名 + 中文对照；同一语义组件若与旧文档重复，以本文档（Figma）为准。
 
+### 组件集完整索引
+
+下表覆盖 18 个「❖」页面中的 **30 个对外组件集**。实例应选择对应组件集的真实变体；带下划线的内部零件不作为页面级控件单独复刻。
+
+| Figma 页面 | 对外组件集（node-id） |
+|------------|------------------------|
+| Button | Button `86:8266` |
+| Button Group | Button Group `449:15290` |
+| Link | Link `90:40112` |
+| Checkbox | Checkbox Icon `91:41372`；Checkbox Button `91:41503`；Checkbox `91:41554`；Checkbox Group `92:44476` |
+| Datetime Picker | Datetime Picker `362:56585` |
+| Switch | Switch `234:8425` |
+| Form | Form `410:22217`；Form-item-right `410:16854`；Form-item-left `410:22219`；Form-item-top `410:23420` |
+| Input | Input `186:7247`；Input-extend `186:7248` |
+| Input Number | Input Number `229:3618` |
+| Radio | Radio Icon `91:41774`；Radio `91:41823`；Radio Group `92:48060` |
+| Select | Select `166:1516` |
+| Table | Table Header `234:10973`；Table Cell-basic `236:6569`；Table Cell-tree `237:11896` |
+| Tag | Tag `128:273`；Check Tag `129:1456` |
+| Statistic | Statistic `516:21708` |
+| Tabs | Tabs `287:1136` |
+| Alert | Alert `3045:33786` |
+| Dialog | Dialog `409:2171` |
+| Tooltip | Tooltips `147:2495` |
+
+内部零件所在页面包括 Table 的 `_table_sort/_table_filter/_table_tree/_table_actions/_table_buttons/_table_tags`，Datetime Picker 的日期/时间面板零件，Input 的 `_input_*`，Switch 的 `_switch_*`，Form 的 `_form_label`，Tag 的 `_tag_*`，Statistic 的倒计时零件，Tabs 的 `_tabs_*`，Tooltip 的箭头零件，以及 `✧ Internal Components` 与 `✧ Slot` 页面。它们由对外组件引用；需修改内部视觉时以 Figma 原节点为准，不凭名称猜测外观。Icon 页面独立持续维护，使用其真实图标组件。
+
 ### 1. Button 按钮
 
 Figma 页面：❖ Button（node-id=48:6417）。10 个变体轴，共 1000+ 变体。
@@ -412,7 +546,7 @@ Figma 页面：❖ Button（node-id=48:6417）。10 个变体轴，共 1000+ 变
 | size | small / default / large | 小 24px / 默认 32px / 大 40px（高度） |
 | type | primary / default / danger | 主要 / 默认 / 危险 |
 | style | basic / circle / icon / link / text | 基础 / 圆形图标 / 图标 / 文字链接 / 文字 |
-| round | off / on | 直角 8px / 胶囊 20px |
+| round | off / on | `basic` 默认 off 为 8px；on 实例（`509:4932`）根节点为 999px，不能按全局 `round=20px` 变量推导 |
 | icon | none / left / right / only | 无图标 / 左图标 / 右图标 / 仅图标 |
 | plain | off / on | 朴素模式（去底、去边框） |
 | background | off / on | 背景显隐 |
@@ -420,7 +554,7 @@ Figma 页面：❖ Button（node-id=48:6417）。10 个变体轴，共 1000+ 变
 | disabled | off / on | 禁用 |
 | loading | off / on | 加载中（spinner） |
 
-**尺寸**：高度 24px / 32px / 40px；左右内边距 12px；图标按钮为正方形（24/32/40）。
+**尺寸**：高度 24px / 32px / 40px；基准主按钮 `86:8090` 左右内边距 **16px**、上下 **5px**，文字 Inter Medium 14/22px。其他变体按自身实例的内边距和宽度设置；图标按钮不要套文字按钮的 16px 边距。
 
 **主要按钮基准实例（页面主操作必须使用）：**
 
@@ -431,12 +565,14 @@ Figma 页面：❖ Button（node-id=48:6417）。10 个变体轴，共 1000+ 变
 | Active | `style=basic, round=off, size=default, icon=none, type=primary, plain=off, background=on, state=active, disabled=off, loading=off` |
 | 禁用 | `style=basic, round=off, size=default, icon=none, type=primary, plain=off, background=on, state=default, disabled=on, loading=off` |
 
-主按钮只通过以上属性切换状态；不得另造 hover/active/disabled 色值或手写近似按钮样式。
+**主按钮正常态必须按 Figma 原实例呈现**（`86:8090`）：60×32px、8px 圆角、`#f4f9fb` 浅底、`#e5f0f5` 描边、`#2f87ac` 蓝字。不要把 `type=primary` 理解成蓝底白字。Hover（`86:8130`）改为 `#e1eef5` 底色并保留蓝字与描边；Active（`86:8194`）为 `#215e78` 深蓝底、白字且无描边；Disabled（`86:8149`）为 `#dfebf1` 底色、白字且无描边。以上均是同一组件的真实变体，不得套用全局色阶自行推导。
+
+主按钮只通过以上属性切换状态；不得另造 hover/active/disabled 色值或手写近似按钮样式。若业务明确指定其他按钮样式，先匹配 Figma 已有变体，再读取该变体的真实填充与文字颜色。
 
 **类型语义**：
-- primary：实心主按钮 —— 背景 #2f87ac，文字 #ffffff；hover #215e78。
+- primary：品牌语义按钮；默认 `basic + plain=off + background=on` 为浅底蓝字，具体状态见上表，不等同“实心蓝底”。
 - default：次级按钮 —— 背景 #ffffff，边框 #f0f4f7，文字 #313333。
-- danger：危险按钮 —— 背景 #c66261，文字 #ffffff。
+- danger：危险语义按钮；上述基础默认变体（`86:8039`）为 `#fae8e7` 浅底、`#c66261` 红字。
 
 **样式语义**：
 - basic：标准按钮（有背景/边框）
@@ -445,7 +581,7 @@ Figma 页面：❖ Button（node-id=48:6417）。10 个变体轴，共 1000+ 变
 - link：链接式按钮（主色文字，无边框）
 - text：纯文字按钮（无背景无边框）
 
-**状态**：default / hover / active / disabled / loading。Loading 时文字替换为 spinner，按钮保持禁用。
+**状态**：default / hover / active / disabled / loading。Figma `loading=on` 实例（`89:8703`）同时保留 `_loading` 图形和可见按钮文字；不要把文字替换掉。是否阻止重复点击由实现交互逻辑决定。
 
 ### 2. Button Group 按钮组
 
@@ -456,7 +592,7 @@ Figma 页面：❖ Button Group（node-id=410:19775）。高度 32px。
 | type | default / primary / confirm / delete / split-default / split-primary | 默认 / 主要 / 确认 / 删除 / 分离-默认 / 分离-主要 |
 
 - 多个按钮横向拼接为一组，相邻按钮共享边框
-- confirm（确认，绿色语义）/ delete（删除，红色语义）用于危险或确认场景
+- `confirm`（`449:15289`）由默认「取消」按钮 + 浅底蓝字 `primary`「确认」按钮组成，**不是绿色按钮**；`delete`（`449:18774`）由默认「取消」按钮 + 浅底红字 `danger`「删除」按钮组成。
 - split-*：带下拉拆分的主按钮 + 附加操作
 
 ### 3. Link 链接
@@ -472,7 +608,7 @@ Figma 页面：❖ Link（node-id=49:6471）。高度 22px。
 | disabled | off / on | 禁用 |
 
 - primary 链接文字 #2f87ac；danger 文字 #c66261；default 文字 #313333
-- hover 态加深；disabled 用 #c0cccc
+- `primary` 原生实例的 default 文字为 `#2f87ac`（`90:40107`），hover 文字变为 **`#9ecfe4`**（`90:40105`），disabled 文字为 **`#dfebf1`**（`90:40098`）；不要统一按“hover 加深”或 `text-disabled` 色值推导链接状态。
 
 ### 4. Checkbox 复选框 / Checkbox Group 复选组
 
@@ -489,7 +625,7 @@ Figma 页面：❖ Checkbox（node-id=63:6474）。
 | state | default / hover | 默认 / 悬停 |
 | disabled | off / on | 禁用 |
 
-- 选中态勾选色 #2f87ac；边框默认 #c5ceda，选中 #2f87ac
+- 默认未选中图标白底、`#c5ceda` 描边；选中图标为 `#2f87ac` 底色、**白色勾形**（`91:41549`），不能把勾形画成蓝色。
 
 **Checkbox Group**：
 
@@ -498,6 +634,8 @@ Figma 页面：❖ Checkbox（node-id=63:6474）。
 | size | small / default / large | 24 / 32 / 40px |
 | type | border / button / icon | 描边组 / 按钮组 / 图标组 |
 | num | 2–10 | 选项数量 |
+
+**同页独立组件**：`Checkbox Icon`（`91:41372`，18 个变体，`size=small/default`，图形高 12/14px；轴为 `size/checked/indeterminate/state/disabled`）与 `Checkbox Button`（`91:41503`，12 个变体，高 24/32/40px；轴为 `size/checked/state/disabled`）也是 Figma 组件集。需要图标或按钮式复选控件时优先复用它们；图标高度不等于 Checkbox 整体行高。
 
 ### 5. Radio 单选框 / Radio Group 单选组
 
@@ -509,6 +647,7 @@ Figma 页面：❖ Radio（node-id=63:6480）。
 |--------|------|------|
 | size | small / default / large | 24 / 32 / 40px |
 | checked | off / on | 选中 |
+| indeterminate | off | Figma Radio 集中保留的固定属性，不存在 `on` 变体 |
 | border | off / on | 描边模式 |
 | state | default / hover | 默认 / 悬停 |
 | disabled | off / on | 禁用 |
@@ -523,6 +662,8 @@ Figma 页面：❖ Radio（node-id=63:6480）。
 | type | border / button / icon | 描边组 / 按钮组 / 图标组 |
 | num | 2–10 | 选项数量 |
 
+**同页独立组件**：`Radio Icon`（`91:41774`，12 个变体，`size=small/default`，图形高 12/14px；轴为 `size/checked/state/disabled`）可用于图标式单选；它与 `Radio`、`Radio Group` 分属不同组件集。
+
 ### 6. Switch 开关
 
 Figma 页面：❖ Switch（node-id=63:6484）。
@@ -534,8 +675,8 @@ Figma 页面：❖ Switch（node-id=63:6484）。
 | switch | off / on | 关 / 开 |
 | custom | off / on | 自定义内容 |
 
-- 开态轨道 #2f87ac，关态轨道 #c5ceda，圆钮 #ffffff
-- 轨道 pill 圆角 999px
+- 默认组件实例中，开态内层轨道为 `#2f87ac`，关态内层轨道为 `#f0f4f7`（`234:8446` / `234:8454`）；圆钮和其他 `type` 按 Figma 变体读取。
+- 默认内层轨道为 40×20px、圆角 **100px**（`234:8448`），圆钮为 16×16px、圆角 **999px**；不要把圆钮的圆角数值套给轨道。
 
 ### 7. Input 输入框 / Input Number 数字输入框
 
@@ -554,7 +695,7 @@ Figma 页面：❖ Input（node-id=63:6479）、❖ Input Number（node-id=228:2
 | state | default / focus / hover | 默认 / 聚焦 / 悬停 |
 | disabled | off / on | 禁用 |
 
-- 默认边框 #c5ceda（1px）；focus 边框 #2f87ac；hover 边框加深
+- Figma `Input` 默认实例（`186:7246`）为白底、`#f0f4f7` 描边、4px 圆角；hover（`186:7217`）描边 `#c0cccc`，focus（`186:7169`）描边 `#2f87ac`。三个实例均为 300×32px；不要把 `border-darker` 或 8px 基础圆角直接套给默认输入框。
 - 占位文字 #a1aaaa；输入文字 #313333
 
 **Input-extend（扩展输入框）**：
@@ -568,6 +709,8 @@ Figma 页面：❖ Input（node-id=63:6479）、❖ Input Number（node-id=228:2
 | required | off / on | 必填 |
 | state | default / focus / hover | 默认 / 聚焦 / 悬停 |
 | disabled | off / on | 禁用 |
+
+`Input-extend` 的 `size` 轴对应基础控件规格，但带前后缀、密码或格式化结构时，Figma 变体实际高度还出现 26/44/98/106px；不能只凭 `small/default/large` 强制改为 24/32/40px。`Input` 的多行等组合也可能为 26/60px，最终使用所选实例的实际尺寸。
 
 **Input Number**：
 
@@ -594,7 +737,8 @@ Figma 页面：❖ Select（node-id=63:6482）。
 | state | default / focus / hover | 默认 / 聚焦 / 悬停 |
 | disabled | off / on | 禁用 |
 
-- 触发器与输入框同规格；下拉面板背景 #fbfcfe，选项 hover #f4f9fb，选中 #e7f5fb
+- 默认 `Select` 触发器（`166:1511`）为 300×32px、白底、`#f0f4f7` 描边、4px 圆角；下拉面板与选项状态从相应 Figma 实例读取，不凭通用色阶推导。
+- 多选、标签折叠等组合在 Figma 中还出现 36/44px 高的实例；不要将所有 `size=default` 的 Select 强制压成 32px。
 
 ### 9. Datetime Picker 日期时间选择器
 
@@ -609,7 +753,7 @@ Figma 页面：❖ Datetime Picker（node-id=63:6477）。高度 32px。
 | shortcut | off / on | 快捷选项 |
 
 - 宽度 240 / 312 / 400 / 624 / 744px（按 type / range 组合）
-- 面板圆角 8px，阴影使用标准阴影
+- 日期下拉面板示例（`361:41521`）根节点圆角为 0，其内部 `_menu` 为 **8px** 圆角；根节点使用 Figma 浅色标准阴影。生成时保持箭头与面板的原有层级。
 
 ### 10. Form 表单 / Form Item 表单项
 
@@ -629,7 +773,7 @@ Figma 页面：❖ Form（node-id=63:6478）。
 | size | small / default / large | 24 / 32 / 40px |
 
 - 标签 + 控件的标准组合行；标签对齐方式由 Form 的 align 控制
-- Form-item-left/right/top 对应标签位置，规格一致
+- `Form-item-left/right/top` 是三个独立组件集，使用相同的 `type/size` 轴；多行类型实际高度可为 60px，不强制压成三档通用高度。
 
 ### 11. Table 表格
 
@@ -652,13 +796,15 @@ Figma 页面：❖ Table（node-id=75:1557）。
 - **作用域严格隔离**：58px 仅用于 Table Header，**不**适用于 Table Cell-basic、Table Cell-tree、Table Row 或 Table Body。不得因统一表格高度而批量修改数据行。
 - 一整行表头应由多个一致高度的 Header 实例组成，通过 Auto Layout 横向排列；按业务语义使用 `type=check/radio/blank/text`，按字段设置 `align`，不要用手绘矩形、普通 Text 代替真实组件。
 
-**表头精确样式（background=on）**：
+**表头组件精确样式（`background=on`，以 `234:10968` 为准）**：
 
 | 属性 | 值 | 说明 |
 |------|-----|------|
-| 背景 background | #FBFCFE | 等同 token bg（#fbfcfe） |
-| 边框 border | 1px solid #F0F4F7 | 等同 token border（#f0f4f7） |
-| 圆角 border-radius | 12px 12px 0px 0px | 表格容器顶部两角 12px，底部 0（表格专用，非全局 token） |
+| 背景 background | #F0F4F7 | Figma 表头实例的实际填充 |
+| 边框 border | 仅底边 1px #F0F4F7 | 上、左、右三边为 0；完整表格外框另有四边 1px 描边 |
+| 圆角 border-radius | 0px | Table Header 单元格本身四角均为 0 |
+
+**表格容器与表头不要混淆**：Figma 的浅色示例中，内层 `Table` 容器（`237:12256`）四角均为 **12px**，透明填充、`#f0f4f7` 描边，并开启内容裁切；示例外层 `table sample`（`696:110797`）另有 8px 圆角与 `#fbfcfe` 填充。组合整行表头时，圆角由内层表格容器统一裁切，表头单元格不单独加顶部圆角。
 
 **Table Cell-basic（基础单元格）**：
 
@@ -681,9 +827,9 @@ Figma 页面：❖ Table（node-id=75:1557）。
 | children | off / on | 子节点 |
 | state | default / hover | 默认 / 悬停 |
 
-- 表头（background=on）：背景 #FBFCFE，边框 1px solid #F0F4F7，顶部圆角 12px 12px 0 0，文字 #949999。顶部圆角属于表格容器的外侧两角，内部 Header 单元格不逐个设置 12px 圆角。
+- 表头（`background=on`）：背景与底边描边均为 `#f0f4f7`，文字 `#949999`；`background=off` 的同规格实例（`234:10970`）背景为 `#fbfcfe`。两种状态的单元格均只有底边 1px 描边、圆角 0；12px 圆角及四边 1px 描边属于完整表格容器。
 - **Table Body 维持独立尺寸**：`Table Cell-basic` 和 `Table Cell-tree` 默认使用 `size=default`，真实高度 **40px**；`small=32px`，`large` 通常为 48px。个别包含控件的变体可高至 52px，按实际 Figma 组件尺寸和内容处理，不能强行压成 40px。
-- 数据行文字 #313333；行分隔线 #F0F4F7；hover 行底 #f4f9fb。单元格宽度、换行及对齐遵循实际列内容与 Auto Layout，不以增加行高的方式补偿错误的列宽。
+- 默认基础数据单元格（`236:6564`）为白底 `#ffffff`、仅底边 1px `#f0f4f7` 描边、0px 圆角、文字 `#313333`。Hover 等状态应直接使用相应组件变体；单元格宽度、换行及对齐遵循实际列内容与 Auto Layout。
 - **嵌套 Tag**：当 `type=tag` 时，优先放置真正的 Tag 实例，默认 `size=default, effect=light`（28px 高），数据行仍按各自的 Cell 组件规格生成。
 - **生成验收**：没有额外需求时，表头各列高度均为 58px、数据行默认高度为 40px；更改 Header 尺寸不得改变 Body 的 size、height、hover 状态或选择控件。
 
@@ -697,22 +843,22 @@ Figma 页面：❖ Tag（node-id=75:1558）。
 | type | primary / success / warning / danger / info | 主要 / 成功 / 警告 / 危险 / 信息 |
 | effect | light / dark / plain | 浅色 / 深色 / 朴素 |
 | closable | off / on | 可关闭 |
-| round | off / on | 胶囊圆角 |
+| round | off / on | Figma 变体轴；当前两个值的 Tag 根节点均为 999px 圆角 |
 
 **Tag 默认实例选择（生成铁律）**：
 
 - **生成 Tag 时默认优先设置 `size=default, effect=light`**；除非需求明确指定其他大小/效果，或现有 Figma 业务模式明确要求其他变体，不得自行切成 `small/large` 或 `dark/plain`。
-- Figma `Tag` 主组件的真实高度是 `small=20px / default=28px / large=36px`（例：`size=default, type=primary, effect=light, closable=off, round=off`，node-id=129:299）；不得沿用旧文档 `20/24/32px` 的错误映射。内部 `_tag_delete` 图标高度 10/12/14px 不等于 Tag 容器高度。
+- Figma `Tag` 主组件的真实高度是 `small=20px / default=28px / large=36px`（例：`size=default, type=primary, effect=light, closable=off, round=off`，node-id=129:299）。内部 `_tag_delete` 图标高度 10/12/14px 不等于 Tag 容器高度。
 - `type` 应根据文案语义选择：primary=品牌/重点，success=完成/成功，warning=提醒/待处理，danger=异常/失败，info=常规中性状态。无明确语义时优先 `info`，但 **type 不得覆盖 `size=default, effect=light` 的默认优先级**。
-- `closable=off, round=off` 为无特殊说明时的生成选择；只有业务需要删除交互时才开启 `closable`，只有明确要求胶囊样式时才开启 `round`。
+- `closable=off, round=off` 为无特殊说明时的生成选择；只有业务需要删除交互时才开启 `closable`，只有明确要求 `round=on` 变体时才切换该轴。当前两种 round 值均显示 999px 根节点圆角。
 - 必须复用 Figma `Tag` 真实组件实例及其文字/颜色/圆角结构；禁止用彩色矩形加文字近似重绘，尤其不得按 Button 的 24/32/40px 高度套用到 Tag。
 
 **效果与样式**：
 
 - light：语义色 light-9 浅底 + base 文字（**默认**）。
 - dark：语义色 base 实底 + 白文字（明确要求时才用）。
-- plain：白底 + base 文字 + 边框（明确要求时才用）。
-- round=on 使用 20px 胶囊；圆角默认值跟随 Figma 当前 `round=off` 组件。
+- plain：以 Figma 原变体为准；`primary/default` 实例（`129:324`）透明填充、`#dfebf1` 描边、`#2f87ac` 文字，不能替换成白底。
+- Figma 当前 180 个 Tag 变体的根节点圆角均为 **999px**，包括 `round=off/on`；按真实实例使用，不根据轴名称改成 20px。`round` 仍按需求选择组件属性。
 - **生成验收**：普通业务状态 Tag 默认为 28px 高且 light 浅底；Table 单元格内、状态列、详情面板复用同一规则，不得出现同屏无理由混用 dark/plain 或其他 size。
 
 **Check Tag（可选标签）**：
@@ -731,8 +877,7 @@ Figma 页面：❖ Statistic（node-id=516:21143）。
 | type | card | 240×92 | 卡片（数值 + 副信息） |
 | type | countdown | 240×128 | 倒计时 |
 
-- 数值字号 16px 起（可放大），字重 Bold，等宽数字
-- 标题 #949999，数值 #313333
+- 三个原生变体的主要数值均为 Inter Medium **20px**，标签为 Inter Regular **12px**；示例主要文字和数值均为 `#313333`。业务数据替换文案时保持原样式，不统一改成 Bold 或次要灰色标题。
 
 ### 14. Tabs 标签页
 
@@ -742,7 +887,7 @@ Figma 页面：❖ Tabs（node-id=75:1568）。
 |--------|------|------|
 | type | default / card / border-card | 默认 / 卡片 / 描边卡片 |
 | closable | off / on | 可关闭 |
-| position | default / left / right | 位置 |
+| positon | default / left / right | 位置；Figma 原组件属性名拼作 `positon`，实例切换须沿用原名 |
 | custom-icon | off / on | 自定义图标 |
 | add | off / on | 新增按钮 |
 
@@ -757,24 +902,24 @@ Figma 页面：❖ Dialog（node-id=75:1570）。
 |--------|------|------|
 | align | default / center | 顶部对齐 / 居中 |
 
-- 默认尺寸 600×300；大尺寸 800×600
-- 背景 #fbfcfe，圆角 8px，阴影使用深阴影
-- 遮罩 rgba(0,0,0,0.80)
+- Figma `Dialog` 组件集仅有 `align=default`、`align=center` 两个变体，原始尺寸均为 **600×300px**。
+- 组件根节点实际填充 `#fbfcfe`、圆角 **0px**、无效果样式；不把平台扩展弹窗的 8px 圆角或深阴影套到该组件上。
+- 页面遮罩属于场景布局，不是 `Dialog` 变体的一部分；如需遮罩，按页面设计和 Figma 实例另行核对。
 
-### 16. Tooltip 文字提示 / Popconfirm 气泡确认
+### 16. Tooltips 文字提示
 
 Figma 页面：❖ Tooltip（node-id=75:1578）。
 
 | 变体轴 | 取值 | 中文 |
 |--------|------|------|
 | placement | top / top-start / top-end / bottom / bottom-start / bottom-end / left / left-start / left-end / right / right-start / right-end | 12 方向 |
-| effect | dark / light / border | 深色 / 浅色 / 描边 |
+| effect | dark / light / custom | 黑底白字 / 浅底深字 / 品牌蓝底白字 |
 | multiple | off / on | 多行内容 |
 
 - dark：深色底 + 白字
-- light：白底 + #313333 文字 + 阴影
-- border：白底 + 边框
-- Popconfirm（气泡确认框）：用于操作二次确认，含确认/取消按钮
+- light：`#fbfcfe` 浅底 + `#313333` 文字；阴影以原组件为准。
+- custom：`#2f87ac` 品牌蓝底 + 白字（Figma 变体 `147:3424`）。
+- UI Kit 中该组件集原名为 `Tooltips`（`147:2495`），共 72 个变体；本页未发现独立的 `Popconfirm` 组件集。需要二次确认时不要把 Tooltips 变体误写成 Popconfirm。
 
 ### 17. Alert 警告提示
 
@@ -881,7 +1026,7 @@ Figma 页面：Icon (on-going)（node-id=7:137）。
 | Header / Topbar | #fbfcfe | 一级承载容器 |
 | Section / layout Frame / group | transparent | 不承担背景，禁止默认白底 |
 | Figma UI Kit 组件实例 | 按组件属性 | 以 Figma 组件定义为准 |
-| Dialog / Tooltip / Select panel | #fbfcfe + shadow/border | 浮层需要承载背景 |
+| Dialog / Tooltips / Select panel | 按各自组件实例 | Dialog 原生根节点为 `#fbfcfe`；Tooltips 有 dark/light/custom 三种底色 |
 | KPI / Statistic / Chart card | 按组件语义 | 只给卡片自身背景，不给外层 section 背景 |
 
 ## 交互状态
@@ -891,14 +1036,14 @@ Figma 页面：Icon (on-going)（node-id=7:137）。
 | 状态 | 说明 | 设计表现 |
 |------|------|---------|
 | Default | 正常可交互 | 标准样式 |
-| Hover | 鼠标悬停 | 颜色微调 / 边框加深 / cursor:pointer |
-| Focus | 键盘聚焦 | 可见聚焦环（主色边框或 0 0 0 3px 环） |
-| Active | 按下 | scale(0.98) / 背景加深 |
-| Loading | 进行中 | spinner + 保持禁用 |
-| Disabled | 不可交互 | 文字 #c0cccc / opacity 0.4-0.5 / cursor:not-allowed |
+| Hover | 鼠标悬停 | 切换组件原生 hover 变体；不要统一加深背景 |
+| Focus | 键盘聚焦 | 使用组件已有 focus 变体或原生焦点结构；不要统一加 3px 环 |
+| Active | 按下 | 切换组件原生 active 变体；不统一缩放或推导颜色 |
+| Loading | 进行中 | 使用组件已有 loading 变体；交互禁用逻辑由产品实现决定 |
+| Disabled | 不可交互 | 切换组件原生 disabled 变体；不统一套透明度 |
 | Empty | 无数据 | 插图 + 提示 + 引导按钮 |
 | Error | 失败 | 错误图标 + 原因 + 重试按钮 |
-| Success | 成功 | 成功色对勾 + 文案（3s 自动消失） |
+| Success | 成功 | 选择 Figma 中对应语义组件；消失时机由具体需求决定 |
 
 ### 过渡动效
 
@@ -922,14 +1067,15 @@ Figma 页面：Icon (on-going)（node-id=7:137）。
 ## 已知缺口
 
 - Icon 图标库仍在持续补充（Figma 页面标注 on-going）
-- 暗色模式：仅提供 shadow dark 变量，组件暗色适配待补充
+- 暗色模式：Figma `Foundations` 已提供 `订单通_Dark Alpha` 与 `订单通_Dark` 两套变量值，并有 4 个 `dark/box-shadow-*` 效果样式；具体组件是否提供暗色变体仍逐项以 Figma 为准。
 - 移动端表格卡片化展示的具体实现待补充
 - 间距变量未在 Figma Variables 中定义（当前采用 4px 基准辅助刻度）
 
-## 本次组件规范校验（v4.1，2026-10-08）
+## 本次组件规范校验（v4.2，2026-10-30）
 
-- **Table（优先级 1）**：检查表头 `size=default` 是否来自 Figma Table Header 原组件并为 **58px**；正文 Cell 默认 **40px**、保持独立。无任何明确需求时，禁止沿用旧的「表头 default=40px」规则。
+- **Button**：主按钮默认实例 `86:8090` 为浅底蓝字，Hover `86:8130` 为更深浅底，Active `86:8194` 为深底白字；生成时检查类型、状态和实际填充。
+- **Table**：表头 `size=default` 使用原组件 `234:10968`，高 **58px**、底色 `#f0f4f7`、自身 0px 圆角；示例内层 Table 容器 `237:12256` 四角 **12px**，正文 Cell 默认 **40px**，两者尺寸独立。
 - **Tag（优先级 2）**：检查 Tag 是否优先 `size=default, effect=light`；Figma 默认高度 **28px**；按语义挑选 `type`，不要无理由调整 `effect` 或 `size`。
 - **Alert（优先级 3）**：复用 Figma 原有 `Alert` 组件集（60 个变体）；默认信息类浅色单行 **38px**，带描述 **64px**；不生成不存在的变体组合。
-- **变更范围**：本次只更新 `DESIGN.md` 的生成默认选型、已核实的 Figma 尺寸与 Alert 文档；不修改 Figma 文件、其他组件母版、平台全局 Size Tokens 或已有页面。
-- **回归要求**：创建含 Table、Tag、Alert 的页面时，分别检查组件 `mainComponent/variantProperties`、Header 与 Body 高度隔离、Tag 的 `effect/size`、Alert 的主题和描述状态。发现生成结果偏离时优先纠正组件实例选择，不用局部缩放/重绘掩盖。
+- **变量与组件覆盖**：`figmaVariables` 收录 `Foundations` 全部 72 个变量与三种模式；组件索引覆盖 18 个组件页的 30 个对外组件集。内部零件与 Icon 页面另行标明，不作为新造页面组件的依据。
+- **回归要求**：生成页面时核对组件 `mainComponent/variantProperties`、填充、描边、圆角与尺寸；发现偏离时先纠正实例选择或文档 token，不用局部缩放或重绘掩盖。
