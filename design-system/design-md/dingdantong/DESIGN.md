@@ -1,5 +1,5 @@
 ---
-version: v4.2
+version: v4.3
 name: 订单通 · FCG Design System UI Kit (Fangcang UI)
 description: "订单通（DingdanTong）B2B SaaS 平台的统一设计系统与组件规范，对齐 Figma「FCG Design System - UI Kit (订单通)- v1」。Figma 是组件、变量、状态与尺寸的唯一权威来源；本文档用于同步记录 Figma 并指导页面/原型生成。生成页面默认以 1920px 宽度为设计基准，使用 Auto Layout 与响应式约束。布局 Frame、section、group 默认透明，禁止自动生成白色背景块；只有 Figma 组件本身或明确的 L1 容器/浮层可使用背景。"
 
@@ -48,9 +48,18 @@ componentDefaults:
       clipsContent: true
     header:
       component: "Table Header"
-      preferredVariant: "size=default, type=text, align=left, background=on"
-      fill: "#f0f4f7"
+      referenceNode: "234:10970"
+      sampleSectionNode: "696:110794"
+      sampleSectionRole: "只用于定位浅色表格示例；分区填充不是 Table Header 的填充依据。"
+      preferredVariant: "size=default, type=text, align=left, background=off"
+      fill: "#fbfcfe"
+      fillVariable: "Color/Background/bg-color"
       border: "仅底边 1px #f0f4f7；其余三边 0px"
+      borderVariable: "Color/Border/border-color-lighter"
+      backgroundOnVariantNode: "234:10968"
+      backgroundOnFill: "#f0f4f7"
+      backgroundOnFillVariable: "Color/Border/border-color"
+      backgroundRule: "默认采用浅色表格示例的 background=off；仅在需求明确指定有底色表头时改用 background=on，不得把边框变量当作所有表头的默认底色。"
       radius: 0px
       height: 58px
       sizeHeights:
@@ -790,21 +799,23 @@ Figma 页面：❖ Table（node-id=75:1557）。
 
 **表头默认实例选择（生成铁律；仅作用于 Table Header）**：
 
-- **没有特别说明时，优先使用 Figma `Table Header` 的 `size=default` 变体，实际高度固定为 58px。** 推荐实例：`size=default, type=text, align=left, background=on`（Figma 变体 node-id=234:10968；不同类型、对齐方式按业务需要选同规格变体）。
+- **没有特别说明时，优先使用 Figma 浅色表格示例的 `background=off` 表头。** 推荐实例：`size=default, type=text, align=left, background=off`（Figma 变体 `234:10970`，高 58px；类型与对齐方式按业务需要选择同规格变体）。只有需求明确要求有底色表头时才选 `background=on`（`234:10968`）。
 - Figma 已核验的尺寸映射为 `small=32px / default=58px / large=48px`；这里的 `default` 虽高于 `large`，仍以 Figma 的真实尺寸为准，**不得按常见 32/40/48 规格推断或重排**。
 - 当业务明确要求紧凑/其他表头尺寸时，按要求选择 `small` 或 `large` 的真实组件变体；不要为了变更行高直接拉伸、缩放母组件。
 - **作用域严格隔离**：58px 仅用于 Table Header，**不**适用于 Table Cell-basic、Table Cell-tree、Table Row 或 Table Body。不得因统一表格高度而批量修改数据行。
 - 一整行表头应由多个一致高度的 Header 实例组成，通过 Auto Layout 横向排列；按业务语义使用 `type=check/radio/blank/text`，按字段设置 `align`，不要用手绘矩形、普通 Text 代替真实组件。
 
-**表头组件精确样式（`background=on`，以 `234:10968` 为准）**：
+**表头组件精确样式（默认 `background=off`，以 `234:10970` 为准）**：
 
 | 属性 | 值 | 说明 |
 |------|-----|------|
-| 背景 background | #F0F4F7 | Figma 表头实例的实际填充 |
-| 边框 border | 仅底边 1px #F0F4F7 | 上、左、右三边为 0；完整表格外框另有四边 1px 描边 |
+| 背景 background | #FBFCFE | 绑定 `Color/Background/bg-color`；浅色表格示例使用这一无灰底状态 |
+| 边框 border | 仅底边 1px #F0F4F7 | 绑定 `Color/Border/border-color-lighter`；上、左、右三边为 0 |
 | 圆角 border-radius | 0px | Table Header 单元格本身四角均为 0 |
 
-**表格容器与表头不要混淆**：Figma 的浅色示例中，内层 `Table` 容器（`237:12256`）四角均为 **12px**，透明填充、`#f0f4f7` 描边，并开启内容裁切；示例外层 `table sample`（`696:110797`）另有 8px 圆角与 `#fbfcfe` 填充。组合整行表头时，圆角由内层表格容器统一裁切，表头单元格不单独加顶部圆角。
+`background=on` 变体 `234:10968` 的填充才是 **#F0F4F7**，绑定 `Color/Border/border-color`；这是该变体的真实样式，不是表头通用默认色。`#F0F4F7` 同时作为表头底边描边值，不能据此推断表头填充。
+
+**表格容器与表头不要混淆**：UI Kit 节点 `696:110794` 是整个浅色示例 `Copy me - light` 分区，填充为 `Color/Background/bg-color`（#FBFCFE），不是 Table Header 组件本身。示例内层 `Table` 容器（`237:12256`）四角均为 **12px**，透明填充、`#f0f4f7` 描边，并开启内容裁切；示例外层 `table sample`（`696:110797`）另有 8px 圆角与 `#fbfcfe` 填充。组合整行表头时，圆角由内层表格容器统一裁切，表头单元格不单独加顶部圆角。
 
 **Table Cell-basic（基础单元格）**：
 
@@ -827,7 +838,7 @@ Figma 页面：❖ Table（node-id=75:1557）。
 | children | off / on | 子节点 |
 | state | default / hover | 默认 / 悬停 |
 
-- 表头（`background=on`）：背景与底边描边均为 `#f0f4f7`，文字 `#949999`；`background=off` 的同规格实例（`234:10970`）背景为 `#fbfcfe`。两种状态的单元格均只有底边 1px 描边、圆角 0；12px 圆角及四边 1px 描边属于完整表格容器。
+- 表头默认使用 `background=off`（`234:10970`）：填充 `#fbfcfe`、底边描边 `#f0f4f7`、文字 `#949999`。仅在明确要求有底色表头时使用 `background=on`（`234:10968`），其填充和底边描边均为 `#f0f4f7`。两种状态的单元格均只有底边 1px 描边、圆角 0；12px 圆角及四边 1px 描边属于完整表格容器。
 - **Table Body 维持独立尺寸**：`Table Cell-basic` 和 `Table Cell-tree` 默认使用 `size=default`，真实高度 **40px**；`small=32px`，`large` 通常为 48px。个别包含控件的变体可高至 52px，按实际 Figma 组件尺寸和内容处理，不能强行压成 40px。
 - 默认基础数据单元格（`236:6564`）为白底 `#ffffff`、仅底边 1px `#f0f4f7` 描边、0px 圆角、文字 `#313333`。Hover 等状态应直接使用相应组件变体；单元格宽度、换行及对齐遵循实际列内容与 Auto Layout。
 - **嵌套 Tag**：当 `type=tag` 时，优先放置真正的 Tag 实例，默认 `size=default, effect=light`（28px 高），数据行仍按各自的 Cell 组件规格生成。
@@ -1071,10 +1082,10 @@ Figma 页面：Icon (on-going)（node-id=7:137）。
 - 移动端表格卡片化展示的具体实现待补充
 - 间距变量未在 Figma Variables 中定义（当前采用 4px 基准辅助刻度）
 
-## 本次组件规范校验（v4.2，2026-10-30）
+## 本次组件规范校验（v4.3，2026-11-02）
 
 - **Button**：主按钮默认实例 `86:8090` 为浅底蓝字，Hover `86:8130` 为更深浅底，Active `86:8194` 为深底白字；生成时检查类型、状态和实际填充。
-- **Table**：表头 `size=default` 使用原组件 `234:10968`，高 **58px**、底色 `#f0f4f7`、自身 0px 圆角；示例内层 Table 容器 `237:12256` 四角 **12px**，正文 Cell 默认 **40px**，两者尺寸独立。
+- **Table**：浅色表格默认使用 `234:10970`（`background=off`），高 **58px**、填充 `#fbfcfe`；`#f0f4f7` 来自底边描边变量，也用于 `234:10968`（`background=on`）的填充。链接节点 `696:110794` 是浅色示例分区，不是表头组件；示例内层 Table 容器 `237:12256` 四角 **12px**，正文 Cell 默认 **40px**，两者尺寸独立。
 - **Tag（优先级 2）**：检查 Tag 是否优先 `size=default, effect=light`；Figma 默认高度 **28px**；按语义挑选 `type`，不要无理由调整 `effect` 或 `size`。
 - **Alert（优先级 3）**：复用 Figma 原有 `Alert` 组件集（60 个变体）；默认信息类浅色单行 **38px**，带描述 **64px**；不生成不存在的变体组合。
 - **变量与组件覆盖**：`figmaVariables` 收录 `Foundations` 全部 72 个变量与三种模式；组件索引覆盖 18 个组件页的 30 个对外组件集。内部零件与 Icon 页面另行标明，不作为新造页面组件的依据。
