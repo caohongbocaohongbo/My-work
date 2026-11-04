@@ -1,5 +1,5 @@
 ---
-version: v4.3
+version: v4.4
 name: 订单通 · FCG Design System UI Kit (Fangcang UI)
 description: "订单通（DingdanTong）B2B SaaS 平台的统一设计系统与组件规范，对齐 Figma「FCG Design System - UI Kit (订单通)- v1」。Figma 是组件、变量、状态与尺寸的唯一权威来源；本文档用于同步记录 Figma 并指导页面/原型生成。生成页面默认以 1920px 宽度为设计基准，使用 Auto Layout 与响应式约束。布局 Frame、section、group 默认透明，禁止自动生成白色背景块；只有 Figma 组件本身或明确的 L1 容器/浮层可使用背景。"
 
@@ -77,7 +77,8 @@ componentDefaults:
   dialog:
     baseSize: "600×300px（原生组件变体）"
     largeSize: "1040×800px（大弹窗实例，按内容场景使用）"
-    contentBackgroundRule: "弹窗外壳按 Dialog 组件自身样式；内容区新增的布局 Frame 默认透明。仅卡片、Alert、表格等已有背景职责的内容按各自规范设置填充，不把示例占位区的底色复制给真实内容。"
+    defaultBackground: "#ffffff（弹窗整体外壳；旧 UI Kit 组件根节点若仍为 #fbfcfe，生成实例时覆盖为纯白）"
+    contentBackgroundRule: "弹窗外壳默认纯白 #ffffff；内容区新增的布局 Frame 默认透明。仅卡片、Alert、表格等已有背景职责的内容按各自规范设置填充，不把示例占位区的底色复制给真实内容。"
     footerActionRule: "确定、提交等完成流程的关键操作只保留一个主按钮；取消为白底、灰边框、主色文字的次要按钮；保存草稿等其他操作不抢主按钮视觉层级。"
   tag:
     figmaPageNode: "75:1558"
@@ -438,7 +439,7 @@ easing:
 
 | 令牌 | 色值 | 用途 |
 |------|------|------|
-| bg | #fbfcfe | 组件背景、弹层背景 |
+| bg | #fbfcfe | 通用组件与浮层背景；Dialog 外壳默认纯白 `#ffffff`，不使用此色 |
 | bg-page | #f7f8fa | 页面底色 |
 | bg-overlay | #fbfcfe | 浮层背景 |
 | border | #f0f4f7 | 默认边框、行分隔线 |
@@ -922,8 +923,8 @@ Figma 页面：❖ Dialog（node-id=75:1570）。
 
 - Figma `Dialog` 组件集仅有 `align=default`、`align=center` 两个变体，原始尺寸均为 **600×300px**。
 - **大弹窗场景**：内容较多时可采用 **1040×800px** 的 Dialog 实例，作为尺寸使用场景，不据此新增 `size` 变体轴。标题、内容和底部操作仍属于同一弹窗结构；内容超出可视高度时让内容区滚动，保证标题和操作可用。
-- 组件根节点实际填充 `#fbfcfe`、圆角 **0px**、无效果样式；不把平台扩展弹窗的 8px 圆角或深阴影套到该组件上。
-- **内容背景按职责决定**：Dialog 外壳保留组件本身的背景。弹窗内部新增的布局 Frame、分组、section 默认透明；只有内容明确属于卡片、Alert、表格、输入框等已有背景规范的对象，才按该对象设置填充。示例中的内容占位底色不等于生成页面的默认内容底色；无规定时不加背景色。
+- **弹窗整体默认纯白**：Dialog 外壳填充 `#ffffff`。旧 UI Kit 组件根节点记录为 `#fbfcfe`；生成弹窗实例时应将外壳覆盖为纯白，不改写全局 `bg` token。[履约质量分页面的 Dialog `2:767`](https://www.figma.com/design/gizC9fhgWUXEokPq8FNyIh/%E8%AE%A2%E5%8D%95%E9%80%9A%E5%B1%A5%E7%BA%A6%E8%B4%A8%E9%87%8F%E5%88%86%E9%A1%B5%E9%9D%A2%E8%AE%BE%E8%AE%A1?node-id=2-767) 已采用纯白外壳。原生组件的圆角仍为 **0px**、无效果样式；不把平台扩展弹窗的 8px 圆角或深阴影套到该组件上。
+- **内容背景按职责决定**：弹窗内部新增的布局 Frame、分组、section 默认透明；只有内容明确属于卡片、Alert、表格、输入框等已有背景规范的对象，才按该对象设置填充。最新示例中的指标块可使用 `#fbfcfe`，但不能把该灰底扩展到整个弹窗；无规定时不加背景色。
 - **底部操作层级**：同一弹窗只突出一个完成流程的关键按钮，如「确定」「提交」，沿用现有主按钮样式；「取消」使用白底 `#ffffff`、灰边框 `#f0f4f7`、主色文字 `#2f87ac` 的次要样式。出现「保存草稿」等额外操作时，采用不突出显示的默认或文字按钮，不与关键操作使用相同强调色块；按钮视觉层级依据业务作用而非按钮数量决定。
 - 页面遮罩属于场景布局，不是 `Dialog` 变体的一部分；如需遮罩，按页面设计和 Figma 实例另行核对。
 
@@ -1036,7 +1037,7 @@ Figma 页面：Icon (on-going)（node-id=7:137）。
 ### 内容区背景归属（禁止默认白底）
 
 - **页面底色**：页面根背景使用 `bg-page #f7f8fa`
-- **L1 容器**：topbar、主内容壳层、弹窗、下拉、Popover 等确实需要承载层级的容器可使用 `bg #fbfcfe`
+- **L1 容器**：topbar、主内容壳层、下拉、Popover 等确实需要承载层级的容器可使用 `bg #fbfcfe`；Dialog 外壳默认 `#ffffff`
 - **L2 / L3 布局层**：section、标题区、正文区、左右列、grid、stack、group、仅用于对齐的 Frame 默认透明，设置 `fills: []`
 - **业务卡片**：只有 KPI、Statistic card、图表面板、信息面板等“真实卡片组件”才可使用背景；不要给卡片外层再套一层白底
 - **L4 强语义元素**：pill、notice、segmented 选中态、按钮、标签等按各自组件规范使用语义底色
@@ -1050,7 +1051,7 @@ Figma 页面：Icon (on-going)（node-id=7:137）。
 | Header / Topbar | #fbfcfe | 一级承载容器 |
 | Section / layout Frame / group | transparent | 不承担背景，禁止默认白底 |
 | Figma UI Kit 组件实例 | 按组件属性 | 以 Figma 组件定义为准 |
-| Dialog / Tooltips / Select panel | 按各自组件实例 | Dialog 原生根节点为 `#fbfcfe`；Tooltips 有 dark/light/custom 三种底色 |
+| Dialog / Tooltips / Select panel | 按各自组件实例 | Dialog 外壳默认 `#ffffff`（旧 UI Kit 根节点 `#fbfcfe` 需在实例中覆盖）；Tooltips 有 dark/light/custom 三种底色 |
 | KPI / Statistic / Chart card | 按组件语义 | 只给卡片自身背景，不给外层 section 背景 |
 
 ## 交互状态
